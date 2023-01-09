@@ -161,12 +161,6 @@ class Complex extends NumberLike<Complex> {
 }
 
 extension ComplexNumExtension on num {
-  Complex get c => Complex.from(this);
-  Complex get ci => Complex.imaginaryFrom(this);
-
-  Complex get re => c;
-  Complex get im => ci;
-
   num pow(num exponent) => r_math.pow(this, exponent);
   num fix([double error = 1e-9]) => rationalize(error).value;
 
@@ -211,10 +205,10 @@ extension ComplexNumExtension on num {
   }
 }
 
-// extension ComplexFractionExtension on ComplexMember {
-//   Complex get c => Complex(this, ComplexMember.from(0));
-//   Complex get ci => Complex(ComplexMember.from(0), this);
+extension ComplexFractionExtension on ComplexMember {
+  Complex get c => Complex.from(this);
+  Complex get ci => Complex.imaginaryFrom(this);
 
-//   Complex get re => c;
-//   Complex get im => ci;
-// }
+  Complex get re => c;
+  Complex get im => ci;
+}

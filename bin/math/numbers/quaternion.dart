@@ -257,7 +257,7 @@ class Quaternion extends NumberLike<Quaternion> {
   }
 }
 
-extension QuaternionNumExtension on num {
+extension QuaternionNumExtension on ComplexMember {
   Quaternion get q => Quaternion.from(this);
   Quaternion get qi => Quaternion.imaginaryIFrom(this);
   Quaternion get qj => Quaternion.imaginaryJFrom(this);

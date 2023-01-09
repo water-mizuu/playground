@@ -4,7 +4,8 @@ typedef Matrix<T> = List<List<T>>;
 
 extension VectorExtension<E extends num> on List<E> {
   num? operator *(List<num> right) => //
-      (0.to(math.min(length, right.length)))
+      0
+          .to(math.min(length, right.length))
           .map((index) => this[index] * right[index])
           .reduce((value, element) => value + element);
 }

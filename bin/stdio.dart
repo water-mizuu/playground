@@ -27,8 +27,8 @@ extension StdoutExt on Stdout {
 
   void print([Object object = ""]) => write(object);
   void println([Object object = ""]) => writeln(object);
-  void printAll(List<Object> objects, {String separator = ""}) => <void>[
-        for (Object obj in objects) <void>[print(obj), if (obj != objects.last) print(separator)]
+  void printAll(List<Object> objects, {String separator = ""}) => [
+        for (Object obj in objects) [print(obj), if (obj != objects.last) print(separator)]
       ];
 
   void newln([int n = 1]) => print("\n" * n);
@@ -40,17 +40,17 @@ extension StdoutExt on Stdout {
   void resetBackgroundColor() => esc(_resetBackgroundCode);
   void setForegroundColor(Rgb color) => esc("38;2;${color.ansi}m");
   void setBackgroundColor(Rgb color) => esc("48;2;${color.ansi}m");
-  void resetColor() => <void>[resetBackgroundColor(), resetForegroundColor()];
+  void resetColor() => [resetBackgroundColor(), resetForegroundColor()];
 
   void clearScreen() => write(_clearCode);
-  void clearln() => <void>[esc(_clearLineCode), movelnStart()];
-  void clearlnsUp([int n = 1]) => <void>[
+  void clearln() => [esc(_clearLineCode), movelnStart()];
+  void clearlnsUp([int n = 1]) => [
         clearln(),
-        for (int i = 1; i < n; i++) <void>[moveUp(), clearln()]
+        for (int i = 1; i < n; i++) [moveUp(), clearln()]
       ];
-  void clearlnsDown([int n = 1]) => <void>[
+  void clearlnsDown([int n = 1]) => [
         clearln(),
-        for (int i = 1; i < n; i++) <void>[moveUp(), clearln()]
+        for (int i = 1; i < n; i++) [moveUp(), clearln()]
       ];
 
   void moveUp([int n = 1]) => esc("$n$_moveUpCode");
@@ -70,4 +70,4 @@ extension StdoutExt on Stdout {
   void set backgroundColor(Rgb color) => setBackgroundColor(color);
 }
 
-Future<void> sleep(Duration duration) => Future<void>.delayed(duration);
+Future<void> sleep(Duration duration) => Future.delayed(duration);

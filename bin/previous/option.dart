@@ -1,7 +1,7 @@
-abstract class Option<E extends Object?> {
+sealed class Option<E extends Object?> {
   const Option();
-  const factory Option.some(E element) = _Some<E>;
-  const factory Option.none() = _None;
+  const factory Option.some(E element) = Some<E>;
+  const factory Option.none() = None;
 
   R match<R>({
     required R Function(E value) some,
@@ -11,14 +11,14 @@ abstract class Option<E extends Object?> {
   bool get isSome;
   bool get isNone;
 
-  Option<R> map<R extends Object?>(R Function(E value) some);
-  Option<R> flatMap<R extends Object?>(Option<R> Function(E value) some);
+  Option<R> select<R extends Object?>(R Function(E value) some);
+  Option<R> expand<R extends Object?>(Option<R> Function(E value) some);
   E? unwrap();
 }
 
-class _Some<E extends Object?> implements Option<E> {
+class Some<E extends Object?> implements Option<E> {
   final E value;
-  const _Some(this.value);
+  const Some(this.value);
 
   @override
   R match<R>({
@@ -34,10 +34,10 @@ class _Some<E extends Object?> implements Option<E> {
   bool get isNone => false;
 
   @override
-  Option<R> flatMap<R extends Object?>(Option<R> Function(E value) some) => some(value);
+  Option<R> expand<R extends Object?>(Option<R> Function(E value) some) => some(value);
 
   @override
-  Option<R> map<R extends Object?>(R Function(E value) some) => Option<R>.some(some(value));
+  Option<R> select<R extends Object?>(R Function(E value) some) => Option<R>.some(some(value));
 
   @override
   E? unwrap() => value;
@@ -46,8 +46,8 @@ class _Some<E extends Object?> implements Option<E> {
   String toString() => "Some($value)";
 }
 
-class _None implements Option<Never> {
-  const _None();
+class None implements Option<Never> {
+  const None();
 
   @override
   R match<R>({
@@ -63,10 +63,10 @@ class _None implements Option<Never> {
   bool get isNone => true;
 
   @override
-  Option<R> flatMap<R extends Object?>(Object some) => this;
+  Option<R> expand<R extends Object?>(Object some) => this;
 
   @override
-  Option<R> map<R extends Object?>(Object some) => this;
+  Option<R> select<R extends Object?>(Object some) => this;
 
   @override
   Null unwrap() => null;

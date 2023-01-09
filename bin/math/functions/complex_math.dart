@@ -14,14 +14,13 @@ Complex log(Complex z) {
 
   num absoluteSquared = z.absSquared();
   num real = 0.5 * r_math.log(absoluteSquared);
-  num imaginary = r_math.acos(z.real / r_math.pow(z.absSquared(), 0.5));
+  num imaginary = r_math.acos(z.real / r_math.pow(absoluteSquared, 0.5));
 
   return Complex(real, imaginary);
 }
 
 Complex exp(Complex z) {
-  num a = z.real;
-  num theta = z.imaginary;
+  var Complex(real: num a, imaginary: num theta) = z;
 
   num gamma = r_math.exp(a);
   num real = gamma * r_math.cos(theta);
@@ -31,9 +30,7 @@ Complex exp(Complex z) {
 }
 
 Complex sin(Complex z) {
-  num a = z.real;
-  num b = z.imaginary;
-
+  var Complex(real: num a, imaginary: num b) = z;
   num real = r_math.sin(a) * r_math.cosh(b);
   num imaginary = r_math.cos(a) * r_math.sinh(b);
 
@@ -41,8 +38,7 @@ Complex sin(Complex z) {
 }
 
 Complex cos(Complex z) {
-  num a = z.real;
-  num b = z.imaginary;
+  var Complex(real: num a, imaginary: num b) = z;
 
   num real = r_math.cos(a) * r_math.cosh(b);
   num imaginary = r_math.sin(a) * r_math.sinh(b);
@@ -51,8 +47,7 @@ Complex cos(Complex z) {
 }
 
 Complex tan(Complex z) {
-  num a = z.real;
-  num b = z.imaginary;
+  var Complex(real: num a, imaginary: num b) = z;
 
   num denominator = r_math.cos(2 * a) + r_math.cosh(2 * b);
   num real = r_math.sin(2 * a) / denominator;

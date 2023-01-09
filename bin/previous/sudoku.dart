@@ -21,8 +21,8 @@ bool isValidMove(int value, int y, int x, Matrix<int> grid, int sectorSize) {
   }
 
   // This might be odd, but focus on the FLOOR division.
-    int sectorY = (y ~/ sectorSize) * sectorSize;
-    int sectorX = (x ~/ sectorSize) * sectorSize;
+  int sectorY = (y ~/ sectorSize) * sectorSize;
+  int sectorX = (x ~/ sectorSize) * sectorSize;
   for (int _y = sectorY; _y < sectorY + sectorSize; _y++) {
     for (int _x = sectorX; _x < sectorX + sectorSize; _x++) {
       if (grid[_y][_x] == value) {
@@ -61,22 +61,21 @@ bool sudokuSolverForce(Matrix<int> grid) {
   return true;
 }
 
-
 bool _sudokuSolverOptimized(
   Matrix<int> grid,
   int i,
   List<(int, int)> indices,
-  Map<(int, int), Set<int>> validInitialMoves,
+  Map<(int, int), Set<int>> searchSpace,
 ) {
   if (i >= indices.length) {
     return true;
   }
 
-  Set<int> moves = validInitialMoves[indices[i]]!;
+  Set<int> moves = searchSpace[indices[i]]!;
   int y = indices[i].$0;
   int x = indices[i].$1;
   if (moves.isEmpty || grid[y][x] != 0) {
-    return _sudokuSolverOptimized(grid, i + 1, indices, validInitialMoves);
+    return _sudokuSolverOptimized(grid, i + 1, indices, searchSpace);
   }
 
   for (int move in moves) {
@@ -85,9 +84,7 @@ bool _sudokuSolverOptimized(
     }
 
     grid[y][x] = move;
-
-
-    if (_sudokuSolverOptimized(grid, i + 1, indices, validInitialMoves)) {
+    if (_sudokuSolverOptimized(grid, i + 1, indices, searchSpace)) {
       return true;
     } else {
       grid[y][x] = 0;
@@ -97,8 +94,13 @@ bool _sudokuSolverOptimized(
   return false;
 }
 
+///
+/// Optimizes solving a sudoku by basically
+///   pruning the search to only those that are guaranteed
+///   to be possible.
+///
 bool sudokuSolverOptimized(Matrix<int> grid) {
-    Map<(int, int), Set<int>> heuristics = {
+  Map<(int, int), Set<int>> searchSpace = {
     for (int y = 0; y < grid.verticalLength; y++)
       for (int x = 0; x < grid.horizontalLength; x++)
         (y, x): {
@@ -108,10 +110,12 @@ bool sudokuSolverOptimized(Matrix<int> grid) {
                 i
         }
   };
-    List<(int, int)> indices = heuristics.keys.toList()
-    ..sort((l, r) => heuristics[l]!.length.compareTo(heuristics[r]!.length));
+  List<(int, int)> indices = searchSpace.keys
+      .where((v) => searchSpace[v]!.isNotEmpty)
+      .toList()
+    ..sort((l, r) => searchSpace[l]!.length.compareTo(searchSpace[r]!.length));
 
-  return _sudokuSolverOptimized(grid, 0, indices, heuristics);
+  return _sudokuSolverOptimized(grid, 0, indices, searchSpace);
 }
 
 void main() {
@@ -132,28 +136,39 @@ void main() {
   // });
   // print(matrix.str);
 
-  // matrix = [
-  //   [0, 0, 3, 0, 0, 0, 0, 0, 9],
-  //   [0, 8, 0, 2, 0, 0, 6, 3, 0],
-  //   [0, 0, 0, 0, 0, 6, 0, 0, 4],
-  //   [0, 4, 0, 0, 5, 0, 0, 0, 0],
-  //   [0, 0, 0, 0, 0, 0, 0, 9, 0],
-  //   [0, 0, 5, 0, 0, 7, 3, 2, 0],
-  //   [1, 0, 0, 8, 0, 0, 0, 0, 0],
-  //   [0, 0, 0, 0, 0, 0, 0, 0, 6],
-  //   [0, 0, 4, 0, 0, 2, 7, 5, 0]
-  // ];
   matrix = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    [0, 0, 3, 0, 0, 0, 0, 0, 9],
+    [0, 8, 0, 2, 0, 0, 6, 3, 0],
+    [0, 0, 0, 0, 0, 6, 0, 0, 4],
+    [0, 4, 0, 0, 5, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 9, 0],
+    [0, 0, 5, 0, 0, 7, 3, 2, 0],
+    [1, 0, 0, 8, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 6],
+    [0, 0, 4, 0, 0, 2, 7, 5, 0]
   ];
+  // matrix = [
+  //   [0, 0, 0, 7, 0, 0, 0, 0, 0],
+  //   [1, 0, 0, 0, 0, 0, 0, 0, 0],
+  //   [0, 0, 0, 4, 3, 0, 2, 0, 0],
+  //   [0, 0, 0, 0, 0, 0, 0, 0, 6],
+  //   [0, 0, 0, 5, 0, 9, 0, 0, 0],
+  //   [0, 0, 0, 0, 0, 0, 4, 1, 8],
+  //   [0, 0, 0, 0, 8, 1, 0, 0, 0],
+  //   [0, 0, 2, 0, 0, 0, 0, 5, 0],
+  //   [0, 4, 0, 0, 0, 0, 3, 0, 0]
+  // ];
+  // matrix = [
+  //   [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  //   [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  //   [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  //   [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  //   [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  //   [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  //   [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  //   [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  //   [0, 0, 0, 0, 0, 0, 0, 0, 0]
+  // ];
   time(() {
     print(matrix.str);
     sudokuSolverOptimized(matrix);

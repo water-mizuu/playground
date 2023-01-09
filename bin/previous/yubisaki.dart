@@ -22,7 +22,7 @@ class Rgba {
 }
 
 Iterable<List<T>> partitioned<T>(Iterable<T> data, int partitionSize) sync* {
-  var values = <T>[];
+  List<T> values = [];
   for (T value in data) {
     values.add(value);
 
@@ -48,14 +48,18 @@ void main() {
   Directory directory = Directory("assets");
 
   print("Reading files.");
-  List<File> children = [for (File dir in directory.listSync().whereType<File>()) dir];
-  List<Image> images = [for (File c in children) decodeJpg(c.readAsBytesSync())!];
+  List<File> children = [
+    for (File dir in directory.listSync().whereType<File>()) dir
+  ];
+  List<Image> images = [
+    for (File c in children) decodeJpg(c.readAsBytesSync())!
+  ];
   List<bool> isSinglePage = [for (int i = 0; i < children.length; i++) i == 0];
   print("Finished reading files.");
 
   int singleOffset = 2 << 32 - 1;
   int doubleOffset = 2 << 32 - 1;
-  for (var i = 0; i < children.length; i++) {
+  for (int i = 0; i < children.length; i++) {
     isSinglePage[i] = i == 0;
 
     Image image = images[i];
@@ -63,8 +67,10 @@ void main() {
     int width = image.width;
     int height = image.height;
 
-    List<int> data = image.data;
-    Iterable<List<int>> partitionedData = partitioned(data, width).take(5 * height ~/ 7);
+    ImageData imageData = image.data!;
+    List<int> data = imageData.getBytes();
+    Iterable<List<int>> partitionedData =
+        partitioned(data, width).take(5 * height ~/ 7);
 
     // Assume that the first pixel (top left) is always a padding/sentinel pixel.
     int sentinel = partitionedData.first[0];
@@ -73,7 +79,8 @@ void main() {
     int rightOffset = width;
     for (List<int> row in partitionedData) {
       int leftCount = row.takeWhile((c) => closeEnough(c, sentinel)).length;
-      int rightCount = row.reversed.takeWhile((c) => closeEnough(c, sentinel)).length;
+      int rightCount =
+          row.reversed.takeWhile((c) => closeEnough(c, sentinel)).length;
 
       leftOffset = min(leftOffset, leftCount);
       rightOffset = min(rightOffset, rightCount);
@@ -109,7 +116,8 @@ void main() {
       {
         String name = "${baseName}_1";
         String fullPath = path.join(directoryName, "$name.jpg");
-        Image croppedImage = copyCrop(image, middle, 0, middle - doubleOffset, height);
+        Image croppedImage =
+            copyCrop(image, x: middle, y: 0, width: middle - doubleOffset, height: height,);
 
         File(fullPath)
           ..createSync(recursive: true)
@@ -120,7 +128,8 @@ void main() {
       {
         String name = "${baseName}_2";
         String fullPath = path.join(directoryName, "$name.jpg");
-        Image croppedImage = copyCrop(image, doubleOffset, 0, middle - doubleOffset, height);
+        Image croppedImage =
+            copyCrop(image, x: doubleOffset, y: 0, width: middle - doubleOffset, height: height);
 
         File(fullPath)
           ..createSync(recursive: true)
@@ -130,7 +139,7 @@ void main() {
       String name = "${baseName}_1";
       String fullPath = path.join(directoryName, "$name.jpg");
       int pageWidth = width - 2 * singleOffset;
-      Image croppedImage = copyCrop(image, singleOffset, 0, pageWidth, height);
+      Image croppedImage = copyCrop(image, x: singleOffset, y: 0, width: pageWidth, height: height);
 
       File(fullPath)
         ..createSync(recursive: true)

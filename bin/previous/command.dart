@@ -15,6 +15,19 @@ Command echo() => (Engine engine) {
       return null;
     };
 
+Command increment() => (Engine engine) {
+      int value = engine.pop<int>();
+      engine.push(value + 1);
+
+      return null;
+    };
+Command decrement() => (Engine engine) {
+      int value = engine.pop<int>();
+      engine.push(value - 1);
+
+      return null;
+    };
+
 Command compare(bool Function(num, num) callback) => (Engine engine) {
       num right = engine.pop();
       num left = engine.pop();

@@ -19,7 +19,8 @@ List<Complex> generateLeadingCoefficients(Complex degree) =>
         .toList();
 
 NumericalMatrix generateSystem(int degree) {
-  NumericalMatrix matrix = (List.generate(degree + 1, (i) => [i]).mt) //
+  NumericalMatrix matrix = List.generate(degree + 1, (i) => [i])
+      .mt //
       .expandColumn(0, generateLeadingCoefficients, filler: 0.re)
       .transpose()
       .rowVectors

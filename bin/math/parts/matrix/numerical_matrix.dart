@@ -228,7 +228,8 @@ extension NumericalMatrixMethods on NumericalMatrix {
       NumericalMatrix accumulative = accuQ * _q;
 
       NumericalVector estimates = _a.rightDiagonalVectors.first;
-      Scalar deviation = (0.to(estimates.degree)) //
+      Scalar deviation = 0
+          .to(estimates.degree) //
           .map((i) => (previous[i] - estimates[i]).abs())
           .variance();
 
@@ -343,7 +344,8 @@ extension NumericalMatrixMethods on NumericalMatrix {
         .reduced;
 
     List<NumericalVector> vectors = hyperReduced.rowVectors;
-    List<MapEntry<int, NumericalVector>> nullVectors = (0.to(vectors.length)) //
+    List<MapEntry<int, NumericalVector>> nullVectors = 0
+        .to(vectors.length) //
         .where((i) {
           NumericalVector vector = vectors[i];
           for (int i = vector.degree - 1; i >= 0; --i) {
