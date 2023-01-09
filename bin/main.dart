@@ -1,20 +1,16 @@
-import "dart:developer";
-import "dart:io";
-
-import "package:time/time.dart";
-
-import "stdio.dart";
+import "data_structeur/avl_tree.dart";
+import "data_structeur/range_union.dart";
 
 void main(List<String> args) async {
-  int start = Timeline.now ~/ 1e6;
+  var unit = Range.unit(2, 10);
+  var union = Range.unit(3, 5) | Range.unit(8, 10);
 
-  for (;;) {
-    stdout.clearScreen();
+  print(Range.fromSet({1, 2, 3, 5, 6, 7}));
+  print(Range.fromSet({1, 8150125, 12489, 13, 14, 15, 16, 2, 3, 4, 5}).length);
 
-    stdout.write("Hello! This application has been open for: ");
-    stdout.foregroundColor = (255, 0, 255);
-    stdout.resetForegroundColor();
+  print(unit.difference(union));
+  print("TARGET: [2, 3) | [5, 8)");
+  print("ACTUAL: ${unit.difference(union)}");
 
-    await sleep(800.milliseconds);
-  }
+  print(Range.unit(1, 1).length);
 }
