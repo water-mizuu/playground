@@ -32,13 +32,13 @@ Rgb hslToRgb2(int hue, double saturation, double lightness) {
   num x = c * (1 - ((hue ~/ 60) % 2 - 1).abs());
   num m = lightness - c / 2;
 
-  List<num> set = <List<num>>[
-    <num>[c, x, 0],
-    <num>[x, c, 0],
-    <num>[0, c, x],
-    <num>[0, x, c],
-    <num>[x, 0, c],
-    <num>[c, 0, x],
+  List<num> set = [
+    [c, x, 0],
+    [x, c, 0],
+    [0, c, x],
+    [0, x, c],
+    [x, 0, c],
+    [c, 0, x],
   ][hue ~/ 60];
 
   return Rgb(
