@@ -1,12 +1,26 @@
-// ignore_for_file: prefer_constructors_over_static_methods
-
 import "dart:math";
 
 sealed class Range extends Iterable<int> {
   const Range();
 
-  factory Range.unit(int start, int end) = RangeUnit;
-  factory Range.union(Set<RangeUnit> units) = RangeUnion;
+  /// Returns a [RangeUnit]. It represents a continuous set of integers from [start] to [end],
+  ///   with an inclusive [start] but an exclusive [end]. This is the smallest unit that a
+  ///   [Range] of numbers can be represented with.
+  factory Range.unit(int start, int end) {
+    if (end <= start) {
+      return RangeUnit._nil;
+    }
+    return RangeUnit(start, end);
+  }
+  /// Returns a [RangeUnion]. This represents a collection of [RangeUnit] that aren't continuous,
+  ///   but nevertheless is from the same [Range].
+  factory Range.union(Set<RangeUnit> units) {
+    units = { for (RangeUnit unit in units) if (unit != RangeUnit._nil) unit };
+    if (units.isEmpty) {
+      return RangeUnit._nil;
+    }
+    return RangeUnion(units);
+  }
   factory Range.fromSet(Set<int> numbers) {
     List<int> sorted = numbers.toList()..sort();
     Set<RangeUnit> runs = {};
@@ -26,17 +40,30 @@ sealed class Range extends Iterable<int> {
     return RangeUnion(runs);
   }
 
+  /// Returns the intersection (common element) of a range. 
   Range intersection(Range other);
+
+  /// Returns the union of a range.
   Range union(Range other);
+
+  /// Returns the difference of two ranges. If the rhs (right hand side) does not
+  ///   intersect with the lhs (left hand side), then the lhs is returned unmodified.
   Range difference(Range other);
 
+  /// Returns `true` if the [Range] intersects with another [Range].
   bool intersects(Range other);
+
+  /// Returns `true` if the [Range] `this` covers or is a superset of another [Range]
   bool covers(Range other);
 
-  bool includes(int value);
+  @override
+  bool contains(Object? value);
 
   Range operator |(Range other) => union(other);
   Range operator &(Range other) => intersection(other);
+  Range operator -(Range other) => difference(other);
+
+  Range operator ^(Range other) => (this | other) - (this & other);
 }
 
 
@@ -56,6 +83,8 @@ class RangeUnit extends Range {
   const RangeUnit._(this.start, this.end);
   const RangeUnit.nil(): start = 0, end = -1;
 
+  /// Returns the contingent combination of two [RangeUnit]s,
+  ///   returning an equivalent [RangeUnit]
   RangeUnit combination(RangeUnit other) {
     int start = min(this.start, other.start);
     int end = max(this.end, other.end);
@@ -80,7 +109,7 @@ class RangeUnit extends Range {
 
     if (other case RangeUnit unit) {
       RangeUnit left = RangeUnit(min(start, other.start), other.start);
-      RangeUnit right = RangeUnit(other.end, max(other.end - 1, end - 1));
+      RangeUnit right = RangeUnit(other.end, max(other.end, end));
 
       return RangeUnion({
         if (left.isNotEmpty) left,
@@ -110,7 +139,7 @@ class RangeUnit extends Range {
     if (other case RangeUnit unit) {
       int start = max(this.start, unit.start);
       int end = min(this.end, unit.end);
-      if (end < start) return _nil;
+      if (end <= start) return _nil;
 
       return RangeUnit(start, end);
     } else if (other case RangeUnion union) {
@@ -156,8 +185,8 @@ class RangeUnit extends Range {
   }
 
   @override
-  bool includes(int value) {
-    return start <= value && value < end;
+  bool contains(Object? value) {
+    return value is num && start <= value && value < end;
   }
 
   @override
@@ -171,7 +200,7 @@ class RangeUnit extends Range {
   }().iterator;
 
   @override
-  String toString() => this == _nil ? "∅" : "[$start, $end)";
+  String toString() => this.isEmpty ? "∅" : "[$start, $end)";
 
   @override
   bool operator ==(Object? other) =>
@@ -186,6 +215,8 @@ class RangeUnion extends Range {
 
   const RangeUnion(this.units);
 
+  /// Returns an "equivalent" [RangeUnit] that contains the same [RangeUnit.start]
+  ///   and [RangeUnit.end] as the units leftmost and rightmost unit values.
   RangeUnit contingent() {
     int? start;
     int? end;
@@ -211,6 +242,8 @@ class RangeUnion extends Range {
   
   @override
   Range difference(Range other) {
+    if (!this.intersects(other)) return this;
+
     Set<RangeUnit> units = {};
     for (RangeUnit unit in this.units) {
       Range difference = unit.difference(other);
@@ -240,12 +273,12 @@ class RangeUnion extends Range {
   }
 
   @override
-  bool includes(int value) {
-    return units.isNotEmpty && units.any((u) => u.contains(value));
+  bool contains(Object? value) {
+    return value is num && units.isNotEmpty && units.any((u) => u.contains(value));
   }
 
   @override
-  int get length => units.map((u) => u.length).reduce((a, b) => a + b);
+  int get length => units.map((u) => u.length).fold(0, (a, b) => a + b);
 
   @override
   Iterator<int> get iterator => () sync* {
@@ -257,5 +290,5 @@ class RangeUnion extends Range {
   }().iterator;
 
   @override
-  String toString() => units.join(" | ");
+  String toString() => isEmpty ? "∅" : units.join(" | ");
 }
