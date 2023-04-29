@@ -99,14 +99,14 @@ class AvlTreeNode<E> {
   (AvlTreeNode<E>, bool) add(E value) {
     bool inserted = false;
     if (comparison(value, this.value) < 0) {
-      var (AvlTreeNode<E> node, bool _inserted) = this.left?.add(value) ??
-          (AvlTreeNode<E>(value: value, comparison: comparison), true);
+      var (AvlTreeNode<E> node, bool _inserted) =
+          this.left?.add(value) ?? (AvlTreeNode<E>(value: value, comparison: comparison), true);
 
       inserted = _inserted;
       this.left = node;
     } else if (comparison(value, this.value) > 0) {
-      var (AvlTreeNode<E> node, bool _inserted) = this.right?.add(value) ??
-          (AvlTreeNode<E>(value: value, comparison: comparison), true);
+      var (AvlTreeNode<E> node, bool _inserted) =
+          this.right?.add(value) ?? (AvlTreeNode<E>(value: value, comparison: comparison), true);
 
       inserted = _inserted;
       this.right = node;
@@ -159,6 +159,7 @@ class AvlTreeNode<E> {
     } else if (key == 0) {
       return this;
     }
+    return null;
   }
 
   AvlTreeNode<E> random(Expando<int> expando) {
@@ -194,7 +195,7 @@ class AvlTree<E> extends Iterable<E> with SetMixin<E> {
   AvlTreeNode<E>? head;
 
   AvlTree([int Function(E, E)? comparison])
-      : comparison = comparison ?? ((a, b) => (a as Comparable<dynamic>).compareTo(b));
+      : comparison = comparison ?? ((E a, E b) => (a as Comparable<dynamic>).compareTo(b));
 
   factory AvlTree.from(Iterable<E> iterable, [int Function(E, E)? comparison]) {
     AvlTree<E> tree = AvlTree<E>(comparison);
@@ -240,24 +241,25 @@ class AvlTree<E> extends Iterable<E> with SetMixin<E> {
 
   @override
   Iterator<E> get iterator => () sync* {
-    if (this.head case AvlTreeNode<E> head) {
-      Queue<AvlTreeNode<E>> stack = Queue();
-      AvlTreeNode<E>? current = head;
+        if (this.head case AvlTreeNode<E> head) {
+          Queue<AvlTreeNode<E>> stack = Queue<AvlTreeNode<E>>();
+          AvlTreeNode<E>? current = head;
 
-      while (true) {
-        if (current != null) {
-          stack.addLast(current);
-          current = current.left;
-        } else if (stack.isNotEmpty) {
-          current = stack.removeLast();
-          yield current.value;
-          current = current.right;
-        } else {
-          break;
+          while (true) {
+            if (current != null) {
+              stack.addLast(current);
+              current = current.left;
+            } else if (stack.isNotEmpty) {
+              current = stack.removeLast();
+              yield current.value;
+              current = current.right;
+            } else {
+              break;
+            }
+          }
         }
-      }
-    }
-  }().iterator;
+      }()
+          .iterator;
 
   @override
   E? lookup(Object? element) {
@@ -273,7 +275,7 @@ class AvlTree<E> extends Iterable<E> with SetMixin<E> {
     AvlTree<E> tree = AvlTree<E>();
 
     if (head case AvlTreeNode<E> head) {
-      Queue<AvlTreeNode<E>> stack = Queue()..add(head);
+      Queue<AvlTreeNode<E>> stack = Queue<AvlTreeNode<E>>()..add(head);
 
       while (stack.isNotEmpty) {
         var AvlTreeNode<E>(
@@ -298,7 +300,7 @@ class AvlTree<E> extends Iterable<E> with SetMixin<E> {
 
   E random() {
     if (head case AvlTreeNode<E> head) {
-      return head.random(Expando()).value;
+      return head.random(Expando<int>()).value;
     }
     throw StateError("no element");
   }

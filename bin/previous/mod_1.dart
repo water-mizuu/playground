@@ -7,7 +7,7 @@ extension on num {
 }
 
 List<int> differences(List<int> numbers) => //
-    List.generate(numbers.length - 1, (i) => numbers[i] - numbers[i + 1]);
+    List<int>.generate(numbers.length - 1, (int i) => numbers[i] - numbers[i + 1]);
 
 Iterable<List<int>> _solveCoefficient(List<int> numbers) sync* {
   yield numbers;
@@ -20,11 +20,11 @@ Iterable<List<int>> _solveCoefficient(List<int> numbers) sync* {
 }
 
 Iterable<int> generateLeadingCoefficients(int degree) =>
-    _solveCoefficient([for (int i = degree + 1; i > 0; i--) i.pow(degree).floor()]) //
+    _solveCoefficient(<int>[for (int i = degree + 1; i > 0; i--) i.pow(degree).floor()]) //
         .map((List<int> e) => e.last);
 
 Matrix<int> generateSystem(int degree) {
-  Matrix<int> matrix = List.generate(degree + 1, (i) => [i])
+  Matrix<int> matrix = List<List<int>>.generate(degree + 1, (int i) => <int>[i])
       .expandColumn(0, (int i) => generateLeadingCoefficients(i).toList(), filler: 0)
       .transpose()
       .map((List<int> e) => e.reversed.toList())

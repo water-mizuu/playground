@@ -6,8 +6,8 @@ extension VectorExtension<E extends num> on List<E> {
   num? operator *(List<num> right) => //
       0
           .to(math.min(length, right.length))
-          .map((index) => this[index] * right[index])
-          .reduce((value, element) => value + element);
+          .map((int index) => this[index] * right[index])
+          .reduce((num value, num element) => value + element);
 }
 
 extension IterableExtension on int {
@@ -28,46 +28,46 @@ extension MatrixMethods<E> on Matrix<E> {
       transpose().removeRowsWhereEvery(handler).transpose();
 
   Matrix<E> removeRowsWhereEvery(bool Function(E) handler) => //
-      where((item) => !item.every(handler)).toList();
+      where((List<E> item) => !item.every(handler)).toList();
 
-  Matrix<E> submatrix({int top = 0, int bottom = 0, int left = 0, int right = 0}) => [
+  Matrix<E> submatrix({int top = 0, int bottom = 0, int left = 0, int right = 0}) => <List<E>>[
         for (int y = top; y < length - bottom; y++) //
-          [for (int x = left; x < this[y].length - right; x++) this[y][x]]
+          <E>[for (int x = left; x < this[y].length - right; x++) this[y][x]]
       ];
 
-  Matrix<E> removed({Set<int> x = const {}, Set<int> y = const {}}) => [
+  Matrix<E> removed({Set<int> x = const <int>{}, Set<int> y = const <int>{}}) => <List<E>>[
         for (int _y = 0; _y < verticalLength; _y++)
           if (!y.contains(_y))
-            [
+            <E>[
               for (int _x = 0; _x < horizontalLength; _x++)
                 if (!x.contains(_x)) this[_y][_x]
             ]
       ];
 
-  Matrix<E> transpose() => [
+  Matrix<E> transpose() => <List<E>>[
         for (int y = 0; y < verticalLength; y++) //
-          [for (int x = 0; x < horizontalLength; x++) this[x][y]]
+          <E>[for (int x = 0; x < horizontalLength; x++) this[x][y]]
       ];
 
   Matrix<E> expandColumn(int at, List<E> Function(E element) handler, {E? filler}) {
-    Matrix<E> expanded = [for (int i = 0; i < length; i++) handler(this[i][at])];
-    Set<int> resultLengths = expanded.map((list) => list.length).toSet();
+    Matrix<E> expanded = <List<E>>[for (int i = 0; i < length; i++) handler(this[i][at])];
+    Set<int> resultLengths = expanded.map((List<E> list) => list.length).toSet();
     if (filler == null && resultLengths.length > 1) {
       throw StateError("The resulting matrix shape is uneven and there was no filler provided.");
     }
 
     int max = resultLengths.reduce(math.max);
-    Matrix<E> filled = [
+    Matrix<E> filled = <List<E>>[
       for (List<E> row in expanded)
-        [
+        <E>[
           ...row,
           if (filler != null)
             for (int i = row.length; i < max; i++) filler
         ]
     ];
-    Matrix<E> matrix = [
+    Matrix<E> matrix = <List<E>>[
       for (int i = 0; i < length; i++)
-        [
+        <E>[
           for (int j = 0; j < this[i].length; j++)
             if (j == at) ...filled[i] else this[i][j]
         ]
@@ -80,40 +80,40 @@ extension MatrixMethods<E> on Matrix<E> {
   Matrix<E> expandRow(int index, List<E> Function(E element) handler, {E? filler}) =>
       transpose().expandColumn(index, handler, filler: filler).transpose();
 
-  Matrix<E> mapColumn(int index, E Function(E element) handler) => [
+  Matrix<E> mapColumn(int index, E Function(E element) handler) => <List<E>>[
         for (List<E> row in this)
-          [
+          <E>[
             for (int i = 0; i < row.length; i++)
               if (i == index) handler(row[i]) else row[i]
           ],
       ];
 
-  Matrix<E> mapRow<R extends E>(int index, E Function(E element) handler) => [
+  Matrix<E> mapRow<R extends E>(int index, E Function(E element) handler) => <List<E>>[
         for (int i = 0; i < length; i++)
-          [
+          <E>[
             for (E item in this[i])
               if (i == index) handler(item) else item
           ],
       ];
 
   Matrix<R> matrixMap<R>(R Function(E element) handler) =>
-      map((row) => row.map((item) => handler(item)).toList()).toList();
+      map((List<E> row) => row.map((E item) => handler(item)).toList()).toList();
 
   int get verticalLength => length;
   int get horizontalLength => _safeLength;
 
-  int get _safeLength => map((row) => row.length).reduce(math.min);
+  int get _safeLength => map((List<E> row) => row.length).reduce(math.min);
 
   String toMatrixString() => str;
   String toCsvString() => csv;
 
   String get str {
     List<int> profile = transpose() //
-        .map((c) => c.map((i) => "$i".length).reduce(math.max))
+        .map((List<E> c) => c.map((E element) => "$element".length).reduce(math.max))
         .toList();
 
     StringBuffer buffer = StringBuffer();
-    for (List<String> row in matrixMap((e) => e.toString())) {
+    for (List<String> row in matrixMap((E element) => element.toString())) {
       for (int i = 0; i < row.length; i++) {
         buffer.write("${row[i]}${" " * (profile[i] - row[i].length)} ");
       }
@@ -125,7 +125,7 @@ extension MatrixMethods<E> on Matrix<E> {
 
   String get csv {
     List<int> profile = transpose() //
-        .map((rows) => rows.map((c) => "$c".length).reduce(math.max))
+        .map((List<E> rows) => rows.map((E element) => "$element".length).reduce(math.max))
         .toList();
 
     StringBuffer buffer = StringBuffer();
@@ -179,11 +179,11 @@ extension MathematicalMatrix<E extends num> on Matrix<E> {
 
   String get str {
     List<int> profile = transpose() //
-        .map((c) => c.map((i) => "$i".length).reduce(math.max))
+        .map((List<E> c) => c.map((E element) => "$element".length).reduce(math.max))
         .toList();
 
     StringBuffer buffer = StringBuffer();
-    for (List<String> row in matrixMap((e) => "$e")) {
+    for (List<String> row in matrixMap((E element) => "$element")) {
       for (int i = 0; i < row.length; i++) {
         buffer.write("${" " * (profile[i] - row[i].length)}${row[i]} ");
       }
@@ -199,20 +199,20 @@ extension MathematicalMatrix<E extends num> on Matrix<E> {
       return null;
     }
 
-    Matrix<num?> cofactorMatrix = [
+    Matrix<num?> cofactorMatrix = <List<num?>>[
       for (int y = 0; y < verticalLength; y++)
-        [
+        <num?>[
           for (int x = 0; x < horizontalLength; x++) //
             removed(x: <int>{x}, y: <int>{y}).determinant
         ],
     ];
-    if (cofactorMatrix.any((r) => r.any((e) => e == null))) {
+    if (cofactorMatrix.any((List<num?> r) => r.any((num? e) => e == null))) {
       return null;
     }
 
-    Matrix<num> adjoint = [
+    Matrix<num> adjoint = <List<num>>[
       for (int y = 0; y < verticalLength; y++)
-        [
+        <num>[
           for (int x = 0; x < horizontalLength; x++) //
             math.pow(-1, x + y) * cofactorMatrix[x][y]!
         ],
@@ -228,8 +228,8 @@ extension MathematicalMatrix<E extends num> on Matrix<E> {
     }
 
     Matrix<num> applied = map(
-      (r) => transmuted //
-          .map((t) => (r * t)!.fix())
+      (List<num> r) => transmuted //
+          .map((List<num> t) => (r * t)!.fix())
           .toList(), //
     ).toList();
 
@@ -239,18 +239,18 @@ extension MathematicalMatrix<E extends num> on Matrix<E> {
   num call(int y, int x) => this[y][x];
 
   Matrix<num>? operator *(Object other) => other is num
-      ? matrixMap((e) => e * other)
+      ? matrixMap((num e) => e * other)
       : other is Matrix<num>
           ? matrixMultiply(other)
           : null;
 
   Matrix<num>? operator /(Object other) => other is num
-      ? matrixMap((e) => e / other)
+      ? matrixMap((num e) => e / other)
       : other is Matrix<num>
           ? ((Matrix<num>? inverse) => inverse == null ? null : matrixMultiply(inverse))(other.inverse)
           : null;
 
   Matrix<num>? operator ~/(Object other) => other is num //
-      ? matrixMap((e) => e ~/ other)
-      : (this / other)?.matrixMap((e) => e.floor());
+      ? matrixMap((num e) => e ~/ other)
+      : (this / other)?.matrixMap((num e) => e.floor());
 }

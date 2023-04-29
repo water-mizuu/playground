@@ -20,17 +20,17 @@ class Matrix<E> extends Iterable<E> {
 
   const Matrix(this.data);
   factory Matrix.fromVectors(List<Vector<E>> columnVectors) {
-    Set<int> degrees = columnVectors.map((v) => v.degree).toSet();
+    Set<int> degrees = columnVectors.map((Vector<E> v) => v.degree).toSet();
     if (degrees.length > 1) {
       throw StateError("Cannot create a matrix with inconsistent degrees!");
     }
     int height = degrees.min();
-    List<List<E>> data = [
+    List<List<E>> data = <List<E>>[
       for (int y = 0; y < height; ++y) //
-        [for (int x = 0; x < columnVectors.length; ++x) columnVectors[x][y]],
+        <E>[for (int x = 0; x < columnVectors.length; ++x) columnVectors[x][y]],
     ];
 
-    return Matrix(data);
+    return Matrix<E>(data);
   }
 
   Iterable<E> get _iterable sync* {
@@ -45,9 +45,9 @@ class Matrix<E> extends Iterable<E> {
       throw StateError("in horzcat, the matrices must have matching vertical dimensions!");
     }
 
-    return Matrix([
+    return Matrix<E>(<List<E>>[
       for (int y = 0; y < verticalLength; ++y)
-        [
+        <E>[
           if (left != null) ...left.data[y],
           ...data[y],
           if (right != null) ...right.data[y],
@@ -61,7 +61,7 @@ class Matrix<E> extends Iterable<E> {
       throw StateError("in vrtcat, the matrices must have matching horizontal dimensions!");
     }
 
-    return Matrix([
+    return Matrix<E>(<List<E>>[
       if (up != null) ...up.data,
       ...this.data,
       if (down != null) ...down.data,
@@ -69,24 +69,24 @@ class Matrix<E> extends Iterable<E> {
   }
 
   Matrix<E> submatrix({int top = 0, int bottom = 0, int left = 0, int right = 0}) => //
-      Matrix([
+      Matrix<E>(<List<E>>[
         for (int y = top; y < data.length - bottom; y++)
-          [for (int x = left; x < data[y].length - right; x++) data[y][x]]
+          <E>[for (int x = left; x < data[y].length - right; x++) data[y][x]]
       ]);
 
-  Matrix<E> removed({Set<int> x = const {}, Set<int> y = const {}}) => //
-      Matrix([
+  Matrix<E> removed({Set<int> x = const <int>{}, Set<int> y = const <int>{}}) => //
+      Matrix<E>(<List<E>>[
         for (int _y = 0; _y < verticalLength; _y++)
           if (!y.contains(_y))
-            [
+            <E>[
               for (int _x = 0; _x < horizontalLength; _x++)
                 if (!x.contains(_x)) data[_y][_x]
             ]
       ]);
 
-  Matrix<E> transpose() => Matrix([
+  Matrix<E> transpose() => Matrix<E>(<List<E>>[
         for (int x = 0; x < horizontalLength; x++) //
-          [for (int y = 0; y < verticalLength; y++) data[y][x]]
+          <E>[for (int y = 0; y < verticalLength; y++) data[y][x]]
       ]);
 
   Matrix<E> expandColumn(
@@ -95,16 +95,16 @@ class Matrix<E> extends Iterable<E> {
     E? filler,
     HorizontalDirection direction = HorizontalDirection.right,
   }) {
-    _List2d<E> expanded = [for (int y = 0; y < data.length; y++) handler(data[y][at])];
-    Set<int> resultLengths = expanded.map((list) => list.length).toSet();
+    _List2d<E> expanded = <List<E>>[for (int y = 0; y < data.length; y++) handler(data[y][at])];
+    Set<int> resultLengths = expanded.map((List<E> list) => list.length).toSet();
     if (filler == null && resultLengths.length > 1) {
       throw StateError("The resulting matrix shape is uneven and there was no filler provided.");
     }
 
     int max = resultLengths.max();
-    _List2d<E> filled = [
+    _List2d<E> filled = <List<E>>[
       for (List<E> row in expanded)
-        [
+        <E>[
           if (filler != null && direction == HorizontalDirection.left)
             for (int x = row.length; x < max; x++) filler,
           ...row,
@@ -112,15 +112,15 @@ class Matrix<E> extends Iterable<E> {
             for (int x = row.length; x < max; x++) filler
         ]
     ];
-    _List2d<E> matrix = [
+    _List2d<E> matrix = <List<E>>[
       for (int y = 0; y < data.length; y++)
-        [
+        <E>[
           for (int x = 0; x < data[y].length; x++)
             if (x == at) ...filled[y] else data[y][x]
         ]
     ];
 
-    return Matrix(matrix);
+    return Matrix<E>(matrix);
   }
 
   Matrix<E> expandRow(
@@ -132,8 +132,8 @@ class Matrix<E> extends Iterable<E> {
     /// Build the matrix.
     /// if y == index, expand bottom.
     ///
-    _List2d<E> expanded = [for (int x = 0; x < horizontalLength; ++x) handler(data[at][x])];
-    Set<int> resultLengths = expanded.map((list) => list.length).toSet();
+    _List2d<E> expanded = <List<E>>[for (int x = 0; x < horizontalLength; ++x) handler(data[at][x])];
+    Set<int> resultLengths = expanded.map((List<E> list) => list.length).toSet();
     if (filler == null && resultLengths.length > 1) {
       throw StateError("The resulting matrix shape is uneven and there was no filler provided.");
     }
@@ -142,12 +142,12 @@ class Matrix<E> extends Iterable<E> {
     ///   If the shape is consistent, let it be.
     ///   Else, we pad it with the filler.
     int max = resultLengths.max();
-    _List2d<E> normalized = [
+    _List2d<E> normalized = <List<E>>[
       for (List<E> partialColumn in expanded)
         if (partialColumn.length == max)
           partialColumn
         else
-          [
+          <E>[
             /// Dichotomy states that it can only be UP or DOWN.
             ///   For the extra null check, idk.
             if (filler != null && direction == VerticalDirection.up)
@@ -162,55 +162,55 @@ class Matrix<E> extends Iterable<E> {
     ///   If y is [at],
     ///     we put the transpose of the normalized.
     ///   else, we just use the row of data.
-    _List2d<E> built = [
+    _List2d<E> built = <List<E>>[
       for (int y = 0; y < verticalLength; ++y)
         if (y == at) //
-          ...[
-          for (int _y = 0; _y < max; ++_y) [for (int x = 0; x < horizontalLength; ++x) normalized[x][_y]]
+          ...<List<E>>[
+          for (int _y = 0; _y < max; ++_y) <E>[for (int x = 0; x < horizontalLength; ++x) normalized[x][_y]]
         ] else
           data[y]
     ];
 
-    return Matrix(built);
+    return Matrix<E>(built);
   }
 
-  Matrix<E> mapColumn(int index, E Function(E element) handler) => Matrix([
+  Matrix<E> mapColumn(int index, E Function(E element) handler) => Matrix<E>(<List<E>>[
         for (List<E> row in data)
-          [
+          <E>[
             for (int i = 0; i < row.length; i++)
               if (i == index) handler(row[i]) else row[i]
           ],
       ]);
 
-  Matrix<E> mapRow<R extends E>(int index, E Function(E element) handler) => Matrix([
+  Matrix<E> mapRow<R extends E>(int index, E Function(E element) handler) => Matrix<E>(<List<E>>[
         for (int i = 0; i < data.length; i++)
-          [
+          <E>[
             for (E item in data[i])
               if (i == index) handler(item) else item
           ],
       ]);
 
-  Matrix<R> matrixMap<R>(R Function(E element) handler) => Matrix([
-        for (List<E> row in data) [for (E item in row) handler(item)]
+  Matrix<R> matrixMap<R>(R Function(E element) handler) => Matrix<R>(<List<R>>[
+        for (List<E> row in data) <R>[for (E item in row) handler(item)]
       ]);
 
-  bool matrixAny(bool Function(E element) handler) => data.any((row) => row.any(handler));
-  bool matrixEvery(bool Function(E element) handler) => data.every((row) => row.every(handler));
+  bool matrixAny(bool Function(E element) handler) => data.any((List<E> row) => row.any(handler));
+  bool matrixEvery(bool Function(E element) handler) => data.every((List<E> row) => row.every(handler));
 
-  Matrix<E> copy() => Matrix([
-        for (List<E> row in data) [for (E item in row) item]
+  Matrix<E> copy() => Matrix<E>(<List<E>>[
+        for (List<E> row in data) <E>[for (E item in row) item]
       ]);
 
   int get verticalLength => data.length;
   int get horizontalLength => _safeLength;
 
-  int get _safeLength => data.map((row) => row.length).min();
+  int get _safeLength => data.map((List<E> row) => row.length).min();
 
   String _buildString(Matrix<String> stringified) {
     List<int> profile = stringified
         .transpose() //
         .data
-        .map((row) => row.map((v) => v.length + 3).max())
+        .map((List<String> row) => row.map((String v) => v.length + 3).max())
         .toList();
 
     StringBuffer buffer = StringBuffer();
@@ -226,27 +226,27 @@ class Matrix<E> extends Iterable<E> {
 
   @override
   String toString() {
-    Matrix<String> stringified = matrixMap((v) => v.toString());
+    Matrix<String> stringified = matrixMap((E element) => element.toString());
 
     return _buildString(stringified);
   }
 
   String toRationalizedString() {
-    if (matrixAny((v) => v is! NumberLike)) {
+    if (matrixAny((E v) => v is! NumberLike)) {
       throw TypeError();
     }
 
-    Matrix<String> stringified = matrixMap((v) => (v as NumberLike).strRat);
+    Matrix<String> stringified = matrixMap((E v) => (v as NumberLike<void>).strRat);
 
     return _buildString(stringified);
   }
 
   String toNumericalString() {
-    if (matrixAny((v) => v is! NumberLike)) {
+    if (matrixAny((E v) => v is! NumberLike)) {
       throw TypeError();
     }
 
-    Matrix<String> stringified = matrixMap((v) => (v as NumberLike).strShort);
+    Matrix<String> stringified = matrixMap((E v) => (v as NumberLike<void>).strShort);
 
     return _buildString(stringified);
   }
@@ -254,7 +254,7 @@ class Matrix<E> extends Iterable<E> {
   static String _renderMatrixString(String input) {
     StringBuffer buffer = StringBuffer();
     List<String> lines = input.split("\n");
-    int fullWidth = lines.map((v) => v.length).max();
+    int fullWidth = lines.map((String v) => v.length).max();
 
     buffer
       ..write("┌ ")
@@ -278,7 +278,7 @@ class Matrix<E> extends Iterable<E> {
 
   static List<int> _countColumnLengths(Matrix<String> components) {
     List<int> profile = components.columnVectors //
-        .map((v) => v.data.map((v) => v.length).max())
+        .map((Vector<String> v) => v.data.map((String v) => v.length).max())
         .toList();
 
     return profile;
@@ -286,7 +286,7 @@ class Matrix<E> extends Iterable<E> {
 
   String toMatrixString() {
     StringBuffer renderBuffer = StringBuffer();
-    Matrix<String> components = matrixMap((v) => "$v");
+    Matrix<String> components = matrixMap((E v) => "$v");
     List<int> profile = _countColumnLengths(components);
 
     String rowSeparator = "  ";
@@ -317,7 +317,7 @@ class Matrix<E> extends Iterable<E> {
 
   String toCsvString() {
     StringBuffer renderBuffer = StringBuffer();
-    Matrix<String> components = matrixMap((v) => "$v");
+    Matrix<String> components = matrixMap((E v) => "$v");
     List<int> profile = _countColumnLengths(components);
 
     String rowSeparator = ",";
@@ -342,31 +342,23 @@ class Matrix<E> extends Iterable<E> {
     return renderBuffer.toString();
   }
 
-  List<Vector<E>> get rowVectors => _ListVectorProxy(this, [
+  List<Vector<E>> get rowVectors => _ListVectorProxy<E>(this, <List<(int, int)>>[
         for (int y = 0; y < verticalLength; ++y) //
-          [
-            for (int x = 0; x < horizontalLength; ++x) (y, x)
-          ]
+          <(int, int)>[for (int x = 0; x < horizontalLength; ++x) (y, x)]
       ]);
-  List<Vector<E>> get columnVectors => _ListVectorProxy(this, [
+  List<Vector<E>> get columnVectors => _ListVectorProxy<E>(this, <List<(int, int)>>[
         for (int x = 0; x < horizontalLength; ++x) //
-          [
-            for (int y = 0; y < verticalLength; ++y) (y, x)
-          ]
+          <(int, int)>[for (int y = 0; y < verticalLength; ++y) (y, x)]
       ]);
-  List<Vector<E>> get rightDiagonalVectors => _ListVectorProxy(this, [
+  List<Vector<E>> get rightDiagonalVectors => _ListVectorProxy<E>(this, <List<(int, int)>>[
         for (int x = 0; x < horizontalLength; ++x) //
-          [
-            for (int y = 0; y < verticalLength; ++y) (y, (y + x) % horizontalLength)
-          ]
+          <(int, int)>[for (int y = 0; y < verticalLength; ++y) (y, (y + x) % horizontalLength)]
       ]);
-  List<Vector<E>> get leftDiagonalVectors => _ListVectorProxy(this, [
+  List<Vector<E>> get leftDiagonalVectors => _ListVectorProxy<E>(this, <List<(int, int)>>[
         for (int x = 0; x < horizontalLength; ++x) //
-          [
-            for (int y = 0; y < verticalLength; ++y) (y, (horizontalLength + y - x) % horizontalLength)
-          ]
+          <(int, int)>[for (int y = 0; y < verticalLength; ++y) (y, (horizontalLength + y - x) % horizontalLength)]
       ]);
-  Vector<E> operator [](int index) => Vector(data[index]);
+  Vector<E> operator [](int index) => Vector<E>(data[index]);
   void operator []=(int index, Vector<E> val) => data[index] = val.data;
 
   @override

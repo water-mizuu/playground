@@ -42,7 +42,7 @@ extension NumFractionExtension<N extends num> on N {
 
 extension FractionMethods on Fraction {
   static Map<T, int> count<T>(  Iterable<T> values) {
-    Map<T, int> count = { for (T c in values) c: 0 };
+    Map<T, int> count = <T, int>{ for (T c in values) c: 0 };
     for (T c in values) {
       count[c] = count[c]! + 1;
     }
@@ -76,8 +76,8 @@ extension FractionMethods on Fraction {
     return (numerator, denominator);
   }
 
-  int get numerator => $0;
-  int get denominator => $1;
+  int get numerator => $1;
+  int get denominator => $2;
 
   Fraction get reduced {
     int gcf = _computeGcf(numerator.abs(), denominator.abs());

@@ -235,16 +235,16 @@ class Quaternion extends NumberLike<Quaternion> {
   }
 
   @override
-  String get str => _writeToString((v) => v.toString());
+  String get str => _writeToString((ComplexMember v) => v.toString());
 
   @override
-  String get strLong => collapsed._writeToString((v) => v.strLong);
+  String get strLong => collapsed._writeToString((ComplexMember v) => v.strLong);
 
   @override
-  String get strRat => collapsed._writeToString((v) => v.strRat);
+  String get strRat => collapsed._writeToString((ComplexMember v) => v.strRat);
 
   @override
-  String get strShort => collapsed._writeToString((v) => v.strShort);
+  String get strShort => collapsed._writeToString((ComplexMember v) => v.strShort);
 
   @override
   Quaternion subtract(Quaternion other) {

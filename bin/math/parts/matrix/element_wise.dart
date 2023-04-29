@@ -14,10 +14,10 @@ class ElementWiseNumericalMatrixProxy extends Iterable<Scalar> {
   @override
   Iterator<Scalar> get iterator => _iterable.iterator;
 
-  NumericalMatrix operator +(Scalar right) => parent.matrixMap((left) => left + right);
-  NumericalMatrix operator -(Scalar right) => parent.matrixMap((left) => left - right);
-  NumericalMatrix operator /(Scalar right) => parent.matrixMap((left) => left / right);
-  NumericalMatrix operator *(Scalar right) => parent.matrixMap((left) => left * right);
-  NumericalMatrix operator %(Scalar right) => parent.matrixMap((left) => left % right);
-  NumericalMatrix operator ~/(Scalar right) => parent.matrixMap((left) => left ~/ right);
+  NumericalMatrix operator +(Scalar right) => parent.matrixMap((Scalar left) => left + right);
+  NumericalMatrix operator -(Scalar right) => parent.matrixMap((Scalar left) => left - right);
+  NumericalMatrix operator /(Scalar right) => parent.matrixMap((Scalar left) => left / right);
+  NumericalMatrix operator *(Scalar right) => parent.matrixMap((Scalar left) => left * right);
+  NumericalMatrix operator %(Scalar right) => parent.matrixMap((Scalar left) => left % right);
+  NumericalMatrix operator ~/(Scalar right) => parent.matrixMap((Scalar left) => left ~/ right);
 }

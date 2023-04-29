@@ -10,7 +10,7 @@ class Vector<E> {
   const Vector(this.data);
 
   Vector<E> subvector({int top = 0, int bottom = 0}) =>
-      Vector([for (int y = top; y < data.length - bottom; y++) data[y]]);
+      Vector<E>(<E>[for (int y = top; y < data.length - bottom; y++) data[y]]);
 
   int get degree => data.length;
 
@@ -23,10 +23,10 @@ class Vector<E> {
   String toMatrixString() {
     const int horizontalLength = 1;
 
-    List<String> components = data.map((v) => "$v").toList();
-    int maxLength = components.map((v) => v.length).max();
+    List<String> components = data.map((E v) => "$v").toList();
+    int maxLength = components.map((String v) => v.length).max();
 
-    List<String> padded = components.map((v) => "${" " * (maxLength - v.length)}$v").toList();
+    List<String> padded = components.map((String v) => "${" " * (maxLength - v.length)}$v").toList();
     StringBuffer buffer = StringBuffer();
 
     int fullWidth = maxLength * horizontalLength + 2;

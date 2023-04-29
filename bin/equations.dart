@@ -1,7 +1,7 @@
 import "math/shared.dart";
 
 List<Complex> differences(List<Complex> numbers) => //
-    List.generate(numbers.length - 1, (i) => numbers[i] - numbers[i + 1]);
+    List<Complex>.generate(numbers.length - 1, (int i) => numbers[i] - numbers[i + 1]);
 
 Iterable<List<Complex>> _solveCoefficient(List<Complex> numbers) sync* {
   yield numbers;
@@ -14,19 +14,19 @@ Iterable<List<Complex>> _solveCoefficient(List<Complex> numbers) sync* {
 }
 
 List<Complex> generateLeadingCoefficients(Complex degree) =>
-    _solveCoefficient([for (Complex i = degree + 1.re; i > 0.re; i -= 1.re) i.pow(degree).floor()]) //
-        .map((e) => e.last)
+    _solveCoefficient(<Complex>[for (Complex i = degree + 1.re; i > 0.re; i -= 1.re) i.pow(degree).floor()]) //
+        .map((List<Complex> e) => e.last)
         .toList();
 
 NumericalMatrix generateSystem(int degree) {
-  NumericalMatrix matrix = List.generate(degree + 1, (i) => [i])
-      .mt //
+  NumericalMatrix matrix = List<List<int>>.generate(degree + 1, (int i) => <int>[i])
+      .toMatrix() //
       .expandColumn(0, generateLeadingCoefficients, filler: 0.re)
       .transpose()
       .rowVectors
-      .map((v) => v.data.reversed.toList())
+      .map((NumericalVector v) => v.data.reversed.toList())
       .toList()
-      .mt;
+      .toMatrix();
 
   return matrix;
 }
@@ -65,7 +65,8 @@ String generateEquations(NumericalMatrix matrix) {
 String generateEquationsFromDegree(int degree) => generateEquations(generateSystem(degree));
 
 NumericalMatrix solve(NumericalMatrix coefficientMatrix, NumericalVector constantVector) {
-  NumericalMatrix augmented = coefficientMatrix.horizontalConcatenate(right: Matrix.fromVectors([constantVector]));
+  NumericalMatrix rightSide = Matrix<Scalar>.fromVectors(<NumericalVector>[constantVector]);
+  NumericalMatrix augmented = coefficientMatrix.horizontalConcatenate(right: rightSide);
   RowReduction reduction = augmented.reducedRowEchelonForm(RowReduction.preserveRowOrder);
   NumericalMatrix reduced = reduction.reduced.collapsed;
 

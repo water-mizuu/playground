@@ -72,8 +72,8 @@ bool _sudokuSolverOptimized(
   }
 
   Set<int> moves = searchSpace[indices[i]]!;
-  int y = indices[i].$0;
-  int x = indices[i].$1;
+  int y = indices[i].$1;
+  int x = indices[i].$2;
   if (moves.isEmpty || grid[y][x] != 0) {
     return _sudokuSolverOptimized(grid, i + 1, indices, searchSpace);
   }
@@ -100,10 +100,10 @@ bool _sudokuSolverOptimized(
 ///   to be possible.
 ///
 bool sudokuSolverOptimized(Matrix<int> grid) {
-  Map<(int, int), Set<int>> searchSpace = {
+  Map<(int, int), Set<int>> searchSpace = <(int, int), Set<int>>{
     for (int y = 0; y < grid.verticalLength; y++)
       for (int x = 0; x < grid.horizontalLength; x++)
-        (y, x): {
+        (y, x): <int>{
           if (grid[y][x] == 0)
             for (int i = 1; i <= 9; i++)
               if (isValidMove(i, y, x, grid, 3))
@@ -111,9 +111,9 @@ bool sudokuSolverOptimized(Matrix<int> grid) {
         }
   };
   List<(int, int)> indices = searchSpace.keys
-      .where((v) => searchSpace[v]!.isNotEmpty)
+      .where(((int, int) v) => searchSpace[v]!.isNotEmpty)
       .toList()
-    ..sort((l, r) => searchSpace[l]!.length.compareTo(searchSpace[r]!.length));
+    ..sort(((int, int) l, (int, int) r) => searchSpace[l]!.length.compareTo(searchSpace[r]!.length));
 
   return _sudokuSolverOptimized(grid, 0, indices, searchSpace);
 }
@@ -136,16 +136,16 @@ void main() {
   // });
   // print(matrix.str);
 
-  matrix = [
-    [0, 0, 3, 0, 0, 0, 0, 0, 9],
-    [0, 8, 0, 2, 0, 0, 6, 3, 0],
-    [0, 0, 0, 0, 0, 6, 0, 0, 4],
-    [0, 4, 0, 0, 5, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 9, 0],
-    [0, 0, 5, 0, 0, 7, 3, 2, 0],
-    [1, 0, 0, 8, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 6],
-    [0, 0, 4, 0, 0, 2, 7, 5, 0]
+  matrix = <List<int>>[
+    <int>[0, 0, 3, 0, 0, 0, 0, 0, 9],
+    <int>[0, 8, 0, 2, 0, 0, 6, 3, 0],
+    <int>[0, 0, 0, 0, 0, 6, 0, 0, 4],
+    <int>[0, 4, 0, 0, 5, 0, 0, 0, 0],
+    <int>[0, 0, 0, 0, 0, 0, 0, 9, 0],
+    <int>[0, 0, 5, 0, 0, 7, 3, 2, 0],
+    <int>[1, 0, 0, 8, 0, 0, 0, 0, 0],
+    <int>[0, 0, 0, 0, 0, 0, 0, 0, 6],
+    <int>[0, 0, 4, 0, 0, 2, 7, 5, 0]
   ];
   // matrix = [
   //   [0, 0, 0, 7, 0, 0, 0, 0, 0],

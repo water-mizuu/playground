@@ -6,7 +6,6 @@ analyzer:
     - value-class
     - extension-types
     - inference-update-2
-    - unnamed-libraries
     - patterns
     - sealed-class
   language:
@@ -20,14 +19,14 @@ analyzer:
     - bin/*.*.dart
   errors:
     invalid_annotation_target: ignore
-    body_might_complete_normally_nullable: ignore
+    unnecessary_cast: ignore
 linter:
   rules:
     - always_declare_return_types
-    # - always_put_control_body_on_new_line
+    - always_put_control_body_on_new_line
     - always_put_required_named_parameters_first
     - always_require_non_null_named_parameters
-    # - always_specify_types
+    - always_specify_types
     - always_use_package_imports
     - annotate_overrides
     # - avoid_annotating_with_dynamic
@@ -133,7 +132,6 @@ linter:
     - prefer_constructors_over_static_methods
     - prefer_contains
     - prefer_double_quotes
-    - prefer_equal_for_default_values
     # - prefer_expression_function_bodies
     # - prefer_final_fields
     # - prefer_final_in_for_each

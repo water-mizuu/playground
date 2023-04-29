@@ -37,8 +37,8 @@ Command compare(bool Function(num, num) callback) => (Engine engine) {
       return null;
     };
 
-Command lessThan() => compare((l, r) => l < r);
-Command greaterThan() => compare((l, r) => l > r);
+Command lessThan() => compare((num l, num r) => l < r);
+Command greaterThan() => compare((num l, num r) => l > r);
 
 Command conditionalJump(int index) => (Engine engine) {
       if (engine.pop()) {
@@ -77,7 +77,7 @@ class Engine {
 }
 
 void main() {
-  Engine engine = Engine([
+  Engine engine = Engine(<Command>[
     push(1),
     echo(),
     push(2),

@@ -1,5 +1,6 @@
 import "dart:io";
 import "dart:math";
+import "dart:typed_data";
 
 import "package:image/image.dart";
 import "package:path/path.dart" as path;
@@ -12,23 +13,23 @@ class Rgba {
 
   const Rgba(this.red, this.green, this.blue, this.alpha);
   const Rgba.fromUint32(int value)
-      : red = value >>> (8 * 0) & 0xff,
-        green = value >>> (8 * 1) & 0xff,
-        blue = value >>> (8 * 2) & 0xff,
-        alpha = value >>> (8 * 3) & 0xff;
+      : red = value >>> (0x8 * 0) & 0xff,
+        green = value >>> (0x8 * 1) & 0xff,
+        blue = value >>> (0x8 * 2) & 0xff,
+        alpha = value >>> (0x8 * 3) & 0xff;
 
   @override
   String toString() => "rgba($red, $green, $blue, $alpha)";
 }
 
 Iterable<List<T>> partitioned<T>(Iterable<T> data, int partitionSize) sync* {
-  List<T> values = [];
+  List<T> values = <T>[];
   for (T value in data) {
     values.add(value);
 
     if (values.length == partitionSize) {
       yield values;
-      values = [];
+      values = <T>[];
     }
   }
 }
@@ -48,13 +49,12 @@ void main() {
   Directory directory = Directory("assets");
 
   print("Reading files.");
-  List<File> children = [
-    for (File dir in directory.listSync().whereType<File>()) dir
-  ];
-  List<Image> images = [
-    for (File c in children) decodeJpg(c.readAsBytesSync())!
-  ];
-  List<bool> isSinglePage = [for (int i = 0; i < children.length; i++) i == 0];
+  List<File> children = directory.listSync().whereType<File>().toList();
+  List<Image> images = children //
+      .map((File file) => file.readAsBytesSync())
+      .map((Uint8List bytes) => decodeJpg(bytes)!)
+      .toList();
+  List<bool> isSinglePage = List<bool>.generate(children.length, (int i) => i == 0);
   print("Finished reading files.");
 
   int singleOffset = 2 << 32 - 1;
@@ -69,8 +69,7 @@ void main() {
 
     ImageData imageData = image.data!;
     List<int> data = imageData.getBytes();
-    Iterable<List<int>> partitionedData =
-        partitioned(data, width).take(5 * height ~/ 7);
+    Iterable<List<int>> partitionedData = partitioned(data, width).take(5 * height ~/ 7);
 
     // Assume that the first pixel (top left) is always a padding/sentinel pixel.
     int sentinel = partitionedData.first[0];
@@ -78,9 +77,8 @@ void main() {
     int leftOffset = width;
     int rightOffset = width;
     for (List<int> row in partitionedData) {
-      int leftCount = row.takeWhile((c) => closeEnough(c, sentinel)).length;
-      int rightCount =
-          row.reversed.takeWhile((c) => closeEnough(c, sentinel)).length;
+      int leftCount = row.takeWhile((int c) => closeEnough(c, sentinel)).length;
+      int rightCount = row.reversed.takeWhile((int c) => closeEnough(c, sentinel)).length;
 
       leftOffset = min(leftOffset, leftCount);
       rightOffset = min(rightOffset, rightCount);
@@ -116,8 +114,13 @@ void main() {
       {
         String name = "${baseName}_1";
         String fullPath = path.join(directoryName, "$name.jpg");
-        Image croppedImage =
-            copyCrop(image, x: middle, y: 0, width: middle - doubleOffset, height: height,);
+        Image croppedImage = copyCrop(
+          image,
+          x: middle,
+          y: 0,
+          width: middle - doubleOffset,
+          height: height,
+        );
 
         File(fullPath)
           ..createSync(recursive: true)
@@ -128,8 +131,7 @@ void main() {
       {
         String name = "${baseName}_2";
         String fullPath = path.join(directoryName, "$name.jpg");
-        Image croppedImage =
-            copyCrop(image, x: doubleOffset, y: 0, width: middle - doubleOffset, height: height);
+        Image croppedImage = copyCrop(image, x: doubleOffset, y: 0, width: middle - doubleOffset, height: height);
 
         File(fullPath)
           ..createSync(recursive: true)

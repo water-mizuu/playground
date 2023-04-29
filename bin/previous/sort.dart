@@ -9,10 +9,10 @@ extension _ListSwapExtension<E> on List<E> {
 extension ListIncomparableExtension<E> on List<E> {
   List<E> sorted(int Function(E, E) compareFunction) {
     if (isEmpty) {
-      return [];
+      return <E>[];
     }
 
-    List<E> items = [...this];
+    List<E> items = <E>[...this];
     quickSort(items, compareFunction);
 
     return items;
@@ -22,10 +22,10 @@ extension ListIncomparableExtension<E> on List<E> {
 extension ListComparableExtension<E extends Comparable<dynamic>> on List<E> {
   List<E> sorted([int Function(E, E) compareFunction = Comparable.compare]) {
     if (isEmpty) {
-      return [];
+      return <E>[];
     }
 
-    List<E> items = [...this];
+    List<E> items = <E>[...this];
     quickSort(items, compareFunction);
 
     return items;

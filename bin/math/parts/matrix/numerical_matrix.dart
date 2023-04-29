@@ -4,49 +4,49 @@ part of "../../matrix.dart";
 ///   Not everything works here.
 
 extension NumericalMatrixMethods on NumericalMatrix {
-  static NumericalMatrix eye(int dimensions) => Matrix([
+  static NumericalMatrix eye(int dimensions) => NumericalMatrix(<List<Scalar>>[
         for (int y = 0; y < dimensions; ++y)
-          [
+          <Scalar>[
             for (int x = 0; x < dimensions; ++x)
               if (y == x) 1.c else 0.c
           ]
       ]);
 
-  static NumericalMatrix ones(int height, [int? width]) => Matrix([
+  static NumericalMatrix ones(int height, [int? width]) => NumericalMatrix(<List<Scalar>>[
         for (int y = 0; y < height; ++y) //
-          [for (int x = 0; x < (width ?? height); ++x) 1.c]
+          <Scalar>[for (int x = 0; x < (width ?? height); ++x) 1.c]
       ]);
 
-  static NumericalMatrix zeros(int height, [int? width]) => Matrix([
+  static NumericalMatrix zeros(int height, [int? width]) => NumericalMatrix(<List<Scalar>>[
         for (int y = 0; y < height; ++y) //
-          [for (int x = 0; x < (width ?? height); ++x) 0.c]
+          <Scalar>[for (int x = 0; x < (width ?? height); ++x) 0.c]
       ]);
 
   static NumericalMatrix companion(List<Scalar> scalars) => zeros(1, scalars.length - 2) //
       .verticalConcatenate(down: eye(scalars.length - 2))
       .horizontalConcatenate(
-        right: Matrix.fromVectors([
-          Vector([for (int i = 0; i < scalars.length - 1; ++i) -scalars[i]])
+        right: NumericalMatrix.fromVectors(<NumericalVector>[
+          NumericalVector(<Scalar>[for (int i = 0; i < scalars.length - 1; ++i) -scalars[i]])
         ]),
       );
 
-  List<int> get dimensions => [verticalLength, horizontalLength];
+  List<int> get dimensions => <int>[verticalLength, horizontalLength];
 
   void swapRows(int rowA, int rowB) {
-    List<Scalar> temp = List.from(data[rowA]);
-    data[rowA] = List.from(data[rowB]);
+    List<Scalar> temp = List<Scalar>.from(data[rowA]);
+    data[rowA] = List<Scalar>.from(data[rowB]);
     data[rowB] = temp;
   }
 
-  NumericalMatrix scale(Scalar scalar) => Matrix([
+  NumericalMatrix scale(Scalar scalar) => NumericalMatrix(<List<Scalar>>[
         for (int y = 0; y < verticalLength; ++y) //
-          [for (int x = 0; x < horizontalLength; ++x) scalar * data[y][x]]
+          <Scalar>[for (int x = 0; x < horizontalLength; ++x) scalar * data[y][x]]
       ]);
 
-  NumericalMatrix get collapsed => matrixMap((v) => v.collapsed);
+  NumericalMatrix get collapsed => matrixMap((Scalar v) => v.collapsed);
 
   Scalar minorCofactorExpansion(int y, int x) {
-    NumericalMatrix minorMatrix = removed(y: {y}, x: {x});
+    NumericalMatrix minorMatrix = removed(y: <int>{y}, x: <int>{x});
     Scalar determinant = minorMatrix.determinantCofactorExpansion();
 
     return determinant;
@@ -61,7 +61,7 @@ extension NumericalMatrixMethods on NumericalMatrix {
       return data[0][0];
     }
 
-    List<Scalar> cofactors = [
+    List<Scalar> cofactors = <Scalar>[
       for (int x = 0; x < horizontalLength; ++x) //
         r_math.pow(-1, x).c * data[0][x] * minorCofactorExpansion(0, x),
     ];
@@ -83,9 +83,9 @@ extension NumericalMatrixMethods on NumericalMatrix {
       throw StateError("A singular matrix does not have a determinant!");
     }
 
-    NumericalMatrix cofactorMatrix = Matrix([
+    NumericalMatrix cofactorMatrix = NumericalMatrix(<List<Scalar>>[
       for (int y = 0; y < vertical; ++y)
-        [
+        <Scalar>[
           for (int x = 0; x < horizontal; ++x) //
             r_math.pow(-1, y + x).c * minorCofactorExpansion(y, x),
         ]
@@ -135,7 +135,9 @@ extension NumericalMatrixMethods on NumericalMatrix {
         int swap = p;
         for (int y = p; y < vertical; ++y) {
           if (upper[y][p].abs() < upper[swap][p].abs()) {
-            continue;
+            {
+              continue;
+            }
           }
 
           swap = y;
@@ -152,7 +154,9 @@ extension NumericalMatrixMethods on NumericalMatrix {
           ++permutationCount;
         }
         if (upper[swap][p] == 0.c) {
-          continue;
+          {
+            continue;
+          }
         }
       }
 
@@ -170,7 +174,7 @@ extension NumericalMatrixMethods on NumericalMatrix {
   Scalar determinantLuFactorization() {
     PLUFactorization factorization = pluFactorization();
     NumericalMatrix upper = factorization.upper;
-    Scalar diagonal = [for (int y = 0; y < verticalLength; ++y) upper[y][y]].product();
+    Scalar diagonal = <Scalar>[for (int y = 0; y < verticalLength; ++y) upper[y][y]].product();
     Scalar determinant = r_math.pow(-1, factorization.permutationCount).c * diagonal;
 
     return determinant;
@@ -183,7 +187,7 @@ extension NumericalMatrixMethods on NumericalMatrix {
       v[0] = 1.c;
 
       Scalar beta = 2.c / v.dot(v).abs();
-      NumericalMatrix matrix = Matrix.fromVectors([v]);
+      NumericalMatrix matrix = NumericalMatrix.fromVectors(<NumericalVector>[v]);
       NumericalMatrix matrixT = matrix.transpose();
       NumericalMatrix hMatrix = NumericalMatrixMethods.eye(vector.degree) - (matrix * matrixT).scale(beta);
 
@@ -218,7 +222,7 @@ extension NumericalMatrixMethods on NumericalMatrix {
     NumericalMatrix q = qr.orthogonal;
     NumericalMatrix r = qr.upper;
 
-    NumericalVector previous = Vector([for (int i = 0; i < verticalLength; ++i) 0.re]);
+    NumericalVector previous = NumericalVector(<Scalar>[for (int i = 0; i < verticalLength; ++i) 0.re]);
     NumericalMatrix accuQ = q;
     for (int k = 0; k <= 100; ++k) {
       NumericalMatrix _a = r * q;
@@ -230,7 +234,7 @@ extension NumericalMatrixMethods on NumericalMatrix {
       NumericalVector estimates = _a.rightDiagonalVectors.first;
       Scalar deviation = 0
           .to(estimates.degree) //
-          .map((i) => (previous[i] - estimates[i]).abs())
+          .map((int i) => (previous[i] - estimates[i]).abs())
           .variance();
 
       if (0.re <= deviation && deviation <= 1e-16.re) {
@@ -256,15 +260,15 @@ extension NumericalMatrixMethods on NumericalMatrix {
 
     int size = verticalLength;
     EigenEstimation estimation = eigenvalueEstimation();
-    List<Scalar> values = estimation.eigenvalues.map((v) => v.collapse()).toSet().toList();
-    List<NumericalVector> vectors = [
+    List<Scalar> values = estimation.eigenvalues.map((Scalar v) => v.collapse()).toSet().toList();
+    List<NumericalVector> vectors = <NumericalVector>[
       // A - λI
       for (Matrix<Complex> eigenMatrix in values.map(NumericalMatrixMethods.eye(size).scale)) //
         ...(this - eigenMatrix).nullBasis()
     ];
 
-    NumericalMatrix diagonal = NumericalMatrixMethods.eye(size)..leftDiagonalVectors[0] = Vector(values);
-    NumericalMatrix eigenMatrix = Matrix.fromVectors(vectors);
+    NumericalMatrix diagonal = NumericalMatrixMethods.eye(size)..leftDiagonalVectors[0] = NumericalVector(values);
+    NumericalMatrix eigenMatrix = NumericalMatrix.fromVectors(vectors);
 
     return EigenObjects(diagonal, eigenMatrix);
   }
@@ -277,7 +281,7 @@ extension NumericalMatrixMethods on NumericalMatrix {
     int horizontal = horizontalLength;
     int diagonal = r_math.min(vertical, horizontal);
 
-    Set<int> ignoreColumns = {};
+    Set<int> ignoreColumns = <int>{};
     NumericalMatrix copy = this.copy();
     NumericalMatrix permutations = NumericalMatrixMethods.eye(vertical);
 
@@ -285,7 +289,9 @@ extension NumericalMatrixMethods on NumericalMatrix {
       int swap = p;
       if (copy[p][p] == 0.c || !permuteOnZeroOnly) {
         for (int y = p + 1; y < vertical; ++y) {
-          if (copy[y][p].abs() < copy[swap][p].abs()) continue;
+          if (copy[y][p].abs() < copy[swap][p].abs()) {
+            continue;
+          }
 
           swap = y;
         }
@@ -295,7 +301,9 @@ extension NumericalMatrixMethods on NumericalMatrix {
         copy.swapRows(swap, p);
         permutations.swapRows(swap, p);
       }
-      if (copy[p][p] == 0.c) continue;
+      if (copy[p][p] == 0.c) {
+        continue;
+      }
 
       Scalar divisor = copy[p][p];
       copy[p] = copy[p].scale(divisor.multiplicativeInverse);
@@ -308,7 +316,9 @@ extension NumericalMatrixMethods on NumericalMatrix {
     }
 
     for (int p = diagonal - 1; p >= 0; --p) {
-      if (ignoreColumns.contains(p) || copy[p][p] == 0.c) continue;
+      if (ignoreColumns.contains(p) || copy[p][p] == 0.c) {
+        continue;
+      }
       for (int y = p - 1; y >= 0; --y) {
         Scalar scalar = -copy[y][p] / copy[p][p];
 
@@ -339,23 +349,27 @@ extension NumericalMatrixMethods on NumericalMatrix {
     // We need to eliminate linearly dependent rows AND columns.
     NumericalMatrix hyperReduced = reduction.reduced //
         .transpose()
-        .matrixMap((v) => v.collapsed)
+        .matrixMap((Scalar v) => v.collapsed)
         .reducedRowEchelonForm()
         .reduced;
 
     List<NumericalVector> vectors = hyperReduced.rowVectors;
     List<MapEntry<int, NumericalVector>> nullVectors = 0
         .to(vectors.length) //
-        .where((i) {
+        .where((int i) {
           NumericalVector vector = vectors[i];
           for (int i = vector.degree - 1; i >= 0; --i) {
-            if (vector[i] == 0.c) continue;
-            if (vector[i] == 1.c) return false;
+            if (vector[i] == 0.c) {
+              continue;
+            }
+            if (vector[i] == 1.c) {
+              return false;
+            }
             return true;
           }
           return true;
         })
-        .map((i) => MapEntry(i, vectors[i]))
+        .map((int i) => MapEntry<int, Vector<Complex>>(i, vectors[i]))
         .toList();
 
     return nullVectors;
@@ -365,18 +379,18 @@ extension NumericalMatrixMethods on NumericalMatrix {
     RowReduction reduction = reducedRowEchelonForm();
     NumericalMatrix reduced = reduction.reduced.collapsed;
     List<NumericalVector> vectors = reduced.rowVectors;
-    Set<NumericalVector> basis = {
+    Set<NumericalVector> basis = <NumericalVector>{
       for (int i = 0; i < verticalLength; ++i)
-        if (!reduced[i].data.every((v) => v == 0.c)) vectors[i]
+        if (!reduced[i].data.every((Scalar v) => v == 0.c)) vectors[i]
     };
 
     return basis;
   }
 
   Set<NumericalVector> columnBasis() {
-    Set<int> nullIndices = nullVectors().map((v) => v.key).toSet();
+    Set<int> nullIndices = nullVectors().map((MapEntry<int, NumericalVector> v) => v.key).toSet();
     List<NumericalVector> vectors = columnVectors;
-    Set<NumericalVector> nonNullVectors = {
+    Set<NumericalVector> nonNullVectors = <NumericalVector>{
       for (int i = 0; i < vectors.length; ++i)
         if (!nullIndices.contains(i)) vectors[i]
     };
@@ -392,7 +406,7 @@ extension NumericalMatrixMethods on NumericalMatrix {
     NumericalMatrix reduced = reduction.reduced.collapsed;
 
     List<int> freeIndices = nullVectors(reduction) //
-        .map((entry) => entry.key)
+        .map((MapEntry<int, NumericalVector> entry) => entry.key)
         .toList();
 
     // Count the maximum free variables.
@@ -400,13 +414,13 @@ extension NumericalMatrixMethods on NumericalMatrix {
     //    It is *not* an augmented matrix.
     // Also times that it is, so ¯\_(ツ)_/ ¯ I think it works for now.
 
-    int max = freeIndices.map((v) => v + 1).max();
+    int max = freeIndices.map((int v) => v + 1).max();
     NumericalMatrix padded = max > vertical //
         ? reduced.verticalConcatenate(down: zeros(max - vertical, horizontal))
         : reduced;
 
     List<NumericalVector> columnVectors = padded.columnVectors;
-    Set<NumericalVector> vectors = freeIndices.map((i) {
+    Set<NumericalVector> vectors = freeIndices.map((int i) {
       NumericalVector vector = columnVectors[i];
       NumericalVector negative = vector.scale(-1.c);
       negative[i] = 1.c;
@@ -422,9 +436,9 @@ extension NumericalMatrixMethods on NumericalMatrix {
       throw ArgumentError("Cannot add two incompatible matrices. L:$dimensions; R:${other.dimensions}");
     }
 
-    return Matrix([
+    return NumericalMatrix(<List<Scalar>>[
       for (int y = 0; y < verticalLength; ++y)
-        [for (int x = 0; x < horizontalLength; ++x) data[y][x] + other.data[y][x]]
+        <Scalar>[for (int x = 0; x < horizontalLength; ++x) data[y][x] + other.data[y][x]]
     ]);
   }
 
@@ -435,12 +449,12 @@ extension NumericalMatrixMethods on NumericalMatrix {
 
     List<NumericalVector> rowVectors = this.rowVectors;
     List<NumericalVector> columnVectors = other.columnVectors;
-    List<NumericalVector> vectors = [
+    List<NumericalVector> vectors = <NumericalVector>[
       for (NumericalVector column in columnVectors) //
-        Vector([for (NumericalVector row in rowVectors) row * column])
+        NumericalVector(<Scalar>[for (NumericalVector row in rowVectors) row * column])
     ];
 
-    return Matrix.fromVectors(vectors);
+    return NumericalMatrix.fromVectors(vectors);
   }
 
   NumericalMatrix operator +(NumericalMatrix other) => add(other);
@@ -464,7 +478,7 @@ class EigenEstimation {
 
   Set<Scalar> get eigenvalues {
     NumericalMatrix matrix = diagonal.collapsed;
-    Set<Scalar> eigenvalues = {};
+    Set<Scalar> eigenvalues = <Scalar>{};
 
     for (int p = 0; p < matrix.verticalLength; ++p) {
       // Determine if it's a 1x1 or 2x2 block.
@@ -539,17 +553,19 @@ class QRFactorization {
 }
 
 extension MatrixPostfixExtension<E> on List<List<E>> {
-  Matrix<E> get mt => Matrix(this);
+  Matrix<E> get mt => Matrix<E>(this);
+  Matrix<E> toMatrix() => Matrix<E>(this);
 }
 
 extension NumericalMatrixPostfixExtension<E extends num> on List<List<E>> {
-  Matrix<Scalar> get mt => Matrix(map((e) => e.map(Scalar.from).toList()).toList());
+  Matrix<Scalar> get mt => Matrix<Scalar>(map((List<E> e) => e.map(Scalar.from).toList()).toList());
+  Matrix<Scalar> toMatrix() => Matrix<Scalar>(map((List<E> e) => e.map(Scalar.from).toList()).toList());
 }
 
 extension on Iterable<Complex> {
   Complex variance() {
     Complex mean = this.mean();
-    Complex distances = map((v) => (v - mean).abs()).sum();
+    Complex distances = map((Complex v) => (v - mean).abs()).sum();
     Complex variance = distances / length.c;
 
     return variance;

@@ -9,9 +9,9 @@ class _ListVectorProxy<E> implements List<Vector<E>> {
 
   _ListVectorProxy(this.parent, this.indices);
 
-  List<Vector<E>> get mirror => [
+  List<Vector<E>> get mirror => <Vector<E>>[
         for (List<(int, int)> list in indices) //
-          Vector([for ((int, int) pair in list) parent[pair.$0][pair.$1]])
+          Vector<E>(<E>[for (var (int y, int x) in list) parent[y][x]])
       ];
 
   @override
@@ -22,7 +22,7 @@ class _ListVectorProxy<E> implements List<Vector<E>> {
     for (int i = 0; i < indices.length; ++i) {
       (int, int) index = indices.first[i];
 
-      parent[index.$0][index.$1] = value[i];
+      parent[index.$1][index.$2] = value[i];
     }
   }
 
@@ -34,7 +34,7 @@ class _ListVectorProxy<E> implements List<Vector<E>> {
     for (int i = 0; i < indices.length; ++i) {
       (int, int) index = indices.last[i];
 
-      parent[index.$0][index.$1] = value[i];
+      parent[index.$1][index.$2] = value[i];
     }
   }
 
@@ -61,7 +61,7 @@ class _ListVectorProxy<E> implements List<Vector<E>> {
     for (int i = 0; i < indices.length; ++i) {
       (int, int) pair = indices[index][i];
 
-      parent[pair.$0][pair.$1] = value[i];
+      parent[pair.$1][pair.$2] = value[i];
     }
   }
 
@@ -179,19 +179,19 @@ class _ListVectorProxy<E> implements List<Vector<E>> {
       Vector<E> replacement = taken[i - start];
 
       for (int j = 0; j < indices.length; ++j) {
-        (int, int) pair = indices[j];
+        var (int y, int x) = indices[j];
 
-        parent[pair.$0][pair.$1] = replacement[j];
+        parent[y][x] = replacement[j];
       }
     }
   }
 
   @override
-  void retainWhere(bool Function(Vector<E> element) test) =>
-      indices.retainWhere((values) => test(Vector([for ((int, int) pair in values) parent[pair.$0][pair.$1]])));
+  void retainWhere(bool Function(Vector<E> element) test) => indices
+      .retainWhere((List<(int, int)> values) => test(Vector<E>(<E>[for (var (int y, int x) in values) parent[y][x]])));
 
   @override
-  Iterable<Vector<E>> get reversed => _ListVectorProxy(parent, indices.reversed.toList());
+  Iterable<Vector<E>> get reversed => _ListVectorProxy<E>(parent, indices.reversed.toList());
 
   @override
   void setAll(int index, Iterable<Vector<E>> iterable) => setRange(index, iterable.length, iterable);
@@ -205,9 +205,9 @@ class _ListVectorProxy<E> implements List<Vector<E>> {
       Vector<E> replacement = taken[i - start];
 
       for (int j = 0; j < indices.length; ++j) {
-        (int, int) pair = indices[j];
+        var (int y, int x) = indices[j];
 
-        parent[pair.$0][pair.$1] = replacement[j];
+        parent[y][x] = replacement[j];
       }
     }
   }
@@ -232,9 +232,9 @@ class _ListVectorProxy<E> implements List<Vector<E>> {
   void sort([int Function(Vector<E> a, Vector<E> b)? compare]) {
     indices.sort(compare == null
         ? null
-        : (a, b) => compare.call(
-              Vector([for ((int, int) pair in a) parent[pair.$0][pair.$1]]),
-              Vector([for ((int, int) pair in b) parent[pair.$0][pair.$1]]),
+        : (List<(int, int)> a, List<(int, int)> b) => compare.call(
+              Vector<E>(<E>[for (var (int y, int x) in a) parent[y][x]]),
+              Vector<E>(<E>[for (var (int y, int x) in b) parent[y][x]]),
             ));
   }
 

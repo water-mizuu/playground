@@ -5,25 +5,25 @@ void bruteForce() {
   ///   the fifth card is any spade card.
 
   List<String> faceCards = <String>[
-    for (String s in ["H", "D", "C", "S"])
-      for (String f in ["K", "Q", "J"]) "$s$f",
+    for (String s in <String>["H", "D", "C", "S"])
+      for (String f in <String>["K", "Q", "J"]) "$s$f",
   ];
-  List<String> kings = ["HK", "DK", "CK", "SK"];
-  List<String> spades = [for (int i = 1; i <= 10; i++) "S$i", "SJ", "SQ", "SK"];
-  List<Set<String>> cards = [];
+  List<String> kings = <String>["HK", "DK", "CK", "SK"];
+  List<String> spades = <String>[for (int i = 1; i <= 10; i++) "S$i", "SJ", "SQ", "SK"];
+  List<Set<String>> cards = <Set<String>>[];
   int finalCount = 0;
 
   for (String c1 in faceCards) {
-    for (String c2 in faceCards.where((c) => !{c1}.contains(c))) {
-      for (String c3 in faceCards.where((c) => !{c1, c2}.contains(c))) {
-        Set<String> accumulated = {c1, c2, c3};
-        if (cards.any((c) => accumulated.every(c.contains))) {
+    for (String c2 in faceCards.where((String c) => !<String>{c1}.contains(c))) {
+      for (String c3 in faceCards.where((String c) => !<String>{c1, c2}.contains(c))) {
+        Set<String> accumulated = <String>{c1, c2, c3};
+        if (cards.any((Set<String> c) => accumulated.every(c.contains))) {
           continue;
         }
         cards.add(accumulated);
 
-        for (String k in kings.where((c) => !{c1, c2, c3}.contains(c))) {
-          finalCount += spades.where((c) => !{c1, c2, c3, k}.contains(c)).length;
+        for (String k in kings.where((String c) => !<String>{c1, c2, c3}.contains(c))) {
+          finalCount += spades.where((String c) => !<String>{c1, c2, c3, k}.contains(c)).length;
         }
       }
     }

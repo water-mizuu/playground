@@ -1,7 +1,7 @@
 import "dart:math";
 
 extension ListSliceExtension<E> on List<E> {
-  ListSlice<E> slice(int start, [int end = 0]) => ListSlice(this, start, end == 0 ? length : end);
+  ListSlice<E> slice(int start, [int end = 0]) => ListSlice<E>(this, start, end == 0 ? length : end);
 }
 
 class ListSlice<E> implements List<E> {
@@ -64,7 +64,7 @@ class ListSlice<E> implements List<E> {
   }
 
   @override
-  Map<int, E> asMap() => {for (int i = start; i < end; ++i) i: list[i]};
+  Map<int, E> asMap() => <int, E>{for (int i = start; i < end; ++i) i: list[i]};
 
   @override
   List<R> cast<R>() => list.sublist(start, end).cast<R>();
@@ -371,7 +371,7 @@ class ListSlice<E> implements List<E> {
   List<E> toList({bool growable = true}) => list.sublist(start, end);
 
   @override
-  Set<E> toSet() => {for (int i = start; i < end; ++i) list[i]};
+  Set<E> toSet() => <E>{for (int i = start; i < end; ++i) list[i]};
 
   @override
   String toString() {
