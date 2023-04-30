@@ -11,7 +11,7 @@ class IsolateHelper {
     sendPort.send(receivePort.sendPort);
 
     late List<Object?> arguments;
-    receivePort.listen((dynamic message) async {
+    receivePort.listen((Object? message) async {
       if (message is Function) {
         dynamic result = (() {
           try {

@@ -1,27 +1,18 @@
-sealed class Box<E> {
-  E get item;
-  const Box();
-}
+import "dart:math";
 
-class FilledBox<E> extends Box<E> {
-  @override
-  final E item;
-
-  const FilledBox(this.item);
-}
-
-class NeverBox extends Box<Never> {
-  @override
-  Never get item => throw Error();
-
-  const NeverBox();
-}
-
-/// This does not.
-Box<O> switchFunction<O>(O? object) => //
-    /// A value of type 'Object' can't be returned from the function
-    ///   'switchFunction' because it has a return type of 'Box<int>'
-    switch (object) {
-      O object => FilledBox<O>(object),
-      _ => NeverBox() as Box<O>,
+final Random random = Random();
+bool? twoState() => switch (random.nextDouble()) {
+      < 0.5 => false,
+      >= 0.5 => true,
+      _ => throw Error(),
     };
+
+void main() {
+  print(switch (twoState()) {
+    void _ when !(true != false) => "hi", // Expected to find '=>'
+    // /ool _ when !twoState() => "hi", // Works.
+    true => 1,
+    false => 0,
+    null => "hi",
+  });
+}

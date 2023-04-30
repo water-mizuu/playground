@@ -4,7 +4,7 @@ import "dart:collection";
 
 typedef Command = int? Function(Engine);
 
-Command push(dynamic value) => (Engine engine) {
+Command push(Object? value) => (Engine engine) {
       engine.push(value);
 
       return null;
@@ -73,7 +73,7 @@ class Engine {
     position = commands[position](this) ?? position + 1;
   }
 
-  void push(dynamic value) => stack.addLast(value);
+  void push(Object? value) => stack.addLast(value);
 }
 
 void main() {

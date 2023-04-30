@@ -149,7 +149,7 @@ class RangeUnit extends Range {
   Range combination(RangeUnit other) {
     int start = min(this.start, other.start);
     int end = max(this.end, other.end);
-    if (start > end) {
+    if (start >= end) {
       return Range.empty();
     }
 
@@ -161,53 +161,59 @@ class RangeUnit extends Range {
     return switch (other) {
       RangeUnit other => this.start <= other.start && this.end >= other.end,
       RangeUnion other => other.units.every(this.covers),
-      RangeEmpty() || Range() => true,
+      RangeEmpty() => true,
     };
   }
 
   @override
-  Range difference(Range other) {
-    return switch (other) {
-      Range other when !this.intersects(other) || other.isEmpty => this,
-      RangeUnit other => () {
-          Range left = Range.unit(min(start, other.start), other.start);
-          Range right = Range.unit(other.end, max(other.end, end));
+  Range difference(Range other) => switch (other) {
+        void _ when !this.intersects(other) || other.isEmpty => this,
+        RangeUnit other => () {
+            Range left = Range.unit(min(start, other.start), other.start);
+            Range right = Range.unit(other.end, max(other.end, end));
 
-          Set<RangeUnit> units = <RangeUnit>{
-            if (left is RangeUnit) left,
-            if (right is RangeUnit) right,
-          };
+            Set<RangeUnit> units = <RangeUnit>{
+              if (left case RangeUnit _) left,
+              if (right case RangeUnit _) right,
+            };
 
-          if (units.isEmpty) {
-            return Range.empty();
-          } else if (units.length == 1) {
-            return units.single;
-          } else {
-            return Range.union(units);
-          }
-        }(),
-      RangeUnion other => other.units.fold(this, (Range v, RangeUnit unit) => v.difference(unit)),
-      RangeEmpty() || Range() => this,
-    };
-  }
+            if (units.isEmpty) {
+              return Range.empty();
+            } else if (units.length == 1) {
+              return units.single;
+            } else {
+              return Range.union(units);
+            }
+          }(),
+        RangeUnion other => other.units.fold(this, (Range v, RangeUnit unit) => v.difference(unit)),
+        RangeEmpty() => this,
+      };
 
   @override
-  bool intersects(Range other) {
-    return switch (other) {
-      RangeUnit other => !(this.start > other.end || this.end <= other.start),
-      RangeUnion other => other.units.any(this.intersects),
-      RangeEmpty() || Range() => true,
-    };
-  }
+  bool intersects(Range other) => switch (other) {
+        RangeUnit other => !(this.start > other.end || this.end <= other.start),
+        RangeUnion other => other.units.any(this.intersects),
+        RangeEmpty() => true,
+      };
 
   @override
   Range intersection(Range other) {
-    return switch (other) {
-      Range _ when this.isEmpty || other.isEmpty || !this.intersects(other) => Range.empty(),
-      RangeUnit other => Range.unit(max(this.start, other.start), min(this.end, other.end)),
-      RangeUnion other => other.units.fold(this, (Range u, RangeUnit r) => u.intersection(r)),
-      RangeEmpty() || Range() => other,
-    };
+    if (this.isEmpty || other.isEmpty) {
+      return Range.empty();
+    }
+
+    if (!this.intersects(other)) {
+      return Range.empty();
+    }
+
+    switch (other) {
+      case RangeUnit _:
+        return Range.unit(max(this.start, other.start), min(this.end, other.end));
+      case RangeUnion _:
+        return other.units.fold(this, (Range range, RangeUnit unit) => range.intersection(unit));
+      case RangeEmpty _:
+        return other;
+    }
   }
 
   @override
@@ -220,7 +226,6 @@ class RangeUnit extends Range {
     }
 
     /// At this point, neither of them should be empty.
-
     if (other is RangeUnit && other.start - this.end == 0) {
       /// This is a special case for when [a, b) | [b, c)
       ///   can be simplified to [a, c).
@@ -231,12 +236,10 @@ class RangeUnit extends Range {
       /// Since this doesn't intersect, then
 
       return switch (other) {
-        RangeUnit other => RangeUnion(<RangeUnit>{this, other}),
-        RangeUnion other => RangeUnion(<RangeUnit>{this, ...other.units}),
+        RangeUnit other => <RangeUnit>{this, other}.toRangeUnion(),
+        RangeUnion other => <RangeUnit>{this, ...other.units}.toRangeUnion(),
         RangeEmpty() => this,
       };
-
-      /// Since [RangeUnit] and [RangeUnion] are exhaustive, this is dead code.
     }
 
     /// At this point, it's guaranteed to intersect somewhere.
@@ -311,8 +314,7 @@ class RangeUnion extends Range {
 
     Set<RangeUnit> units = <RangeUnit>{};
     for (RangeUnit unit in this.units) {
-      Range difference = unit.difference(other);
-      switch (difference) {
+      switch (unit.difference(other)) {
         case RangeUnit difference when difference != Range.empty():
           units.add(difference);
           break;
@@ -413,4 +415,8 @@ class RangeEmpty extends Range {
 
   @override
   String toString() => "∅";
+}
+
+extension on Set<RangeUnit> {
+  RangeUnion toRangeUnion() => RangeUnion(this);
 }

@@ -8,7 +8,7 @@ class Test<T> {
 
     Completer<FutureOr<T> Function()> callbackCompleter = Completer<FutureOr<T> Function()>();
 
-    isolateReceivePort.listen((dynamic message) {
+    isolateReceivePort.listen((Object? message) {
       if (message is FutureOr<T> Function()) {
         callbackCompleter.complete(message);
       }
@@ -26,7 +26,7 @@ class Test<T> {
     Completer<SendPort> sendPortCompleter = Completer<SendPort>();
     Completer<T> resultCompleter = Completer<T>();
 
-    receivePort.listen((dynamic message) {
+    receivePort.listen((Object? message) {
       if (!sendPortCompleter.isCompleted && message is SendPort) {
         sendPortCompleter.complete(message);
       }
