@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_equals_and_hash_code_on_mutable_classes, hash_and_equals
+
 abstract class NumberLike<Self extends NumberLike<Self>> implements Comparable<Self> {
   const NumberLike();
 
@@ -42,9 +44,6 @@ abstract class NumberLike<Self extends NumberLike<Self>> implements Comparable<S
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is Self && isEqualTo(other);
-
-  @override
-  int get hashCode => super.hashCode;
 
   String get str;
   String get strRat;

@@ -17,8 +17,8 @@ sealed class Option<E extends Object?> {
 }
 
 class Some<E extends Object?> implements Option<E> {
-  final E value;
   const Some(this.value);
+  final E value;
 
   @override
   R match<R>({

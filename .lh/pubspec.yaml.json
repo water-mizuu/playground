@@ -1,0 +1,22 @@
+{
+    "sourceFile": "pubspec.yaml",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1687855788867,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1696341562697,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,8 @@\n name: playground\r\n # cspell:disable\r\n environment:\r\n-  sdk: \">=3.0.0-0 \"\r\n+  sdk: \">=3..0-0 \"\r\n \r\n dependencies:\r\n   # ansicolor:\r\n   # archive:\r\n@@ -68,12 +68,12 @@\n   # yaml:\r\n # pass\r\n \r\n # dev_dependencies:\r\n-  # build_runner:\r\n-  # copy_with_extension_gen:\r\n-  # dependency_validator:\r\n-  # ferry_generator:\r\n-  # freezed:\r\n-  # hive_generator:\r\n-  # json_serializable:\r\n-  # sealed_generators:\r\n+# build_runner:\r\n+# copy_with_extension_gen:\r\n+# dependency_validator:\r\n+# ferry_generator:\r\n+# freezed:\r\n+# hive_generator:\r\n+# json_serializable:\r\n+# sealed_generators:\r\n"
+                }
+            ],
+            "date": 1687855788867,
+            "name": "Commit-0",
+            "content": "name: playground\r\n# cspell:disable\r\nenvironment:\r\n  sdk: \">=3.0.0-0 \"\r\n\r\ndependencies:\r\n  # ansicolor:\r\n  # archive:\r\n  # args:\r\n  # async:\r\n  # barcode:\r\n  # basic_utils:\r\n  # basics:\r\n  # built_collection:\r\n  # charcode:\r\n  # collection:\r\n  # collection_ext:\r\n  # copy_with_extension:\r\n  # crypto:\r\n  # darq:\r\n  # dart_code_metrics:\r\n  # dartx:\r\n  # date_format:\r\n  # dcli:\r\n  # decimal:\r\n  # demoji:\r\n  # dfunc:\r\n  # enum_to_string:\r\n  # equatable:\r\n  # fast_immutable_collections:\r\n  # ferry:\r\n  # ffi:\r\n  # file_picker_desktop:\r\n  # filesize:\r\n  # flinq:\r\n  # fpdart:\r\n  # freezed_annotation:\r\n  # googleapis:\r\n  # gql_http_link:\r\n  # graphs:\r\n  # hive:\r\n  # http:\r\n  image:\r\n  # js:\r\n  # kt_dart:\r\n  # mime:\r\n  # more:\r\n  # numeral:\r\n  path:\r\n  # pdf:\r\n  # petitparser:\r\n  # pubspec_parse:\r\n  # qr:\r\n  # recase:\r\n  # sealed_annotations:\r\n  # stack:\r\n  # statemachine:\r\n  # supercharged_dart:\r\n  test:\r\n  time:\r\n  # toml:\r\n  # tuple:\r\n  # typed_data:\r\n  # universal_io:\r\n  # uuid:\r\n  # vector_math:\r\n  # weak_map:\r\n  # yaml:\r\n# pass\r\n\r\n# dev_dependencies:\r\n  # build_runner:\r\n  # copy_with_extension_gen:\r\n  # dependency_validator:\r\n  # ferry_generator:\r\n  # freezed:\r\n  # hive_generator:\r\n  # json_serializable:\r\n  # sealed_generators:\r\n"
+        }
+    ]
+}

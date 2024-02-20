@@ -1,0 +1,18 @@
+{
+    "sourceFile": "bin/previous/command.dart",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1698396743991,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1698396743991,
+            "name": "Commit-0",
+            "content": "// ignore_for_file: avoid_dynamic_calls\r\n\r\nimport \"dart:collection\";\r\n\r\ntypedef Command = int? Function(Engine);\r\n\r\nCommand push(Object? value) => (Engine engine) {\r\n      engine.push(value);\r\n\r\n      return null;\r\n    };\r\nCommand echo() => (Engine engine) {\r\n      print(engine.stack.last);\r\n\r\n      return null;\r\n    };\r\n\r\nCommand increment() => (Engine engine) {\r\n      int value = engine.pop<int>();\r\n      engine.push(value + 1);\r\n\r\n      return null;\r\n    };\r\nCommand decrement() => (Engine engine) {\r\n      int value = engine.pop<int>();\r\n      engine.push(value - 1);\r\n\r\n      return null;\r\n    };\r\n\r\nCommand compare(bool Function(num, num) callback) => (Engine engine) {\r\n      num right = engine.pop();\r\n      num left = engine.pop();\r\n      bool result = callback(left, right);\r\n      engine.stack.addLast(result);\r\n\r\n      return null;\r\n    };\r\n\r\nCommand lessThan() => compare((num l, num r) => l < r);\r\nCommand greaterThan() => compare((num l, num r) => l > r);\r\n\r\nCommand conditionalJump(int index) => (Engine engine) {\r\n      if (engine.pop()) {\r\n        return index;\r\n      }\r\n      return null;\r\n    };\r\n\r\nclass Engine {\r\n  List<Command> commands;\r\n  Queue<dynamic> stack = Queue<dynamic>();\r\n\r\n  int position = 0;\r\n\r\n  Engine(this.commands);\r\n\r\n  R pop<R>() {\r\n    dynamic removed = stack.removeLast();\r\n    if (removed is! R) {\r\n      throw StateError(\"Expected type $R, received ${removed.runtimeType}\");\r\n    }\r\n    return removed;\r\n  }\r\n\r\n  bool get isFinished => position >= commands.length;\r\n  bool get isNotFinished => position < commands.length;\r\n\r\n  void step() {\r\n    if (position >= commands.length) {\r\n      throw StateError(\"It is over.\");\r\n    }\r\n    position = commands[position](this) ?? position + 1;\r\n  }\r\n\r\n  void push(Object? value) => stack.addLast(value);\r\n}\r\n\r\nvoid main() {\r\n  Engine engine = Engine(<Command>[\r\n    push(1),\r\n    echo(),\r\n    push(2),\r\n    echo(),\r\n    greaterThan(),\r\n    conditionalJump(0),\r\n  ]);\r\n  while (engine.isNotFinished) {\r\n    engine.step();\r\n  }\r\n}\r\n"
+        }
+    ]
+}

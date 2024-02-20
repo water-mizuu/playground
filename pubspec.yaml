@@ -1,7 +1,7 @@
 name: playground
 # cspell:disable
 environment:
-  sdk: ">=3.0.0-0"
+  sdk: ">=3.2.0-0 "
 
 dependencies:
   # ansicolor:
@@ -69,11 +69,11 @@ dependencies:
 # pass
 
 # dev_dependencies:
-  # build_runner:
-  # copy_with_extension_gen:
-  # dependency_validator:
-  # ferry_generator:
-  # freezed:
-  # hive_generator:
-  # json_serializable:
-  # sealed_generators:
+# build_runner:
+# copy_with_extension_gen:
+# dependency_validator:
+# ferry_generator:
+# freezed:
+# hive_generator:
+# json_serializable:
+# sealed_generators:

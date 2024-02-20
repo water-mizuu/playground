@@ -42,8 +42,8 @@ extension IntegerListExtension on Iterable<int> {
 extension ScalarListExtension on Iterable<Scalar> {
   Scalar mean() => sum() / Scalar.from(length);
 
-  Scalar sum() => fold(Scalar.from(0), (Scalar a, Scalar b) => a + b);
-  Scalar product() => fold(Scalar.from(1), (Scalar a, Scalar b) => a * b);
+  Scalar sum() => fold(Scalar.zero, (Scalar a, Scalar b) => a + b);
+  Scalar product() => fold(Scalar.one, (Scalar a, Scalar b) => a * b);
 
   Scalar max() => reduce((Scalar a, Scalar b) => a > b ? a : b);
   Scalar min() => reduce((Scalar a, Scalar b) => a < b ? a : b);

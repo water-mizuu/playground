@@ -1,3 +1,5 @@
+// ignore_for_file: unreachable_from_main
+
 import "matrix.dart";
 import "time.dart";
 
@@ -8,14 +10,14 @@ bool isValidMove(int value, int y, int x, Matrix<int> grid, int sectorSize) {
     return false;
   }
 
-  for (int _y = 0; _y < grid.length; _y++) {
-    if (y != _y && grid[_y][x] == value) {
+  for (int y_ = 0; y_ < grid.length; y_++) {
+    if (y != y_ && grid[y_][x] == value) {
       return false;
     }
   }
 
-  for (int _x = 0; _x < grid.length; _x++) {
-    if (x != _x && grid[y][_x] == value) {
+  for (int x_ = 0; x_ < grid.length; x_++) {
+    if (x != x_ && grid[y][x_] == value) {
       return false;
     }
   }
@@ -23,9 +25,9 @@ bool isValidMove(int value, int y, int x, Matrix<int> grid, int sectorSize) {
   // This might be odd, but focus on the FLOOR division.
   int sectorY = (y ~/ sectorSize) * sectorSize;
   int sectorX = (x ~/ sectorSize) * sectorSize;
-  for (int _y = sectorY; _y < sectorY + sectorSize; _y++) {
-    for (int _x = sectorX; _x < sectorX + sectorSize; _x++) {
-      if (grid[_y][_x] == value) {
+  for (int y_ = sectorY; y_ < sectorY + sectorSize; y_++) {
+    for (int x_ = sectorX; x_ < sectorX + sectorSize; x_++) {
+      if (grid[y_][x_] == value) {
         return false;
       }
     }
@@ -106,13 +108,10 @@ bool sudokuSolverOptimized(Matrix<int> grid) {
         (y, x): <int>{
           if (grid[y][x] == 0)
             for (int i = 1; i <= 9; i++)
-              if (isValidMove(i, y, x, grid, 3))
-                i
-        }
+              if (isValidMove(i, y, x, grid, 3)) i,
+        },
   };
-  List<(int, int)> indices = searchSpace.keys
-      .where(((int, int) v) => searchSpace[v]!.isNotEmpty)
-      .toList()
+  List<(int, int)> indices = searchSpace.keys.where(((int, int) v) => searchSpace[v]!.isNotEmpty).toList()
     ..sort(((int, int) l, (int, int) r) => searchSpace[l]!.length.compareTo(searchSpace[r]!.length));
 
   return _sudokuSolverOptimized(grid, 0, indices, searchSpace);
@@ -145,7 +144,7 @@ void main() {
     <int>[0, 0, 5, 0, 0, 7, 3, 2, 0],
     <int>[1, 0, 0, 8, 0, 0, 0, 0, 0],
     <int>[0, 0, 0, 0, 0, 0, 0, 0, 6],
-    <int>[0, 0, 4, 0, 0, 2, 7, 5, 0]
+    <int>[0, 0, 4, 0, 0, 2, 7, 5, 0],
   ];
   // matrix = [
   //   [0, 0, 0, 7, 0, 0, 0, 0, 0],

@@ -1,9 +1,9 @@
 part of "../../matrix.dart";
 
 class ElementWiseNumericalMatrixProxy extends Iterable<Scalar> {
-  final NumericalMatrix parent;
 
   ElementWiseNumericalMatrixProxy(this.parent);
+  final NumericalMatrix parent;
 
   Iterable<Scalar> get _iterable sync* {
     for (List<Scalar> row in parent.data) {

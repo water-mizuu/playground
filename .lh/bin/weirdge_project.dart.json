@@ -1,0 +1,118 @@
+{
+    "sourceFile": "bin/weirdge_project.dart",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 25,
+            "patches": [
+                {
+                    "date": 1690566018034,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1690566049720,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,1 +1,6 @@\n-void m\n\\ No newline at end of file\n+import \"dart:io\";\r\n+\r\n+void main() {\r\n+  \r\n+  String filePath = File();\r\n+}\r\n"
+                },
+                {
+                    "date": 1690566080369,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,12 @@\n import \"dart:io\";\r\n \r\n void main() {\r\n-  \r\n-  String filePath = File();\r\n+  stdout.write(\"Input file path: \");\r\n+  String filePath = stdin.readLineSync()!;\r\n+  File file = File(filePath);\r\n+\r\n+  while (true) {\r\n+    print(\"MAIN MENU\");\r\n+    \r\n+  }\r\n }\r\n"
+                },
+                {
+                    "date": 1690566111327,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,8 +5,12 @@\n   String filePath = stdin.readLineSync()!;\r\n   File file = File(filePath);\r\n \r\n   while (true) {\r\n-    print(\"MAIN MENU\");\r\n-    \r\n+    stdout.writeln(\"MAIN MENU\");\r\n+    stdout.writeln(\"[1] Get friend list\");\r\n+    stdout.writeln(\"[2] Get connection\");\r\n+    stdout.writeln(\"[3] Exit\");\r\n+    stdout.writeln(\"\");\r\n+    stdout.writeln(\"Enter your choice: \");\r\n   }\r\n }\r\n"
+                },
+                {
+                    "date": 1690566141412,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -9,8 +9,11 @@\n     stdout.writeln(\"MAIN MENU\");\r\n     stdout.writeln(\"[1] Get friend list\");\r\n     stdout.writeln(\"[2] Get connection\");\r\n     stdout.writeln(\"[3] Exit\");\r\n-    stdout.writeln(\"\");\r\n-    stdout.writeln(\"Enter your choice: \");\r\n+    stdout.writeln();\r\n+    stdout.write(\"Enter your choice: \");\r\n+\r\n+    int choice = int.parse(stdin.readLineSync()!);\r\n+    switch (choic)\r\n   }\r\n }\r\n"
+                },
+                {
+                    "date": 1690566141442,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,7 +13,7 @@\n     stdout.writeln();\r\n     stdout.write(\"Enter your choice: \");\r\n \r\n     int choice = int.parse(stdin.readLineSync()!);\r\n-    switch (choic)\r\n+    switch (choice)\r\n   }\r\n }\r\n"
+                },
+                {
+                    "date": 1690566171531,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,17 +3,27 @@\n void main() {\r\n   stdout.write(\"Input file path: \");\r\n   String filePath = stdin.readLineSync()!;\r\n   File file = File(filePath);\r\n+  bool run = true;\r\n \r\n-  while (true) {\r\n+  while (run) {\r\n     stdout.writeln(\"MAIN MENU\");\r\n     stdout.writeln(\"[1] Get friend list\");\r\n     stdout.writeln(\"[2] Get connection\");\r\n     stdout.writeln(\"[3] Exit\");\r\n     stdout.writeln();\r\n     stdout.write(\"Enter your choice: \");\r\n \r\n     int choice = int.parse(stdin.readLineSync()!);\r\n-    switch (choice)\r\n+    switch (choice) {\r\n+      case 1:\r\n+        getFriendList();\r\n+      case 2:\r\n+        break;\r\n+        getConnection();\r\n+      case 3:\r\n+        run = false;\r\n+        break;\r\n+    }\r\n   }\r\n }\r\n"
+                },
+                {
+                    "date": 1690566201669,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,10 @@\n import \"dart:io\";\r\n \r\n+Map<\r\n+\r\n+void getFriendList() {}\r\n+\r\n void main() {\r\n   stdout.write(\"Input file path: \");\r\n   String filePath = stdin.readLineSync()!;\r\n   File file = File(filePath);\r\n@@ -17,11 +21,12 @@\n     int choice = int.parse(stdin.readLineSync()!);\r\n     switch (choice) {\r\n       case 1:\r\n         getFriendList();\r\n+        break;\r\n       case 2:\r\n+        getConnection();\r\n         break;\r\n-        getConnection();\r\n       case 3:\r\n         run = false;\r\n         break;\r\n     }\r\n"
+                },
+                {
+                    "date": 1690566231746,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,10 +1,15 @@\n import \"dart:io\";\r\n \r\n-Map<\r\n+Map<int, List<int>> friendData = <int, List<int>>{};\r\n \r\n-void getFriendList() {}\r\n+void getFriendList() {\r\n+  stdout.write(\"Enter ID of person: \");\r\n+  int id = int.parse(stdin.readLineSync()!);\r\n \r\n+  stdout.writeln()\r\n+}\r\n+\r\n void main() {\r\n   stdout.write(\"Input file path: \");\r\n   String filePath = stdin.readLineSync()!;\r\n   File file = File(filePath);\r\n"
+                },
+                {
+                    "date": 1690566262938,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,10 @@\n void getFriendList() {\r\n   stdout.write(\"Enter ID of person: \");\r\n   int id = int.parse(stdin.readLineSync()!);\r\n \r\n-  stdout.writeln()\r\n+  List<int>? friends = friendData[id];\r\n+  stdout.writeln(\"Person $id has \")\r\n }\r\n \r\n void main() {\r\n   stdout.write(\"Input file path: \");\r\n"
+                },
+                {
+                    "date": 1690566292997,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,4 +1,6 @@\n+// ignore_for_file: prefer_conditional_assignment\r\n+\r\n import \"dart:io\";\r\n \r\n Map<int, List<int>> friendData = <int, List<int>>{};\r\n \r\n@@ -6,11 +8,17 @@\n   stdout.write(\"Enter ID of person: \");\r\n   int id = int.parse(stdin.readLineSync()!);\r\n \r\n   List<int>? friends = friendData[id];\r\n-  stdout.writeln(\"Person $id has \")\r\n+  if (friends == null) {\r\n+    friends = <int>[];\r\n+  }\r\n+  stdout.writeln(\"Person $id has ${friends.length} friends!\");\r\n+  stdout.writeln(\"List of friends: ${friends.join(\" \")}\");\r\n }\r\n \r\n+void getConnecti\r\n+\r\n void main() {\r\n   stdout.write(\"Input file path: \");\r\n   String filePath = stdin.readLineSync()!;\r\n   File file = File(filePath);\r\n"
+                },
+                {
+                    "date": 1690566324539,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,9 +15,14 @@\n   stdout.writeln(\"Person $id has ${friends.length} friends!\");\r\n   stdout.writeln(\"List of friends: ${friends.join(\" \")}\");\r\n }\r\n \r\n-void getConnecti\r\n+void getConnection() {\r\n+  stdout.write(\"Enter ID of first person: \");\r\n+  stdout.write(\"Enter ID of first person: \");\r\n+  int idFirst = int.parse(stdin.readLineSync()!);\r\n+  stdout.write(\"Enter ID of second person: \");\r\n+}\r\n \r\n void main() {\r\n   stdout.write(\"Input file path: \");\r\n   String filePath = stdin.readLineSync()!;\r\n"
+                },
+                {
+                    "date": 1690566356026,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,11 +17,13 @@\n }\r\n \r\n void getConnection() {\r\n   stdout.write(\"Enter ID of first person: \");\r\n-  stdout.write(\"Enter ID of first person: \");\r\n   int idFirst = int.parse(stdin.readLineSync()!);\r\n   stdout.write(\"Enter ID of second person: \");\r\n+  int idSecond = int.parse(stdin.readLineSync()!);\r\n+\r\n+  L\r\n }\r\n \r\n void main() {\r\n   stdout.write(\"Input file path: \");\r\n"
+                },
+                {
+                    "date": 1690566386189,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,56 @@\n+// ignore_for_file: prefer_conditional_assignment\r\n+\r\n+import \"dart:collection\";\r\n+import \"dart:io\";\r\n+\r\n+Map<int, List<int>> friendData = <int, List<int>>{};\r\n+\r\n+void getFriendList() {\r\n+  stdout.write(\"Enter ID of person: \");\r\n+  int id = int.parse(stdin.readLineSync()!);\r\n+\r\n+  List<int>? friends = friendData[id];\r\n+  if (friends == null) {\r\n+    friends = <int>[];\r\n+  }\r\n+  stdout.writeln(\"Person $id has ${friends.length} friends!\");\r\n+  stdout.writeln(\"List of friends: ${friends.join(\" \")}\");\r\n+}\r\n+\r\n+void getConnection() {\r\n+  stdout.write(\"Enter ID of first person: \");\r\n+  int idFirst = int.parse(stdin.readLineSync()!);\r\n+  stdout.write(\"Enter ID of second person: \");\r\n+  int idSecond = int.parse(stdin.readLineSync()!);\r\n+\r\n+  Qu<List<int>> queue = Qu<List<int>>();\r\n+}\r\n+\r\n+void main() {\r\n+  stdout.write(\"Input file path: \");\r\n+  String filePath = stdin.readLineSync()!;\r\n+  File file = File(filePath);\r\n+  bool run = true;\r\n+\r\n+  while (run) {\r\n+    stdout.writeln(\"MAIN MENU\");\r\n+    stdout.writeln(\"[1] Get friend list\");\r\n+    stdout.writeln(\"[2] Get connection\");\r\n+    stdout.writeln(\"[3] Exit\");\r\n+    stdout.writeln();\r\n+    stdout.write(\"Enter your choice: \");\r\n+\r\n+    int choice = int.parse(stdin.readLineSync()!);\r\n+    switch (choice) {\r\n+      case 1:\r\n+        getFriendList();\r\n+        break;\r\n+      case 2:\r\n+        getConnection();\r\n+        break;\r\n+      case 3:\r\n+        run = false;\r\n+        break;\r\n+    }\r\n+  }\r\n+}\r\n"
+                },
+                {
+                    "date": 1690566421585,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,66 +22,15 @@\n   int idFirst = int.parse(stdin.readLineSync()!);\r\n   stdout.write(\"Enter ID of second person: \");\r\n   int idSecond = int.parse(stdin.readLineSync()!);\r\n \r\n-  Qu<List<int>> queue = Qu<List<int>>();\r\n-}\r\n+  HashSet<int> visited = HashSet<int>();\r\n+  Queue<List<int>> queue = Queue<List<int>>();\r\n+  \r\n+  queue.add(<int>[idFirst]);\r\n \r\n-void main() {\r\n-  stdout.write(\"Input file path: \");\r\n-  String filePath = stdin.readLineSync()!;\r\n-  File file = File(filePath);\r\n-  bool run = true;\r\n-\r\n-  while (run) {\r\n-    stdout.writeln(\"MAIN MENU\");\r\n-    stdout.writeln(\"[1] Get friend list\");\r\n-    stdout.writeln(\"[2] Get connection\");\r\n-    stdout.writeln(\"[3] Exit\");\r\n-    stdout.writeln();\r\n-    stdout.write(\"Enter your choice: \");\r\n-\r\n-    int choice = int.parse(stdin.readLineSync()!);\r\n-    switch (choice) {\r\n-      case 1:\r\n-        getFriendList();\r\n-        break;\r\n-      case 2:\r\n-        getConnection();\r\n-        break;\r\n-      case 3:\r\n-        run = false;\r\n-        break;\r\n-    }\r\n-  }\r\n }\r\n-// ignore_for_file: prefer_conditional_assignment\r\n \r\n-import \"dart:io\";\r\n-\r\n-Map<int, List<int>> friendData = <int, List<int>>{};\r\n-\r\n-void getFriendList() {\r\n-  stdout.write(\"Enter ID of person: \");\r\n-  int id = int.parse(stdin.readLineSync()!);\r\n-\r\n-  List<int>? friends = friendData[id];\r\n-  if (friends == null) {\r\n-    friends = <int>[];\r\n-  }\r\n-  stdout.writeln(\"Person $id has ${friends.length} friends!\");\r\n-  stdout.writeln(\"List of friends: ${friends.join(\" \")}\");\r\n-}\r\n-\r\n-void getConnection() {\r\n-  stdout.write(\"Enter ID of first person: \");\r\n-  int idFirst = int.parse(stdin.readLineSync()!);\r\n-  stdout.write(\"Enter ID of second person: \");\r\n-  int idSecond = int.parse(stdin.readLineSync()!);\r\n-\r\n-  L\r\n-}\r\n-\r\n void main() {\r\n   stdout.write(\"Input file path: \");\r\n   String filePath = stdin.readLineSync()!;\r\n   File file = File(filePath);\r\n"
+                },
+                {
+                    "date": 1690566453149,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -24,11 +24,16 @@\n   int idSecond = int.parse(stdin.readLineSync()!);\r\n \r\n   HashSet<int> visited = HashSet<int>();\r\n   Queue<List<int>> queue = Queue<List<int>>();\r\n-  \r\n+  visited.add(idFirst);\r\n   queue.add(<int>[idFirst]);\r\n \r\n+  while (queue.isNotEmpty) {\r\n+    List<int> path = queue.removeFirst();\r\n+\r\n+    f\r\n+  }\r\n }\r\n \r\n void main() {\r\n   stdout.write(\"Input file path: \");\r\n"
+                },
+                {
+                    "date": 1690566453171,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -30,9 +30,9 @@\n \r\n   while (queue.isNotEmpty) {\r\n     List<int> path = queue.removeFirst();\r\n \r\n-    f\r\n+    fo\r\n   }\r\n }\r\n \r\n void main() {\r\n"
+                },
+                {
+                    "date": 1690566484218,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -29,10 +29,14 @@\n   queue.add(<int>[idFirst]);\r\n \r\n   while (queue.isNotEmpty) {\r\n     List<int> path = queue.removeFirst();\r\n-\r\n-    fo\r\n+    if (path.last == idSecond) {\r\n+      stdout.writeln(\"Connection found!\");\r\n+      stdout.writeln(\"Path: ${path.join(\" -> \")}\");\r\n+      return;\r\n+    }\r\n+    \r\n   }\r\n }\r\n \r\n void main() {\r\n"
+                },
+                {
+                    "date": 1690566516061,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -34,9 +34,20 @@\n       stdout.writeln(\"Connection found!\");\r\n       stdout.writeln(\"Path: ${path.join(\" -> \")}\");\r\n       return;\r\n     }\r\n-    \r\n+\r\n+    List<int>? friends = friendData[path.last];\r\n+    if (friends != null) {\r\n+    for (int friend in friendData[path.last] ?? <int>[]) {\r\n+      if (!visited.contains(friend)) {\r\n+        visited.add(friend);\r\n+        List<int> newPath = List<int>.from(path);\r\n+        newPath.add(friend);\r\n+        queue.add(newPath);\r\n+      }\r\n+    }\r\n+    }\r\n   }\r\n }\r\n \r\n void main() {\r\n"
+                },
+                {
+                    "date": 1690566569486,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,8 +4,9 @@\n import \"dart:io\";\r\n \r\n Map<int, List<int>> friendData = <int, List<int>>{};\r\n \r\n+\r\n void getFriendList() {\r\n   stdout.write(\"Enter ID of person: \");\r\n   int id = int.parse(stdin.readLineSync()!);\r\n \r\n@@ -37,17 +38,17 @@\n     }\r\n \r\n     List<int>? friends = friendData[path.last];\r\n     if (friends != null) {\r\n-    for (int friend in friendData[path.last] ?? <int>[]) {\r\n-      if (!visited.contains(friend)) {\r\n-        visited.add(friend);\r\n-        List<int> newPath = List<int>.from(path);\r\n-        newPath.add(friend);\r\n-        queue.add(newPath);\r\n+      for (int friend in friends) {\r\n+        if (!visited.contains(friend)) {\r\n+          visited.add(friend);\r\n+          List<int> newPath = List<int>.from(path);\r\n+          newPath.add(friend);\r\n+          queue.add(newPath);\r\n+        }\r\n       }\r\n     }\r\n-    }\r\n   }\r\n }\r\n \r\n void main() {\r\n"
+                },
+                {
+                    "date": 1690566607750,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,9 +4,17 @@\n import \"dart:io\";\r\n \r\n Map<int, List<int>> friendData = <int, List<int>>{};\r\n \r\n+void loadData(String path) {\r\n+  File file = File(path);\r\n+  if (!file.existsSync()) {\r\n+    throw Exception(\"File not found!\");\r\n+  }\r\n \r\n+  L\r\n+}\r\n+\r\n void getFriendList() {\r\n   stdout.write(\"Enter ID of person: \");\r\n   int id = int.parse(stdin.readLineSync()!);\r\n \r\n@@ -53,9 +61,8 @@\n \r\n void main() {\r\n   stdout.write(\"Input file path: \");\r\n   String filePath = stdin.readLineSync()!;\r\n-  File file = File(filePath);\r\n   bool run = true;\r\n \r\n   while (run) {\r\n     stdout.writeln(\"MAIN MENU\");\r\n"
+                },
+                {
+                    "date": 1690566638020,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -10,9 +10,11 @@\n   if (!file.existsSync()) {\r\n     throw Exception(\"File not found!\");\r\n   }\r\n \r\n-  L\r\n+  List<String> lines = file.readAsLinesSync();\r\n+  /// The first line contains two numbers, n and e.\r\n+  var [n, ie]\r\n }\r\n \r\n void getFriendList() {\r\n   stdout.write(\"Enter ID of person: \");\r\n"
+                },
+                {
+                    "date": 1690566668578,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,10 +11,12 @@\n     throw Exception(\"File not found!\");\r\n   }\r\n \r\n   List<String> lines = file.readAsLinesSync();\r\n+\r\n   /// The first line contains two numbers, n and e.\r\n-  var [n, ie]\r\n+  List<String> tokens = lines[0].split(\" \");\r\n+  \r\n }\r\n \r\n void getFriendList() {\r\n   stdout.write(\"Enter ID of person: \");\r\n"
+                },
+                {
+                    "date": 1690566711579,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,9 +14,13 @@\n   List<String> lines = file.readAsLinesSync();\r\n \r\n   /// The first line contains two numbers, n and e.\r\n   List<String> tokens = lines[0].split(\" \");\r\n-  \r\n+  int n = int.parse(tokens[0]);\r\n+  int e = int.parse(tokens[1]);\r\n+\r\n+  /// Why i = 1? We skip the first line.\r\n+  for (int i = 1; i )\r\n }\r\n \r\n void getFriendList() {\r\n   stdout.write(\"Enter ID of person: \");\r\n"
+                },
+                {
+                    "date": 1690566741749,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,9 +19,9 @@\n   int e = int.parse(tokens[1]);\r\n \r\n   /// Why i = 1? We skip the first line.\r\n   for (int i = 1; i < e + 1; ++i) {\r\n-    List<Stt\r\n+    List<Sttr\r\n   }\r\n }\r\n \r\n void getFriendList() {\r\n"
+                },
+                {
+                    "date": 1690566741780,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,9 +19,9 @@\n   int e = int.parse(tokens[1]);\r\n \r\n   /// Why i = 1? We skip the first line.\r\n   for (int i = 1; i < e + 1; ++i) {\r\n-    List<Sttr\r\n+    List<Sttri\r\n   }\r\n }\r\n \r\n void getFriendList() {\r\n"
+                }
+            ],
+            "date": 1690566018034,
+            "name": "Commit-0",
+            "content": "void m"
+        }
+    ]
+}

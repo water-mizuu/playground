@@ -1,3 +1,5 @@
+// ignore_for_file: unreachable_from_main
+
 import "dart:math";
 
 final Random random = Random();

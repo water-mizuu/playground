@@ -18,7 +18,7 @@ void main() {
 
     test("is empty when invalid", () {
       Range range = Range.unit(25, 5);
-      expect(range, equals(Range.empty()));
+      expect(range, equals(const Range.empty()));
     });
 
     test("is equal to sets", () {
@@ -37,16 +37,17 @@ void main() {
     });
 
     test("combines properly", () {
-      RangeUnit left = RangeUnit(2, 12);
-      RangeUnit right = RangeUnit(4, 20);
+      RangeUnit left = const RangeUnit(2, 12);
+      RangeUnit right = const RangeUnit(4, 20);
       Range combination = left.combination(right);
 
       expect(
-          combination,
-          isA<RangeUnit>()
-              .having((RangeUnit unit) => unit.start, "start", equals(2))
-              .having((RangeUnit unit) => unit.end, "end", equals(20))
-              .having((RangeUnit unit) => unit.length, "length", equals(18)));
+        combination,
+        isA<RangeUnit>()
+            .having((RangeUnit unit) => unit.start, "start", equals(2))
+            .having((RangeUnit unit) => unit.end, "end", equals(20))
+            .having((RangeUnit unit) => unit.length, "length", equals(18)),
+      );
     });
 
     group("computes", () {
@@ -103,7 +104,7 @@ void main() {
         Range left = Range.unit(5, 10);
         Range right = Range.unit(2, 12);
 
-        expect(left - right, equals(Range.empty()));
+        expect(left - right, equals(const Range.empty()));
       });
     });
 
@@ -145,7 +146,7 @@ void main() {
   });
 
   group("right hand null", () {
-    Range rhs = Range.empty();
+    Range rhs = const Range.empty();
 
     test("unions are unchanged", () {
       Range lhs = Range.unit(4, 20);

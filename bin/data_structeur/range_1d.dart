@@ -1,11 +1,12 @@
+// ignore_for_file: avoid_equals_and_hash_code_on_mutable_classes, hash_and_equals
+
 import "dart:collection";
 import "dart:math";
 
 class RangeSet with SetMixin<num> implements Set<num> {
-  Range inner;
-
   RangeSet(this.inner);
-  RangeSet.empty() : inner = Range.empty();
+  RangeSet.empty() : inner = const Range.empty();
+  Range inner;
 
   @override
   bool add(num value) {
@@ -66,7 +67,7 @@ sealed class Range extends Iterable<int> {
   ///   [Range] of numbers can be represented with.
   factory Range.unit(int start, int end) {
     if (end <= start) {
-      return Range.empty();
+      return const Range.empty();
     }
     return RangeUnit(start, end);
   }
@@ -76,10 +77,10 @@ sealed class Range extends Iterable<int> {
   factory Range.union(Set<RangeUnit> units) {
     units = <RangeUnit>{
       for (RangeUnit unit in units)
-        if (unit.isNotEmpty) unit
+        if (unit.isNotEmpty) unit,
     };
     if (units.isEmpty) {
-      return Range.empty();
+      return const Range.empty();
     }
     return RangeUnion(units);
   }
@@ -131,7 +132,6 @@ sealed class Range extends Iterable<int> {
   Range operator ^(Range other) => (this | other) - (this & other);
 
   @override
-  // ignore: hash_and_equals
   bool operator ==(Object other) => other is Range && this.covers(other) && other.covers(this);
 
   @override
@@ -139,10 +139,9 @@ sealed class Range extends Iterable<int> {
 }
 
 class RangeUnit extends Range {
+  const RangeUnit(this.start, this.end);
   final int start;
   final int end;
-
-  const RangeUnit(this.start, this.end);
 
   /// Returns the contingent combination of two [RangeUnit]s,
   ///   returning an equivalent [RangeUnit]
@@ -150,7 +149,7 @@ class RangeUnit extends Range {
     int start = min(this.start, other.start);
     int end = max(this.end, other.end);
     if (start >= end) {
-      return Range.empty();
+      return const Range.empty();
     }
 
     return Range.unit(start, end);
@@ -169,16 +168,13 @@ class RangeUnit extends Range {
   Range difference(Range other) => switch (other) {
         void _ when !this.intersects(other) || other.isEmpty => this,
         RangeUnit other => () {
-            Range left = Range.unit(min(start, other.start), other.start);
-            Range right = Range.unit(other.end, max(other.end, end));
-
             Set<RangeUnit> units = <RangeUnit>{
-              if (left case RangeUnit _) left,
-              if (right case RangeUnit _) right,
+              if (Range.unit(min(start, other.start), other.start) case RangeUnit left) left,
+              if (Range.unit(other.end, max(other.end, end)) case RangeUnit right) right,
             };
 
             if (units.isEmpty) {
-              return Range.empty();
+              return const Range.empty();
             } else if (units.length == 1) {
               return units.single;
             } else {
@@ -199,11 +195,11 @@ class RangeUnit extends Range {
   @override
   Range intersection(Range other) {
     if (this.isEmpty || other.isEmpty) {
-      return Range.empty();
+      return const Range.empty();
     }
 
     if (!this.intersects(other)) {
-      return Range.empty();
+      return const Range.empty();
     }
 
     switch (other) {
@@ -277,29 +273,8 @@ class RangeUnit extends Range {
 }
 
 class RangeUnion extends Range {
-  final Set<RangeUnit> units;
-
   const RangeUnion(this.units);
-
-  /// Returns an "equivalent" [RangeUnit] that contains the same [RangeUnit.start]
-  ///   and [RangeUnit.end] as the units leftmost and rightmost unit values.
-  RangeUnit contingent() {
-    int? start;
-    int? end;
-    for (RangeUnit unit in units) {
-      start ??= unit.start;
-      end ??= unit.end;
-
-      start = min(start, unit.start);
-      end = max(end, unit.end);
-    }
-
-    if (start == null || end == null) {
-      throw StateError("Empty union!");
-    }
-
-    return RangeUnit(start, end);
-  }
+  final Set<RangeUnit> units;
 
   @override
   bool covers(Range other) {
@@ -315,12 +290,10 @@ class RangeUnion extends Range {
     Set<RangeUnit> units = <RangeUnit>{};
     for (RangeUnit unit in this.units) {
       switch (unit.difference(other)) {
-        case RangeUnit difference when difference != Range.empty():
+        case RangeUnit difference when difference != const Range.empty():
           units.add(difference);
-          break;
         case RangeUnion difference:
           units.addAll(difference.units);
-          break;
         case RangeEmpty _:
         default:
           break;

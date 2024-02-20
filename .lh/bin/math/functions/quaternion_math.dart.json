@@ -1,0 +1,18 @@
+{
+    "sourceFile": "bin/math/functions/quaternion_math.dart",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1698396643928,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1698396643928,
+            "name": "Commit-0",
+            "content": "import \"../shared.dart\";\r\nimport \"real_math.dart\" as r_math;\r\n\r\nfinal r_math.Random _random = r_math.Random.secure();\r\n\r\nfinal Quaternion pi = Quaternion.from(r_math.pi);\r\nfinal Quaternion e = Quaternion.from(r_math.e);\r\nfinal Quaternion phi = Quaternion.from(r_math.phi);\r\n\r\nQuaternion log(Quaternion q) {\r\n  /// Credits: https://math.stackexchange.com/questions/2552/the-logarithm-of-quaternion\r\n\r\n  num s = q.real;\r\n  num norm = q.abs().real;\r\n  num vectorNorm = q.vectorNorm;\r\n  num angle = r_math.acos(s / norm);\r\n\r\n  if (vectorNorm == 0) {\r\n    num absoluteSquared = q.absSquared();\r\n    num real = 0.5 * r_math.log(absoluteSquared);\r\n    num imaginary = angle;\r\n\r\n    return Quaternion(real, imaginary, 0, 0);\r\n  } else {\r\n    num imaginaryScalar = (1 / vectorNorm) * angle;\r\n\r\n    num real = r_math.log(norm);\r\n    num imaginaryI = imaginaryScalar * q.imaginaryI;\r\n    num imaginaryJ = imaginaryScalar * q.imaginaryJ;\r\n    num imaginaryK = imaginaryScalar * q.imaginaryK;\r\n\r\n    return Quaternion(real, imaginaryI, imaginaryJ, imaginaryK);\r\n  }\r\n}\r\n\r\nQuaternion exp(Quaternion q) {\r\n  /// Credits: https://math.stackexchange.com/questions/1030737/exponential-function-of-quaternion-derivation\r\n\r\n  num vectorNorm = q.vectorNorm;\r\n  if (vectorNorm == 0) {\r\n    num real = r_math.exp(q.real);\r\n\r\n    return Quaternion(real, 0, 0, 0);\r\n  } else {\r\n    num scalar = r_math.exp(q.real);\r\n    num realScalar = r_math.cos(vectorNorm);\r\n    num imaginaryScalar = r_math.sin(vectorNorm) / vectorNorm;\r\n\r\n    num real = scalar * realScalar;\r\n    num imaginaryI = scalar * q.imaginaryI * imaginaryScalar;\r\n    num imaginaryJ = scalar * q.imaginaryJ * imaginaryScalar;\r\n    num imaginaryK = scalar * q.imaginaryK * imaginaryScalar;\r\n\r\n    return Quaternion(real, imaginaryI, imaginaryJ, imaginaryK);\r\n  }\r\n}\r\n\r\nQuaternion pow(Quaternion q, Quaternion exponent) => q == 0.w\r\n    ? q\r\n    : exponent == 0.w\r\n        ? 1.w\r\n        : exp(log(q) * exponent);\r\nQuaternion rpow(Quaternion q, Quaternion exponent) => q == 0.w\r\n    ? q\r\n    : exponent == 0.w\r\n        ? 1.w\r\n        : exp(exponent * log(q));\r\n\r\nQuaternion randomDouble() => Quaternion(\r\n      _random.nextDouble(),\r\n      _random.nextDouble(),\r\n      _random.nextDouble(),\r\n      _random.nextDouble(),\r\n    );\r\nQuaternion randomInt(\r\n  int realMax, [\r\n  int? imaginaryIMax,\r\n  int? imaginaryJMax,\r\n  int? imaginaryKMax,\r\n]) =>\r\n    Quaternion(\r\n      _random.nextInt(realMax),\r\n      _random.nextInt(imaginaryIMax ??= realMax),\r\n      _random.nextInt(imaginaryJMax ??= imaginaryIMax),\r\n      _random.nextInt(imaginaryKMax ??= imaginaryJMax),\r\n    );\r\n"
+        }
+    ]
+}

@@ -1,17 +1,17 @@
 part of "../../matrix.dart";
 
 class _ListVectorProxy<E> implements List<Vector<E>> {
+
+  _ListVectorProxy(this.parent, this.indices);
   static Never _unsupported(String message) =>
       throw UnsupportedError("$message is not supported for a vector list view.");
 
   final Matrix<E> parent;
   final List<List<(int, int)>> indices;
 
-  _ListVectorProxy(this.parent, this.indices);
-
   List<Vector<E>> get mirror => <Vector<E>>[
         for (List<(int, int)> list in indices) //
-          Vector<E>(<E>[for (var (int y, int x) in list) parent[y][x]])
+          Vector<E>(<E>[for (var (int y, int x) in list) parent[y][x]]),
       ];
 
   @override
@@ -235,7 +235,7 @@ class _ListVectorProxy<E> implements List<Vector<E>> {
         : (List<(int, int)> a, List<(int, int)> b) => compare.call(
               Vector<E>(<E>[for (var (int y, int x) in a) parent[y][x]]),
               Vector<E>(<E>[for (var (int y, int x) in b) parent[y][x]]),
-            ));
+            ),);
   }
 
   @override

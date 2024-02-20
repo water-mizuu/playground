@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_dynamic_calls
+// ignore_for_file: avoid_dynamic_calls, unreachable_from_main
 
 import "dart:collection";
 
@@ -48,12 +48,11 @@ Command conditionalJump(int index) => (Engine engine) {
     };
 
 class Engine {
+  Engine(this.commands);
   List<Command> commands;
   Queue<dynamic> stack = Queue<dynamic>();
 
   int position = 0;
-
-  Engine(this.commands);
 
   R pop<R>() {
     dynamic removed = stack.removeLast();

@@ -3,8 +3,8 @@ import "real_math.dart" as r_math;
 
 final r_math.Random _random = r_math.Random.secure();
 
-final Quaternion pi = Quaternion.from(r_math.pi);
-final Quaternion e = Quaternion.from(r_math.e);
+const Quaternion pi = Quaternion.from(r_math.pi);
+const Quaternion e = Quaternion.from(r_math.e);
 final Quaternion phi = Quaternion.from(r_math.phi);
 
 Quaternion log(Quaternion q) {

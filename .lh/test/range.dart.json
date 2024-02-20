@@ -1,0 +1,58 @@
+{
+    "sourceFile": "test/range.dart",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 10,
+            "patches": [
+                {
+                    "date": 1688900971344,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1688901001700,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,1 +1,7 @@\n-void main() {\n\\ No newline at end of file\n+import \"package:test/test.dart\";\r\n+\r\n+void main() {\r\n+  group(\"range\", () {\r\n+    test(\"single\")\r\n+  });\r\n+}\r\n"
+                },
+                {
+                    "date": 1688901031817,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,14 @@\n import \"package:test/test.dart\";\r\n \r\n+import \"../bin/range.dart\";\r\n+\r\n void main() {\r\n   group(\"range\", () {\r\n-    test(\"single\")\r\n+    group(\"single\", () {\r\n+      test(\"instantiates properly\", () {\r\n+        Range range = Range.single(3);\r\n+        \r\n+      });\r\n+    });\r\n   });\r\n }\r\n"
+                },
+                {
+                    "date": 1688901084678,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,9 +6,13 @@\n   group(\"range\", () {\r\n     group(\"single\", () {\r\n       test(\"instantiates properly\", () {\r\n         Range range = Range.single(3);\r\n-        \r\n+\r\n+        expect(range, isNotNull);\r\n+        expect(range, isA<RangeSingle>());\r\n+        expect(range.length, equals(1));\r\n+        expect(range.contains(3), isTrue);4\r\n       });\r\n     });\r\n   });\r\n }\r\n"
+                },
+                {
+                    "date": 1688901116901,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,12 +7,23 @@\n     group(\"single\", () {\r\n       test(\"instantiates properly\", () {\r\n         Range range = Range.single(3);\r\n \r\n-        expect(range, isNotNull);\r\n         expect(range, isA<RangeSingle>());\r\n-        expect(range.length, equals(1));\r\n-        expect(range.contains(3), isTrue);4\r\n       });\r\n+\r\n+      test(\"contains\", () {\r\n+        Range range = Range.single(3);\r\n+\r\n+        expect(range.contains(3), isTrue);\r\n+        expect(range.contains(4), isFalse);\r\n+      });\r\n+\r\n+      test (\"covers\", () {\r\n+        Range range = Range.single(3);\r\n+\r\n+        expect(range.covers(Range.single(3)), isTrue);\r\n+        expect(range.covers(Range.single(4)), isFalse);\r\n+      });\r\n     });\r\n   });\r\n }\r\n"
+                },
+                {
+                    "date": 1688901148730,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,13 +17,33 @@\n         expect(range.contains(3), isTrue);\r\n         expect(range.contains(4), isFalse);\r\n       });\r\n \r\n-      test (\"covers\", () {\r\n+      test(\"covers\", () {\r\n         Range range = Range.single(3);\r\n \r\n         expect(range.covers(Range.single(3)), isTrue);\r\n         expect(range.covers(Range.single(4)), isFalse);\r\n       });\r\n+\r\n+      test(\"has length 1\", () {\r\n+        Range range = Range.single(3);\r\n+\r\n+        expect(range.length, equals(1));\r\n+      });\r\n+\r\n+      test(\"intersects\", () {\r\n+        Range range = Range.single(3);\r\n+\r\n+        expect(range.intersects(Range.single(3)), isTrue);\r\n+        expect(range.intersects(Range.single(4)), isFalse);\r\n+      });\r\n+\r\n+      test(\"difference\", () {\r\n+        Range range = Range.single(3);\r\n+\r\n+        expect(range.difference(Range.single(3)), isA<RangeEmpty>());\r\n+        expect(range.difference(Range.single(4)), equals(range));\r\n+      });\r\n     });\r\n   });\r\n }\r\n"
+                },
+                {
+                    "date": 1688901182089,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -43,7 +43,14 @@\n \r\n         expect(range.difference(Range.single(3)), isA<RangeEmpty>());\r\n         expect(range.difference(Range.single(4)), equals(range));\r\n       });\r\n+\r\n+      test(\"intersection\", () {\r\n+        Range range = Range.single(3);\r\n+\r\n+        expect(range.intersection(Range.single(3)), equals(range));\r\n+        expect(range.intersection(Range.single(4)), isA<RangeEmpty>());\r\n+      });\r\n     });\r\n   });\r\n }\r\n"
+                },
+                {
+                    "date": 1688901219633,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -50,7 +50,15 @@\n \r\n         expect(range.intersection(Range.single(3)), equals(range));\r\n         expect(range.intersection(Range.single(4)), isA<RangeEmpty>());\r\n       });\r\n+\r\n+      test(\"union\", () {\r\n+        Range range = Range.single(3);\r\n+\r\n+        expect(range.union(Range.single(3)), equals(range));\r\n+        expect(range.union(Range.single(4)),\r\n+            isA<RangeUnion>().having((RangeUnion union) => union.contains(3),));\r\n+      });\r\n     });\r\n   });\r\n }\r\n"
+                },
+                {
+                    "date": 1688901266081,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -55,10 +55,14 @@\n       test(\"union\", () {\r\n         Range range = Range.single(3);\r\n \r\n         expect(range.union(Range.single(3)), equals(range));\r\n-        expect(range.union(Range.single(4)),\r\n-            isA<RangeUnion>().having((RangeUnion union) => union.contains(3),));\r\n+        expect(\r\n+            range.union(Range.single(4)),\r\n+            isA<RangeUnion>()\r\n+                .having((RangeUnion union) => union.contains(3), \"Contains 3\", isTrue)\r\n+                .having((RangeUnion union) => union.contains(4), \"Contains 4\", isTrue)\r\n+                .having((RangeUnion union) => union.contains(3.5), \"Not in between\", isFalse));\r\n       });\r\n     });\r\n   });\r\n }\r\n"
+                },
+                {
+                    "date": 1688901296253,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -56,13 +56,16 @@\n         Range range = Range.single(3);\r\n \r\n         expect(range.union(Range.single(3)), equals(range));\r\n         expect(\r\n-            range.union(Range.single(4)),\r\n-            isA<RangeUnion>()\r\n-                .having((RangeUnion union) => union.contains(3), \"Contains 3\", isTrue)\r\n-                .having((RangeUnion union) => union.contains(4), \"Contains 4\", isTrue)\r\n-                .having((RangeUnion union) => union.contains(3.5), \"Not in between\", isFalse));\r\n+          range.union(Range.single(4)),\r\n+          isA<RangeUnion>()\r\n+              .having((RangeUnion union) => union.contains(3), \"Contains 3\", isTrue)\r\n+              .having((RangeUnion union) => union.contains(4), \"Contains 4\", isTrue)\r\n+              .having((RangeUnion union) => union.contains(2.5), \"Not before\", isFalse)\r\n+              .having((RangeUnion union) => union.contains(3.5), \"Not in between\", isFalse)\r\n+              .having((RangeUnion union) => union.contains(2.5), \"Not a\", isFalse)\r\n+        );\r\n       });\r\n     });\r\n   });\r\n }\r\n"
+                },
+                {
+                    "date": 1688901353468,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -56,16 +56,15 @@\n         Range range = Range.single(3);\r\n \r\n         expect(range.union(Range.single(3)), equals(range));\r\n         expect(\r\n-          range.union(Range.single(4)),\r\n-          isA<RangeUnion>()\r\n-              .having((RangeUnion union) => union.contains(3), \"Contains 3\", isTrue)\r\n-              .having((RangeUnion union) => union.contains(4), \"Contains 4\", isTrue)\r\n-              .having((RangeUnion union) => union.contains(2.5), \"Not before\", isFalse)\r\n-              .having((RangeUnion union) => union.contains(3.5), \"Not in between\", isFalse)\r\n-              .having((RangeUnion union) => union.contains(2.5), \"Not a\", isFalse)\r\n-        );\r\n+            range.union(Range.single(4)),\r\n+            isA<RangeUnion>()\r\n+                .having((RangeUnion union) => union.contains(3), \"Contains 3\", isTrue)\r\n+                .having((RangeUnion union) => union.contains(4), \"Contains 4\", isTrue)\r\n+                .having((RangeUnion union) => union.contains(2.5), \"Not before\", isFalse)\r\n+                .having((RangeUnion union) => union.contains(3.5), \"Not in between\", isFalse)\r\n+                .having((RangeUnion union) => union.contains(4.5), \"Not after\", ));\r\n       });\r\n     });\r\n   });\r\n }\r\n"
+                }
+            ],
+            "date": 1688900971344,
+            "name": "Commit-0",
+            "content": "void main() {"
+        }
+    ]
+}

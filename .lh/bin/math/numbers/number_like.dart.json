@@ -1,0 +1,18 @@
+{
+    "sourceFile": "bin/math/numbers/number_like.dart",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1698396687080,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1698396687080,
+            "name": "Commit-0",
+            "content": "abstract class NumberLike<Self extends NumberLike<Self>> implements Comparable<Self> {\r\n  const NumberLike();\r\n\r\n  @override\r\n  int compareTo(Self other);\r\n\r\n  Self add(Self other);\r\n  Self subtract(Self other);\r\n  Self multiply(Self other);\r\n  Self divide(Self other);\r\n  Self floorDivide(Self other);\r\n  Self modulo(Self other);\r\n  Self pow(Self other);\r\n  bool isEqualTo(Self other);\r\n\r\n  Self abs();\r\n  Self floor();\r\n  Self round();\r\n  Self ceil();\r\n  Self collapse();\r\n  Self normalize();\r\n\r\n  Self get additiveInverse;\r\n  Self get multiplicativeInverse;\r\n  Self get sign;\r\n  Self get collapsed;\r\n  Self get normalized;\r\n\r\n  Self operator +(Self other) => other.isNaN ? other : add(other);\r\n  Self operator -(Self other) => other.isNaN ? other : subtract(other);\r\n  Self operator -() => additiveInverse;\r\n\r\n  Self operator *(Self other) => other.isNaN ? other : multiply(other);\r\n  Self operator /(Self other) => other.isNaN ? other : divide(other);\r\n  Self operator ~/(Self other) => other.isNaN ? other : floorDivide(other);\r\n  Self operator %(Self other) => other.isNaN ? other : modulo(other);\r\n\r\n  bool operator >(Self other) => !other.isNaN && compareTo(other) > 0;\r\n  bool operator >=(Self other) => !other.isNaN && compareTo(other) >= 0;\r\n  bool operator <(Self other) => !other.isNaN && compareTo(other) < 0;\r\n  bool operator <=(Self other) => !other.isNaN && compareTo(other) <= 0;\r\n\r\n  @override\r\n  bool operator ==(Object other) => identical(this, other) || other is Self && isEqualTo(other);\r\n\r\n  @override\r\n  int get hashCode => super.hashCode;\r\n\r\n  String get str;\r\n  String get strRat;\r\n  String get strShort;\r\n  String get strLong;\r\n  bool get isNaN;\r\n\r\n  @override\r\n  String toString() => str;\r\n}\r\n"
+        }
+    ]
+}

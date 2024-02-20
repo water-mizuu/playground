@@ -1,0 +1,18 @@
+{
+    "sourceFile": "bin/stdio.dart",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1687862484495,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1687862484495,
+            "name": "Commit-0",
+            "content": "import \"dart:io\";\r\n\r\ntypedef Rgb = ({int r, int g, int b});\r\n\r\nextension RgbMethods on Rgb {\r\n  int get r => $1;\r\n  int get g => $2;\r\n  int get b => $3;\r\n\r\n  String get ansi => \"$r;$g;$b\";\r\n}\r\n\r\nextension StdoutExt on Stdout {\r\n  static String _clearCode = String.fromCharCodes(<int>[27, 99, 27, 91, 51, 74]);\r\n  static String _bellCode = String.fromCharCode(0x07);\r\n  static String _escapeCode = \"\\x1B[\";\r\n  static String _hideCursorCode = \"?25l\";\r\n  static String _showCursorCode = \"?25h\";\r\n  static String _clearLineCode = \"2K\";\r\n  static String _moveUpCode = \"A\";\r\n  static String _moveDownCode = \"B\";\r\n  static String _moveRightCode = \"C\";\r\n  static String _moveLeftCode = \"D\";\r\n  static String _moveToColumnCode = \"G\";\r\n  static String _resetForegroundCode = \"39m\";\r\n  static String _resetBackgroundCode = \"49m\";\r\n  static bool _cursorHidden = false;\r\n\r\n  void print([Object object = \"\"]) => write(object);\r\n  void println([Object object = \"\"]) => writeln(object);\r\n  void printAll(List<Object> objects, {String separator = \"\"}) => <List<void>>[\r\n        for (Object obj in objects) <void>[print(obj), if (obj != objects.last) print(separator)]\r\n      ];\r\n\r\n  void newln([int n = 1]) => print(\"\\n\" * n);\r\n\r\n  void esc(String s) => write(\"$_escapeCode$s\");\r\n  void bell() => write(_bellCode);\r\n\r\n  void resetForegroundColor() => esc(_resetForegroundCode);\r\n  void resetBackgroundColor() => esc(_resetBackgroundCode);\r\n  void setForegroundColor(Rgb color) => esc(\"38;2;${color.ansi}m\");\r\n  void setBackgroundColor(Rgb color) => esc(\"48;2;${color.ansi}m\");\r\n  void resetColor() => <void>[resetBackgroundColor(), resetForegroundColor()];\r\n\r\n  void clearScreen() => write(_clearCode);\r\n  void clearln() => <void>[esc(_clearLineCode), movelnStart()];\r\n  void clearlnsUp([int n = 1]) => <void>[\r\n        clearln(),\r\n        for (int i = 1; i < n; i++) <void>[moveUp(), clearln()]\r\n      ];\r\n  void clearlnsDown([int n = 1]) => <void>[\r\n        clearln(),\r\n        for (int i = 1; i < n; i++) <void>[moveUp(), clearln()]\r\n      ];\r\n\r\n  void moveUp([int n = 1]) => esc(\"$n$_moveUpCode\");\r\n  void moveDown([int n = 1]) => esc(\"$n$_moveDownCode\");\r\n  void moveRight([int n = 1]) => esc(\"$n$_moveRightCode\");\r\n  void moveLeft([int n = 1]) => esc(\"$n$_moveLeftCode\");\r\n  void movelnStart() => esc(\"1$_moveToColumnCode\");\r\n  void movelnEnd() => esc(\"1000000000$_moveToColumnCode\");\r\n\r\n  void hideCursor() => esc(_hideCursorCode);\r\n  void showCursor() => esc(_showCursorCode);\r\n  void sessionHideCursor() => hideCursor();\r\n  void toggleCursor() => !(_cursorHidden = !_cursorHidden) ? showCursor() : hideCursor();\r\n\r\n  // Overloads\r\n  void set foregroundColor(Rgb color) => setForegroundColor(color);\r\n  void set backgroundColor(Rgb color) => setBackgroundColor(color);\r\n}\r\n\r\nFuture<void> sleep(Duration duration) => Future<void>.delayed(duration);\r\n"
+        }
+    ]
+}

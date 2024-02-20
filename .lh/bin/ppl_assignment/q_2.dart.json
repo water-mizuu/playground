@@ -1,0 +1,82 @@
+{
+    "sourceFile": "bin/ppl_assignment/q_2.dart",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 16,
+            "patches": [
+                {
+                    "date": 1700004166861,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1700004210693,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,1 +1,20 @@\n-Using function write a program that takes parameter input from the user and search if it is existing on an Array of numbers. Explain.\n\\ No newline at end of file\n+/// Using function write a program that takes parameter input from the user and search if it is existing on an Array of numbers.\r\n+/// Explain.\r\n+\r\n+library;\r\n+\r\n+int? readInt() {\r\n+  while (true) {\r\n+    String? line = stdin.readLineSync();\r\n+    if (line == null) {\r\n+      return null;\r\n+    }\r\n+\r\n+    if (int.tryParse(line) case int value) {\r\n+      return value;\r\n+    }\r\n+  }\r\n+}\r\n+void main() {\r\n+\r\n+}\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1700004242712,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,8 +2,10 @@\n /// Explain.\r\n \r\n library;\r\n \r\n+import \"dart:io\";\r\n+\r\n int? readInt() {\r\n   while (true) {\r\n     String? line = stdin.readLineSync();\r\n     if (line == null) {\r\n@@ -14,7 +16,9 @@\n       return value;\r\n     }\r\n   }\r\n }\r\n+\r\n void main() {\r\n-\r\n\\ No newline at end of file\n-}\n+  stdout.write(\"Enter a number: \");\r\n+  int number = readInt()!; // N\r\n+}\r\n"
+                },
+                {
+                    "date": 1700004273270,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,6 +19,7 @@\n }\r\n \r\n void main() {\r\n   stdout.write(\"Enter a number: \");\r\n-  int number = readInt()!; // N\r\n+  // Non-null assertion because we want to error when stdin returns null (there is no stdin stream).\r\n+  int number = readInt()!;\r\n }\r\n"
+                },
+                {
+                    "date": 1700004304630,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,28 @@\n+/// Using function write a program that takes parameter input from the user and search if it is existing on an Array of numbers.\r\n+/// Explain.\r\n+\r\n+library;\r\n+\r\n+import \"dart:io\";\r\n+\r\n+int? readInt() {\r\n+  while (true) {\r\n+    String? line = stdin.readLineSync();\r\n+    if (line == null) {\r\n+      return null;\r\n+    }\r\n+\r\n+    if (int.tryParse(line) case int value) {\r\n+      return value;\r\n+    }\r\n+  }\r\n+}\r\n+\r\n+void main() {\r\n+  List<int> integers = [for (int i = 0; i < 10; ++i) r];\r\n+\r\n+  stdout.write(\"Enter a number: \");\r\n+\r\n+  // Non-null assertion because we want to error when stdin returns null (there is no stdin stream).\r\n+  int number = readInt()!;\r\n+}\r\n"
+                },
+                {
+                    "date": 1700004304720,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,36 +18,11 @@\n   }\r\n }\r\n \r\n void main() {\r\n-  List<int> integers = [for (int i = 0; i < 10; ++i) r];\r\n+  List<int> integers = [for (int i = 0; i < 10; ++i) ra];\r\n \r\n   stdout.write(\"Enter a number: \");\r\n \r\n   // Non-null assertion because we want to error when stdin returns null (there is no stdin stream).\r\n   int number = readInt()!;\r\n }\r\n-/// Using function write a program that takes parameter input from the user and search if it is existing on an Array of numbers.\r\n-/// Explain.\r\n-\r\n-library;\r\n-\r\n-import \"dart:io\";\r\n-\r\n-int? readInt() {\r\n-  while (true) {\r\n-    String? line = stdin.readLineSync();\r\n-    if (line == null) {\r\n-      return null;\r\n-    }\r\n-\r\n-    if (int.tryParse(line) case int value) {\r\n-      return value;\r\n-    }\r\n-  }\r\n-}\r\n-\r\n-void main() {\r\n-  stdout.write(\"Enter a number: \");\r\n-  // Non-null assertion because we want to error when stdin returns null (there is no stdin stream).\r\n-  int number = readInt()!;\r\n-}\r\n"
+                },
+                {
+                    "date": 1700004335253,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,8 +3,9 @@\n \r\n library;\r\n \r\n import \"dart:io\";\r\n+import \"dart:math\";\r\n \r\n int? readInt() {\r\n   while (true) {\r\n     String? line = stdin.readLineSync();\r\n@@ -18,9 +19,10 @@\n   }\r\n }\r\n \r\n void main() {\r\n-  List<int> integers = [for (int i = 0; i < 10; ++i) ra];\r\n+  Random random = Random();\r\n+  List<int> integers = [for (int i = 0; i < 10; ++i) random.nextInt(100)];\r\n \r\n   stdout.write(\"Enter a number: \");\r\n \r\n   // Non-null assertion because we want to error when stdin returns null (there is no stdin stream).\r\n"
+                },
+                {
+                    "date": 1700004365398,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,13 +18,19 @@\n     }\r\n   }\r\n }\r\n \r\n+bool hasNumber(List<int> integers, int number) {\r\n+  for (int i = 0; i < integers.length; +)\r\n+}\r\n+\r\n void main() {\r\n   Random random = Random();\r\n-  List<int> integers = [for (int i = 0; i < 10; ++i) random.nextInt(100)];\r\n+  List<int> integers = <int>[for (int i = 0; i < 10; ++i) random.nextInt(100)];\r\n \r\n-  stdout.write(\"Enter a number: \");\r\n+  stdout.write(\"Enter a number within 0-99: \");\r\n \r\n   // Non-null assertion because we want to error when stdin returns null (there is no stdin stream).\r\n   int number = readInt()!;\r\n+\r\n+\r\n }\r\n"
+                },
+                {
+                    "date": 1700004396698,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,9 +19,15 @@\n   }\r\n }\r\n \r\n bool hasNumber(List<int> integers, int number) {\r\n-  for (int i = 0; i < integers.length; +)\r\n+  for (int i = 0; i < integers.length; ++i) {\r\n+    if (integers[i] == number) {\r\n+      return true;\r\n+    }\r\n+  }\r\n+\r\n+  return false;\r\n }\r\n \r\n void main() {\r\n   Random random = Random();\r\n@@ -31,6 +37,11 @@\n \r\n   // Non-null assertion because we want to error when stdin returns null (there is no stdin stream).\r\n   int number = readInt()!;\r\n \r\n-\r\n+  \r\n+  if (hasNumber(integers, number)) {\r\n+    print(\"The number $number is in the list\");\r\n+  } else {\r\n+    print(\"The number $number is not in the list\");\r\n+  }\r\n }\r\n"
+                },
+                {
+                    "date": 1700004477597,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,7 @@\n /// Using function write a program that takes parameter input from the user and search if it is existing on an Array of numbers.\r\n /// Explain.\r\n+/// \r\n \r\n library;\r\n \r\n import \"dart:io\";\r\n@@ -30,16 +31,16 @@\n }\r\n \r\n void main() {\r\n   Random random = Random();\r\n-  List<int> integers = <int>[for (int i = 0; i < 10; ++i) random.nextInt(100)];\r\n+  List<int> integers = <int>[for (int i = 0; i < 10; ++i) random.nextInt(100)]..sort();\r\n \r\n   stdout.write(\"Enter a number within 0-99: \");\r\n \r\n   // Non-null assertion because we want to error when stdin returns null (there is no stdin stream).\r\n   int number = readInt()!;\r\n \r\n-  \r\n+  print(\"The numbers are: $integers\");\r\n   if (hasNumber(integers, number)) {\r\n     print(\"The number $number is in the list\");\r\n   } else {\r\n     print(\"The number $number is not in the list\");\r\n"
+                },
+                {
+                    "date": 1700004554914,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,8 @@\n /// Using function write a program that takes parameter input from the user and search if it is existing on an Array of numbers.\r\n /// Explain.\r\n /// \r\n+/// Zuñiga, John Michael\r\n \r\n library;\r\n \r\n import \"dart:io\";\r\n"
+                },
+                {
+                    "date": 1700004585560,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,9 @@\n /// Using function write a program that takes parameter input from the user and search if it is existing on an Array of numbers.\r\n /// Explain.\r\n-/// \r\n-/// Zuñiga, John Michael\r\n+///\r\n+/// Zuñiga, John Michael T.\r\n+/// CS 200-CS21S1 -\r\n \r\n library;\r\n \r\n import \"dart:io\";\r\n"
+                },
+                {
+                    "date": 1700005849396,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,9 +1,9 @@\n /// Using function write a program that takes parameter input from the user and search if it is existing on an Array of numbers.\r\n /// Explain.\r\n ///\r\n /// Zuñiga, John Michael T.\r\n-/// CS 200-CS21S1 -\r\n+/// CS 200-CS21S1 - Principles of Programming Languages\r\n \r\n library;\r\n \r\n import \"dart:io\";\r\n@@ -47,4 +47,5 @@\n   } else {\r\n     print(\"The number $number is not in the list\");\r\n   }\r\n }\r\n+\r\n"
+                },
+                {
+                    "date": 1700005880788,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -48,4 +48,12 @@\n     print(\"The number $number is not in the list\");\r\n   }\r\n }\r\n \r\n+/// Short Explanation:\r\n+///\r\n+/// As shown in the implementation of [hasNumber], we iterate through the list of integers\r\n+/// and check if the current integer is equal to the number we are searching for. If it is,\r\n+/// then we return true. Otherwise, we return false.\r\n+///\r\n+/// We then use the result of [hasNumber] in determining t\r\n+///\r\n"
+                },
+                {
+                    "date": 1700005880825,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -54,6 +54,6 @@\n /// As shown in the implementation of [hasNumber], we iterate through the list of integers\r\n /// and check if the current integer is equal to the number we are searching for. If it is,\r\n /// then we return true. Otherwise, we return false.\r\n ///\r\n-/// We then use the result of [hasNumber] in determining t\r\n+/// We then use the result of [hasNumber] in determining th\r\n ///\r\n"
+                },
+                {
+                    "date": 1700127298567,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -54,6 +54,6 @@\n /// As shown in the implementation of [hasNumber], we iterate through the list of integers\r\n /// and check if the current integer is equal to the number we are searching for. If it is,\r\n /// then we return true. Otherwise, we return false.\r\n ///\r\n-/// We then use the result of [hasNumber] in determining th\r\n-///\r\n+/// We then use the result of [hasNumber] in determining the kind of message we will print.\r\n+\r\n"
+                },
+                {
+                    "date": 1700127359129,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -38,9 +38,9 @@\n \r\n   stdout.write(\"Enter a number within 0-99: \");\r\n \r\n   // Non-null assertion because we want to error when stdin returns null (there is no stdin stream).\r\n-  int number = readInt()!;\r\n+  int nu2mber = readInt()!;\r\n \r\n   print(\"The numbers are: $integers\");\r\n   if (hasNumber(integers, number)) {\r\n     print(\"The number $number is in the list\");\r\n@@ -55,5 +55,4 @@\n /// and check if the current integer is equal to the number we are searching for. If it is,\r\n /// then we return true. Otherwise, we return false.\r\n ///\r\n /// We then use the result of [hasNumber] in determining the kind of message we will print.\r\n-\r\n"
+                }
+            ],
+            "date": 1700004166861,
+            "name": "Commit-0",
+            "content": "Using function write a program that takes parameter input from the user and search if it is existing on an Array of numbers. Explain."
+        }
+    ]
+}

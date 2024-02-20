@@ -1,0 +1,38 @@
+{
+    "sourceFile": "bin/ppl_assignment/q_1.dart",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 5,
+            "patches": [
+                {
+                    "date": 1700003831708,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1700003938603,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,1 +1,16 @@\n-v\n\\ No newline at end of file\n+/// Using function write a program that can find the maximum number of 3 parameters.\r\n+/// Explain.\r\n+/// \r\n+void main() {\r\n+  int a = 10;\r\n+  int b = 20;\r\n+  int c = 30;\r\n+  int max = a;\r\n+  if (b > max) {\r\n+    max = b;\r\n+  }\r\n+  if (c > max) {\r\n+    max = c;\r\n+  }\r\n+  print(\"Max: $max\");\r\n+}\r\n"
+                },
+                {
+                    "date": 1700003968968,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,9 +1,23 @@\n /// Using function write a program that can find the maximum number of 3 parameters.\r\n /// Explain.\r\n-/// \r\n+library;\r\n+\r\n+import \"dart:io\";\r\n+\r\n+int max3(int a, int b, int c) {\r\n+  int max = a;\r\n+  if (b > max) {\r\n+    max = b;\r\n+  }\r\n+  if (c > max) {\r\n+    max = c;\r\n+  }\r\n+  return max;\r\n+}\r\n+\r\n void main() {\r\n-  int a = 10;\r\n+  int a = stdin.readLineSync();\r\n   int b = 20;\r\n   int c = 30;\r\n   int max = a;\r\n   if (b > max) {\r\n"
+                },
+                {
+                    "date": 1700003999992,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,45 @@\n+/// Using function write a program that can find the maximum number of 3 parameters.\r\n+/// Explain.\r\n+library;\r\n+\r\n+import \"dart:io\";\r\n+\r\n+int? readInt() {\r\n+  while (true) {\r\n+    String? line = stdin.readLineSync();\r\n+    if (line == null) {\r\n+      return null;\r\n+    }\r\n+    \r\n+    try {\r\n+      return int.tryParse(line);\r\n+    } on (e) {\r\n+      print(\"Invalid input! Try again.\");\r\n+    }\r\n+  }\r\n+}\r\n+\r\n+int max3(int a, int b, int c) {\r\n+  int max = a;\r\n+  if (b > max) {\r\n+    max = b;\r\n+  }\r\n+  if (c > max) {\r\n+    max = c;\r\n+  }\r\n+  return max;\r\n+}\r\n+\r\n+void main() {\r\n+  int a = stdin.readLineSync()!;\r\n+  int b = 20;\r\n+  int c = 30;\r\n+  int max = a;\r\n+  if (b > max) {\r\n+    max = b;\r\n+  }\r\n+  if (c > max) {\r\n+    max = c;\r\n+  }\r\n+  print(\"Max: $max\");\r\n+}\r\n"
+                },
+                {
+                    "date": 1700004030273,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -29,9 +29,9 @@\n }\r\n \r\n void main() {\r\n   int a = readInt() ?? 1;\r\n-  int b = readInt() ?? ;\r\n+  int b = readInt() ?? 2;\r\n   int c = 30;\r\n   int max = a;\r\n   if (b > max) {\r\n     max = b;\r\n"
+                },
+                {
+                    "date": 1700004086012,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,8 +17,9 @@\n   }\r\n }\r\n \r\n int max3(int a, int b, int c) {\r\n+  \r\n   int max = a;\r\n   if (b > max) {\r\n     max = b;\r\n   }\r\n"
+                }
+            ],
+            "date": 1700003831708,
+            "name": "Commit-0",
+            "content": "v"
+        }
+    ]
+}

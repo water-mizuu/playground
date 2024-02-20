@@ -1,0 +1,26 @@
+{
+    "sourceFile": "bin/main.dart",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 2,
+            "patches": [
+                {
+                    "date": 1687855839132,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1688899698356,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,12 +7,5 @@\n       _ => throw Error(),\r\n     };\r\n \r\n void main() {\r\n-  print(switch (twoState()) {\r\n-    _ when !(true != false) => \"hi\", // Expected to find '=>'\r\n-    // /ool _ when !twoState() => \"hi\", // Works.\r\n-    true => 1,\r\n-    false => 0,\r\n-    null => \"hi\",\r\n-  });\r\n }\r\n"
+                },
+                {
+                    "date": 1688899766824,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,11 +0,0 @@\n-import \"dart:math\";\r\n-\r\n-final Random random = Random();\r\n-bool? twoState() => switch (random.nextDouble()) {\r\n-      < 0.5 => false,\r\n-      >= 0.5 => true,\r\n-      _ => throw Error(),\r\n-    };\r\n-\r\n-void main() {\r\n-}\r\n\\ No newline at end of file\n"
+                }
+            ],
+            "date": 1687855839132,
+            "name": "Commit-0",
+            "content": "import \"dart:math\";\r\n\r\nfinal Random random = Random();\r\nbool? twoState() => switch (random.nextDouble()) {\r\n      < 0.5 => false,\r\n      >= 0.5 => true,\r\n      _ => throw Error(),\r\n    };\r\n\r\nvoid main() {\r\n  print(switch (twoState()) {\r\n    _ when !(true != false) => \"hi\", // Expected to find '=>'\r\n    // /ool _ when !twoState() => \"hi\", // Works.\r\n    true => 1,\r\n    false => 0,\r\n    null => \"hi\",\r\n  });\r\n}\r\n"
+        }
+    ]
+}

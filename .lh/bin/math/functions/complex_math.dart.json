@@ -1,0 +1,18 @@
+{
+    "sourceFile": "bin/math/functions/complex_math.dart",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1698396641493,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1698396641493,
+            "name": "Commit-0",
+            "content": "import \"../shared.dart\";\r\nimport \"real_math.dart\" as r_math;\r\n\r\nfinal r_math.Random _random = r_math.Random.secure();\r\n\r\nfinal Complex pi = Complex.from(r_math.pi);\r\nfinal Complex e = Complex.from(r_math.e);\r\nfinal Complex phi = Complex.from(r_math.phi);\r\n\r\n/// Returns the principal log of [z].\r\nComplex log(Complex z) {\r\n  /// ln (a + bi) = ln(sqrt(a^2 + b^2)) + i*atan(b/a)\r\n  /// ln (a + bi) = 0.5 ln (a^2 + b^2) + i * atan(b/a)\r\n\r\n  num absoluteSquared = z.absSquared();\r\n  num real = 0.5 * r_math.log(absoluteSquared);\r\n  num imaginary = r_math.acos(z.real / r_math.pow(absoluteSquared, 0.5));\r\n\r\n  return Complex(real, imaginary);\r\n}\r\n\r\nComplex exp(Complex z) {\r\n  var Complex(real: num a, imaginary: num theta) = z;\r\n\r\n  num gamma = r_math.exp(a);\r\n  num real = gamma * r_math.cos(theta);\r\n  num imaginary = gamma * r_math.sin(theta);\r\n\r\n  return Complex(real, imaginary);\r\n}\r\n\r\nComplex sin(Complex z) {\r\n  var Complex(real: num a, imaginary: num b) = z;\r\n  num real = r_math.sin(a) * r_math.cosh(b);\r\n  num imaginary = r_math.cos(a) * r_math.sinh(b);\r\n\r\n  return Complex(real, imaginary);\r\n}\r\n\r\nComplex cos(Complex z) {\r\n  var Complex(real: num a, imaginary: num b) = z;\r\n\r\n  num real = r_math.cos(a) * r_math.cosh(b);\r\n  num imaginary = r_math.sin(a) * r_math.sinh(b);\r\n\r\n  return Complex(real, -imaginary);\r\n}\r\n\r\nComplex tan(Complex z) {\r\n  var Complex(real: num a, imaginary: num b) = z;\r\n\r\n  num denominator = r_math.cos(2 * a) + r_math.cosh(2 * b);\r\n  num real = r_math.sin(2 * a) / denominator;\r\n  num imaginary = r_math.sinh(2 * b) / denominator;\r\n\r\n  return Complex(real, imaginary);\r\n}\r\n\r\nComplex sinh(Complex z) => 0.5.re * (exp(z) - exp(-z));\r\nComplex cosh(Complex z) => 0.5.re * (exp(z) + exp(-z));\r\nComplex tanh(Complex z) {\r\n  Complex posX = exp(z);\r\n  Complex negX = exp(-z);\r\n\r\n  return (posX - negX) / (posX + negX);\r\n}\r\n\r\nComplex cis(Complex theta) {\r\n  Complex real = cos(theta);\r\n  Complex imaginary = sin(theta) * 1.im;\r\n\r\n  return real + imaginary;\r\n}\r\n\r\n// credits: https://mathworld.wolfram.com/ComplexExponentiation.html\r\n//   (╥﹏╥ )\r\n//\r\n// Since exp(z) and ln(z) are well defined,\r\n//   we can use them instead.\r\nComplex pow(Complex z, Complex exponent) => z == 0.re\r\n    ? z\r\n    : exponent == 0.re\r\n        ? 1.re\r\n        : exp(log(z) * exponent);\r\n\r\nIterable<Complex> rootsOfUnity(int degree, [Complex start = Complex.one]) sync* {\r\n  double angle = 2 * r_math.pi / degree;\r\n  for (int i = 0; i < degree; ++i) {\r\n    yield start * exp(angle.im * i.re);\r\n  }\r\n}\r\n\r\nComplex randomDouble() => Complex(_random.nextDouble(), _random.nextDouble());\r\nComplex randomInt(int realMax, [int? imaginaryMax]) =>\r\n    Complex(_random.nextInt(realMax), _random.nextInt(imaginaryMax ?? realMax));\r\n"
+        }
+    ]
+}

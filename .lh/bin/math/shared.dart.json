@@ -1,0 +1,18 @@
+{
+    "sourceFile": "bin/math/shared.dart",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1698396720637,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1698396720637,
+            "name": "Commit-0",
+            "content": "import \"dart:math\" as math;\r\n\r\nimport \"matrix.dart\";\r\nimport \"vector.dart\";\r\n\r\nexport \"matrix.dart\";\r\nexport \"numbers/complex.dart\";\r\nexport \"numbers/fraction.dart\";\r\nexport \"numbers/number_like.dart\";\r\nexport \"numbers/quaternion.dart\";\r\nexport \"vector.dart\";\r\n\r\ntypedef ComplexMember = num;\r\ntypedef Scalar = Complex;\r\ntypedef NumericalVector = Vector<Scalar>;\r\ntypedef NumericalMatrix = Matrix<Scalar>;\r\n\r\nextension IntegerListExtension on Iterable<int> {\r\n  num mean() => sum() / length;\r\n\r\n  int sum() => fold(0, (int a, int b) => a + b);\r\n  int product() => fold(1, (int a, int b) => a * b);\r\n\r\n  int max() => reduce(math.max);\r\n  int min() => reduce(math.min);\r\n\r\n  String get sup {\r\n    const String table = \"⁰¹²³⁴⁵⁶⁷⁸⁹\";\r\n    List<String> chars = toString().split(\"\");\r\n\r\n    return chars.map(int.parse).map((int i) => table[i]).join();\r\n  }\r\n\r\n  String get sub {\r\n    const String table = \"₀₁₂₃₄₅₆₇₈₉\";\r\n    List<String> chars = toString().split(\"\");\r\n\r\n    return chars.map(int.parse).map((int i) => table[i]).join();\r\n  }\r\n}\r\n\r\nextension ScalarListExtension on Iterable<Scalar> {\r\n  Scalar mean() => sum() / Scalar.from(length);\r\n\r\n  Scalar sum() => fold(Scalar.from(0), (Scalar a, Scalar b) => a + b);\r\n  Scalar product() => fold(Scalar.from(1), (Scalar a, Scalar b) => a * b);\r\n\r\n  Scalar max() => reduce((Scalar a, Scalar b) => a > b ? a : b);\r\n  Scalar min() => reduce((Scalar a, Scalar b) => a < b ? a : b);\r\n}\r\n\r\nextension StringPadExtension on String {\r\n  String padCenter(int value, [String padding = \" \"]) {\r\n    int padCount = (value - length).clamp(0, math.max(length, value));\r\n    int left = (padCount / 2).ceil();\r\n    int right = (padCount / 2).floor();\r\n\r\n    return \"${padding * left}$this${padding * right}\";\r\n  }\r\n}\r\n\r\nextension IterableExtension on int {\r\n  Iterable<int> to(int end) sync* {\r\n    for (int i = this; i < end; i++) {\r\n      yield i;\r\n    }\r\n  }\r\n}\r\n"
+        }
+    ]
+}

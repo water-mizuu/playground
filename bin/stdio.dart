@@ -1,12 +1,8 @@
 import "dart:io";
 
-typedef Rgb = (int r, int g, int b);
+typedef Rgb = ({int r, int g, int b});
 
 extension RgbMethods on Rgb {
-  int get r => $1;
-  int get g => $2;
-  int get b => $3;
-
   String get ansi => "$r;$g;$b";
 }
 
@@ -29,7 +25,7 @@ extension StdoutExt on Stdout {
   void print([Object object = ""]) => write(object);
   void println([Object object = ""]) => writeln(object);
   void printAll(List<Object> objects, {String separator = ""}) => <List<void>>[
-        for (Object obj in objects) <void>[print(obj), if (obj != objects.last) print(separator)]
+        for (Object obj in objects) <void>[print(obj), if (obj != objects.last) print(separator)],
       ];
 
   void newln([int n = 1]) => print("\n" * n);
@@ -47,11 +43,11 @@ extension StdoutExt on Stdout {
   void clearln() => <void>[esc(_clearLineCode), movelnStart()];
   void clearlnsUp([int n = 1]) => <void>[
         clearln(),
-        for (int i = 1; i < n; i++) <void>[moveUp(), clearln()]
+        for (int i = 1; i < n; i++) <void>[moveUp(), clearln()],
       ];
   void clearlnsDown([int n = 1]) => <void>[
         clearln(),
-        for (int i = 1; i < n; i++) <void>[moveUp(), clearln()]
+        for (int i = 1; i < n; i++) <void>[moveUp(), clearln()],
       ];
 
   void moveUp([int n = 1]) => esc("$n$_moveUpCode");
@@ -67,8 +63,8 @@ extension StdoutExt on Stdout {
   void toggleCursor() => !(_cursorHidden = !_cursorHidden) ? showCursor() : hideCursor();
 
   // Overloads
-  void set foregroundColor(Rgb color) => setForegroundColor(color);
-  void set backgroundColor(Rgb color) => setBackgroundColor(color);
+  set foregroundColor(Rgb color) => setForegroundColor(color);
+  set backgroundColor(Rgb color) => setBackgroundColor(color);
 }
 
 Future<void> sleep(Duration duration) => Future<void>.delayed(duration);

@@ -5,40 +5,6 @@ import "number_like.dart";
 part "../parts/numbers/fraction/fraction_nan.dart";
 
 class Fraction extends NumberLike<Fraction> {
-  static final Fraction zero = Fraction(BigInt.zero);
-  static final Fraction one = Fraction(BigInt.one);
-  static final Fraction two = Fraction(BigInt.two);
-  static final Fraction nan = _NotAFraction();
-
-  static BigInt _euclidGcf(BigInt big, BigInt small) {
-    BigInt b = big;
-    BigInt s = small;
-
-    while (s != BigInt.zero) {
-      BigInt temp = s;
-      s = b % s;
-      b = temp;
-    }
-    return b;
-  }
-
-  static BigInt _computeGcf(BigInt left, BigInt right) {
-    if (left == BigInt.zero && right == BigInt.zero) {
-      return BigInt.one;
-    }
-
-    BigInt leftAbs = left.abs();
-    BigInt rightAbs = right.abs();
-
-    BigInt big = leftAbs > rightAbs ? leftAbs : rightAbs;
-    BigInt small = leftAbs > rightAbs ? rightAbs : leftAbs;
-
-    return _euclidGcf(big, small);
-  }
-
-  final BigInt numerator;
-  final BigInt denominator;
-
   factory Fraction(BigInt numerator, [BigInt? denominator]) {
     denominator ??= BigInt.one;
 
@@ -81,6 +47,39 @@ class Fraction extends NumberLike<Fraction> {
     }
   }
   const Fraction._(this.numerator, this.denominator);
+  static final Fraction zero = Fraction(BigInt.zero);
+  static final Fraction one = Fraction(BigInt.one);
+  static final Fraction two = Fraction(BigInt.two);
+  static final Fraction nan = _NotAFraction();
+
+  static BigInt _euclidGcf(BigInt big, BigInt small) {
+    BigInt b = big;
+    BigInt s = small;
+
+    while (s != BigInt.zero) {
+      BigInt temp = s;
+      s = b % s;
+      b = temp;
+    }
+    return b;
+  }
+
+  static BigInt _computeGcf(BigInt left, BigInt right) {
+    if (left == BigInt.zero && right == BigInt.zero) {
+      return BigInt.one;
+    }
+
+    BigInt leftAbs = left.abs();
+    BigInt rightAbs = right.abs();
+
+    BigInt big = leftAbs > rightAbs ? leftAbs : rightAbs;
+    BigInt small = leftAbs > rightAbs ? rightAbs : leftAbs;
+
+    return _euclidGcf(big, small);
+  }
+
+  final BigInt numerator;
+  final BigInt denominator;
 
   @override
   Fraction abs() {
@@ -116,8 +115,8 @@ class Fraction extends NumberLike<Fraction> {
 
   @override
   Fraction collapse() {
-    const double _threshold = 1000000000;
-    BigInt threshold = _threshold.n;
+    const double threshold0 = 1000000000;
+    BigInt threshold = threshold0.n;
     // If the numbers get too large, be willing to lose some accuracy.
 
     if (this.numerator.abs() < threshold || this.denominator.abs() < threshold) {

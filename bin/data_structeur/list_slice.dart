@@ -5,32 +5,31 @@ extension ListSliceExtension<E> on List<E> {
 }
 
 class ListSlice<E> implements List<E> {
-  final List<E> list;
-  final int start;
-  final int end;
-
   const ListSlice(this.list, int start, int end)
       : assert(list.length > 0, "A list must have at least one element to have a slice."),
         start = start > 0 ? start : start % list.length,
         end = end > 0 ? end : end % list.length;
+  final List<E> list;
+  final int start;
+  final int end;
 
   @override
   E get first => list[start];
 
   @override
-  void set first(E _) => throw UnsupportedError("Cannot set item to slice!");
+  set first(E _) => throw UnsupportedError("Cannot set item to slice!");
 
   @override
   E get last => list[end - 1];
 
   @override
-  void set last(E _) => throw UnsupportedError("Cannot set item to slice!");
+  set last(E _) => throw UnsupportedError("Cannot set item to slice!");
 
   @override
   int get length => end - start;
 
   @override
-  void set length(int _) => throw UnsupportedError("Cannot change slice size!");
+  set length(int _) => throw UnsupportedError("Cannot change slice size!");
 
   @override
   Never operator +(List<E> other) {

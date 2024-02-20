@@ -1,0 +1,30 @@
+{
+    "sourceFile": "bin/playground.dart",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 3,
+            "patches": [
+                {
+                    "date": 1687855875257,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1687855919278,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,10 +1,10 @@\n-inline class MyInlineClass< {\r\n-  final int value;\r\n+inline class MyInlineClass<inou E> {\r\n+  final E value;\r\n \r\n   const MyInlineClass(this.value);\r\n }\r\n \r\n void main() {\r\n-  final MyInlineClass myInlineClass = MyInlineClass(1);\r\n+  final MyInlineClass<int> myInlineClass = MyInlineClass<int>(1);\r\n   print(myInlineClass.value);\r\n }\r\n"
+                },
+                {
+                    "date": 1687855949630,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n inline class MyInlineClass<in E> {\r\n-  void my\r\n+  void myF\r\n \r\n   MyInlineClass(this._value);\r\n }\r\n \r\n"
+                },
+                {
+                    "date": 1687856000103,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,13 @@\n+inline class MyInlineClass<in E> {\r\n+  void myFn(E value) {\r\n+    print(value);\r\n+  }\r\n+\r\n+  MyInlineClass();\r\n+}\r\n+\r\n+void main() {\r\n+  final MyInlineClass<int> myInlineClass = MyInlineClass<int>();\r\n+  myInlineClass.myFn(3);\r\n+  pri\r\n+}\r\n"
+                }
+            ],
+            "date": 1687855875257,
+            "name": "Commit-0",
+            "content": "inline class MyInlineClass< {\r\n  final int value;\r\n\r\n  const MyInlineClass(this.value);\r\n}\r\n\r\nvoid main() {\r\n  final MyInlineClass myInlineClass = MyInlineClass(1);\r\n  print(myInlineClass.value);\r\n}\r\n"
+        }
+    ]
+}

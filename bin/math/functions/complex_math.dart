@@ -3,8 +3,8 @@ import "real_math.dart" as r_math;
 
 final r_math.Random _random = r_math.Random.secure();
 
-final Complex pi = Complex.from(r_math.pi);
-final Complex e = Complex.from(r_math.e);
+const Complex pi = Complex.from(r_math.pi);
+const Complex e = Complex.from(r_math.e);
 final Complex phi = Complex.from(r_math.phi);
 
 /// Returns the principal log of [z].

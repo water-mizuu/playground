@@ -2,7 +2,7 @@ import "dart:async";
 import "dart:isolate";
 
 class Test<T> {
-  void entryPoint(SendPort sendPort) async {
+  Future<void> entryPoint(SendPort sendPort) async {
     ReceivePort isolateReceivePort = ReceivePort();
     sendPort.send(isolateReceivePort.sendPort);
 

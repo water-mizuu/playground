@@ -1,3 +1,5 @@
+// ignore_for_file: unreachable_from_main
+
 import "dart:io";
 import "dart:math";
 import "dart:typed_data";
@@ -6,17 +8,16 @@ import "package:image/image.dart";
 import "package:path/path.dart" as path;
 
 class Rgba {
-  final int red;
-  final int green;
-  final int blue;
-  final int alpha;
-
   const Rgba(this.red, this.green, this.blue, this.alpha);
   const Rgba.fromUint32(int value)
       : red = value >>> (0x8 * 0) & 0xff,
         green = value >>> (0x8 * 1) & 0xff,
         blue = value >>> (0x8 * 2) & 0xff,
         alpha = value >>> (0x8 * 3) & 0xff;
+  final int red;
+  final int green;
+  final int blue;
+  final int alpha;
 
   @override
   String toString() => "rgba($red, $green, $blue, $alpha)";

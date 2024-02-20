@@ -1,11 +1,10 @@
 import "dart:math";
 
 class Rgb {
+  const Rgb({required this.red, required this.green, required this.blue});
   final int red;
   final int green;
   final int blue;
-
-  const Rgb({required this.red, required this.green, required this.blue});
 
   @override
   String toString() => "Rgb ($red, $green, $blue)";

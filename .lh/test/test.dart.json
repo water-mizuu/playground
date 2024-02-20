@@ -1,0 +1,22 @@
+{
+    "sourceFile": "test/test.dart",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1688901380310,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1688901429041,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,1 +1,5 @@\n-v\n\\ No newline at end of file\n+import 'range_test.dart' as range_test;\r\n+\r\n+void main() {\r\n+  range_test.main();\r\n+}\r\n"
+                }
+            ],
+            "date": 1688901380310,
+            "name": "Commit-0",
+            "content": "v"
+        }
+    ]
+}

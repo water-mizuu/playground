@@ -32,21 +32,21 @@ extension MatrixMethods<E> on Matrix<E> {
 
   Matrix<E> submatrix({int top = 0, int bottom = 0, int left = 0, int right = 0}) => <List<E>>[
         for (int y = top; y < length - bottom; y++) //
-          <E>[for (int x = left; x < this[y].length - right; x++) this[y][x]]
+          <E>[for (int x = left; x < this[y].length - right; x++) this[y][x]],
       ];
 
   Matrix<E> removed({Set<int> x = const <int>{}, Set<int> y = const <int>{}}) => <List<E>>[
-        for (int _y = 0; _y < verticalLength; _y++)
-          if (!y.contains(_y))
+        for (int y_ = 0; y_ < verticalLength; y_++)
+          if (!y.contains(y_))
             <E>[
-              for (int _x = 0; _x < horizontalLength; _x++)
-                if (!x.contains(_x)) this[_y][_x]
-            ]
+              for (int x_ = 0; x_ < horizontalLength; x_++)
+                if (!x.contains(x_)) this[y_][x_],
+            ],
       ];
 
   Matrix<E> transpose() => <List<E>>[
         for (int y = 0; y < verticalLength; y++) //
-          <E>[for (int x = 0; x < horizontalLength; x++) this[x][y]]
+          <E>[for (int x = 0; x < horizontalLength; x++) this[x][y]],
       ];
 
   Matrix<E> expandColumn(int at, List<E> Function(E element) handler, {E? filler}) {
@@ -62,21 +62,20 @@ extension MatrixMethods<E> on Matrix<E> {
         <E>[
           ...row,
           if (filler != null)
-            for (int i = row.length; i < max; i++) filler
-        ]
+            for (int i = row.length; i < max; i++) filler,
+        ],
     ];
     Matrix<E> matrix = <List<E>>[
       for (int i = 0; i < length; i++)
         <E>[
           for (int j = 0; j < this[i].length; j++)
-            if (j == at) ...filled[i] else this[i][j]
-        ]
+            if (j == at) ...filled[i] else this[i][j],
+        ],
     ];
 
     return matrix;
   }
 
-  // I got lazy lmao
   Matrix<E> expandRow(int index, List<E> Function(E element) handler, {E? filler}) =>
       transpose().expandColumn(index, handler, filler: filler).transpose();
 
@@ -84,7 +83,7 @@ extension MatrixMethods<E> on Matrix<E> {
         for (List<E> row in this)
           <E>[
             for (int i = 0; i < row.length; i++)
-              if (i == index) handler(row[i]) else row[i]
+              if (i == index) handler(row[i]) else row[i],
           ],
       ];
 
@@ -92,7 +91,7 @@ extension MatrixMethods<E> on Matrix<E> {
         for (int i = 0; i < length; i++)
           <E>[
             for (E item in this[i])
-              if (i == index) handler(item) else item
+              if (i == index) handler(item) else item,
           ],
       ];
 
@@ -203,7 +202,7 @@ extension MathematicalMatrix<E extends num> on Matrix<E> {
       for (int y = 0; y < verticalLength; y++)
         <num?>[
           for (int x = 0; x < horizontalLength; x++) //
-            removed(x: <int>{x}, y: <int>{y}).determinant
+            removed(x: <int>{x}, y: <int>{y}).determinant,
         ],
     ];
     if (cofactorMatrix.any((List<num?> r) => r.any((num? e) => e == null))) {
@@ -214,7 +213,7 @@ extension MathematicalMatrix<E extends num> on Matrix<E> {
       for (int y = 0; y < verticalLength; y++)
         <num>[
           for (int x = 0; x < horizontalLength; x++) //
-            math.pow(-1, x + y) * cofactorMatrix[x][y]!
+            math.pow(-1, x + y) * cofactorMatrix[x][y]!,
         ],
     ];
 

@@ -1,0 +1,18 @@
+{
+    "sourceFile": "test/avl_tree_test.dart",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1688901421459,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1688901421459,
+            "name": "Commit-0",
+            "content": "// import \"package:test/test.dart\";\r\n\r\n// import \"../bin/data_structeur/avl_tree.dart\";\r\n// import \"shared.dart\";\r\n\r\n// void main() {\r\n//   group(\"avl-node\", () {\r\n//     AvlTree<int> tree = AvlTree<int>();\r\n\r\n//     test(\"adds items and remains balanced\", () {\r\n//       expect(tree.add(4), equals(true));\r\n//       expect(tree.add(4), equals(false));\r\n\r\n//       expect(tree.add(5), equals(true));\r\n//       expect(tree.add(5), equals(false));\r\n\r\n//       expect(tree.add(21), equals(true));\r\n//       expect(tree.add(-3), equals(true));\r\n\r\n//       expect(tree.head.balanceFactor, equals(-1) | equals(0) | equals(1));\r\n//     });\r\n\r\n//     test(\"removes successfully\", () {\r\n//       expect(tree.remove(43), equals(false));\r\n//       expect(tree.remove(-3), equals(true));\r\n//       expect(tree.remove(21), equals(true));\r\n\r\n//       expect(tree.head.balanceFactor, equals(-1) | equals(0) | equals(1));\r\n//     });\r\n//   });\r\n// }\r\n"
+        }
+    ]
+}

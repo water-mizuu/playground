@@ -1,25 +1,7 @@
-import "../functions/real_math.dart" as rmath;
+import "../functions/real_math.dart" as r_math;
 import "../matrix.dart";
 
 class Quaternion extends NumberLike<Quaternion> {
-  static const Quaternion zero = Quaternion(0, 0, 0, 0);
-  static const Quaternion one = Quaternion(1, 0, 0, 0);
-  static const Quaternion two = Quaternion(2, 0, 0, 0);
-  static const Quaternion nan = Quaternion(double.nan, double.nan, double.nan, double.nan);
-
-  static Quaternion rotate(Quaternion vector, Quaternion axis, num angle) {
-    Quaternion normalizedAxis = axis.normalize();
-    Quaternion rotationQuaternion = rmath.cos(angle / 2).w + rmath.sin(angle / 2).w * normalizedAxis;
-    Quaternion inverseQuaternion = rmath.cos(-angle / 2).w + rmath.sin(-angle / 2).w * normalizedAxis;
-
-    return rotationQuaternion * (vector * inverseQuaternion);
-  }
-
-  final ComplexMember real;
-  final ComplexMember imaginaryI;
-  final ComplexMember imaginaryJ;
-  final ComplexMember imaginaryK;
-
   const Quaternion(this.real, this.imaginaryI, this.imaginaryJ, this.imaginaryK);
   const Quaternion.from(this.real)
       : imaginaryI = 0,
@@ -37,6 +19,23 @@ class Quaternion extends NumberLike<Quaternion> {
       : real = 0,
         imaginaryI = 0,
         imaginaryJ = 0;
+  static const Quaternion zero = Quaternion(0, 0, 0, 0);
+  static const Quaternion one = Quaternion(1, 0, 0, 0);
+  static const Quaternion two = Quaternion(2, 0, 0, 0);
+  static const Quaternion nan = Quaternion(double.nan, double.nan, double.nan, double.nan);
+
+  static Quaternion rotate(Quaternion vector, Quaternion axis, num angle) {
+    Quaternion normalizedAxis = axis.normalize();
+    Quaternion rotationQuaternion = r_math.cos(angle / 2).w + r_math.sin(angle / 2).w * normalizedAxis;
+    Quaternion inverseQuaternion = r_math.cos(-angle / 2).w + r_math.sin(-angle / 2).w * normalizedAxis;
+
+    return rotationQuaternion * (vector * inverseQuaternion);
+  }
+
+  final ComplexMember real;
+  final ComplexMember imaginaryI;
+  final ComplexMember imaginaryJ;
+  final ComplexMember imaginaryK;
 
   ComplexMember imaginaryAbsSquared() => imaginaryI * imaginaryI + imaginaryJ * imaginaryJ + imaginaryK * imaginaryK;
   ComplexMember absSquared() => real * real + imaginaryAbsSquared();

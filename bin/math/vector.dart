@@ -5,9 +5,8 @@ export "shared.dart";
 part "parts/vector/numerical_vector.dart";
 
 class Vector<E> {
-  final List<E> data;
-
   const Vector(this.data);
+  final List<E> data;
 
   Vector<E> subvector({int top = 0, int bottom = 0}) =>
       Vector<E>(<E>[for (int y = top; y < data.length - bottom; y++) data[y]]);

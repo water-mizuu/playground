@@ -27,14 +27,13 @@ extension AvlTreeNodeNullableMethods<E> on AvlTreeNode<E>? {
 }
 
 class AvlTreeNode<E> {
+  AvlTreeNode({required this.value, required this.comparison, this.left, this.right});
   static final math.Random _random = math.Random();
   final int Function(E, E) comparison;
 
   E value;
   AvlTreeNode<E>? left;
   AvlTreeNode<E>? right;
-
-  AvlTreeNode({required this.value, required this.comparison, this.left, this.right});
 
   AvlTreeNode<E> _rotateLeft() {
     AvlTreeNode<E> rightChild = this.right!;
@@ -99,16 +98,16 @@ class AvlTreeNode<E> {
   (AvlTreeNode<E>, bool) add(E value) {
     bool inserted = false;
     if (comparison(value, this.value) < 0) {
-      var (AvlTreeNode<E> node, bool _inserted) =
+      var (AvlTreeNode<E> node, bool inserted0) =
           this.left?.add(value) ?? (AvlTreeNode<E>(value: value, comparison: comparison), true);
 
-      inserted = _inserted;
+      inserted = inserted0;
       this.left = node;
     } else if (comparison(value, this.value) > 0) {
-      var (AvlTreeNode<E> node, bool _inserted) =
+      var (AvlTreeNode<E> node, bool inserted0) =
           this.right?.add(value) ?? (AvlTreeNode<E>(value: value, comparison: comparison), true);
 
-      inserted = _inserted;
+      inserted = inserted0;
       this.right = node;
     }
 
@@ -121,15 +120,15 @@ class AvlTreeNode<E> {
 
     if (compare < 0) {
       if (this.left case AvlTreeNode<E> left) {
-        var (AvlTreeNode<E>? node, bool _removed) = left.remove(value);
+        var (AvlTreeNode<E>? node, bool removed0) = left.remove(value);
         this.left = node;
-        removed = _removed;
+        removed = removed0;
       }
     } else if (compare > 0) {
       if (this.right case AvlTreeNode<E> right) {
-        var (AvlTreeNode<E>? node, bool _removed) = right.remove(value);
+        var (AvlTreeNode<E>? node, bool removed0) = right.remove(value);
         this.right = node;
-        removed = _removed;
+        removed = removed0;
       }
     } else {
       if (this.left == null) {
@@ -139,10 +138,10 @@ class AvlTreeNode<E> {
       } else {
         if (this.right case AvlTreeNode<E> right) {
           E value = right.minValueNode.value;
-          var (AvlTreeNode<E>? node, bool _removed) = right.remove(value);
+          var (AvlTreeNode<E>? node, bool removed0) = right.remove(value);
           this.value = value;
           this.right = node;
-          removed = _removed;
+          removed = removed0;
         }
       }
     }
@@ -191,9 +190,6 @@ class AvlTreeNode<E> {
 }
 
 class AvlTree<E> extends Iterable<E> with SetMixin<E> {
-  final int Function(E, E) comparison;
-  AvlTreeNode<E>? head;
-
   AvlTree([int Function(E, E)? comparison])
       : comparison = comparison ?? ((E a, E b) => (a as Comparable<dynamic>).compareTo(b));
 
@@ -203,6 +199,8 @@ class AvlTree<E> extends Iterable<E> with SetMixin<E> {
 
     return tree;
   }
+  final int Function(E, E) comparison;
+  AvlTreeNode<E>? head;
 
   @override
   int get length => head?.length ?? 0;

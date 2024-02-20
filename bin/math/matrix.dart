@@ -16,8 +16,6 @@ enum HorizontalDirection { left, right }
 enum VerticalDirection { up, down }
 
 class Matrix<E> extends Iterable<E> {
-  final List<List<E>> data;
-
   const Matrix(this.data);
   factory Matrix.fromVectors(List<Vector<E>> columnVectors) {
     Set<int> degrees = columnVectors.map((Vector<E> v) => v.degree).toSet();
@@ -32,6 +30,7 @@ class Matrix<E> extends Iterable<E> {
 
     return Matrix<E>(data);
   }
+  final List<List<E>> data;
 
   Iterable<E> get _iterable sync* {
     for (List<E> row in data) {
@@ -51,7 +50,7 @@ class Matrix<E> extends Iterable<E> {
           if (left != null) ...left.data[y],
           ...data[y],
           if (right != null) ...right.data[y],
-        ]
+        ],
     ]);
   }
 
@@ -71,22 +70,22 @@ class Matrix<E> extends Iterable<E> {
   Matrix<E> submatrix({int top = 0, int bottom = 0, int left = 0, int right = 0}) => //
       Matrix<E>(<List<E>>[
         for (int y = top; y < data.length - bottom; y++)
-          <E>[for (int x = left; x < data[y].length - right; x++) data[y][x]]
+          <E>[for (int x = left; x < data[y].length - right; x++) data[y][x]],
       ]);
 
   Matrix<E> removed({Set<int> x = const <int>{}, Set<int> y = const <int>{}}) => //
       Matrix<E>(<List<E>>[
-        for (int _y = 0; _y < verticalLength; _y++)
-          if (!y.contains(_y))
+        for (int yi = 0; yi < verticalLength; yi++)
+          if (!y.contains(yi))
             <E>[
-              for (int _x = 0; _x < horizontalLength; _x++)
-                if (!x.contains(_x)) data[_y][_x]
-            ]
+              for (int xi = 0; xi < horizontalLength; xi++)
+                if (!x.contains(xi)) data[yi][xi],
+            ],
       ]);
 
   Matrix<E> transpose() => Matrix<E>(<List<E>>[
         for (int x = 0; x < horizontalLength; x++) //
-          <E>[for (int y = 0; y < verticalLength; y++) data[y][x]]
+          <E>[for (int y = 0; y < verticalLength; y++) data[y][x]],
       ]);
 
   Matrix<E> expandColumn(
@@ -109,15 +108,15 @@ class Matrix<E> extends Iterable<E> {
             for (int x = row.length; x < max; x++) filler,
           ...row,
           if (filler != null && direction == HorizontalDirection.right)
-            for (int x = row.length; x < max; x++) filler
-        ]
+            for (int x = row.length; x < max; x++) filler,
+        ],
     ];
     _List2d<E> matrix = <List<E>>[
       for (int y = 0; y < data.length; y++)
         <E>[
           for (int x = 0; x < data[y].length; x++)
-            if (x == at) ...filled[y] else data[y][x]
-        ]
+            if (x == at) ...filled[y] else data[y][x],
+        ],
     ];
 
     return Matrix<E>(matrix);
@@ -166,9 +165,9 @@ class Matrix<E> extends Iterable<E> {
       for (int y = 0; y < verticalLength; ++y)
         if (y == at) //
           ...<List<E>>[
-          for (int _y = 0; _y < max; ++_y) <E>[for (int x = 0; x < horizontalLength; ++x) normalized[x][_y]]
+          for (int y = 0; y < max; ++y) <E>[for (int x = 0; x < horizontalLength; ++x) normalized[x][y]],
         ] else
-          data[y]
+          data[y],
     ];
 
     return Matrix<E>(built);
@@ -178,7 +177,7 @@ class Matrix<E> extends Iterable<E> {
         for (List<E> row in data)
           <E>[
             for (int i = 0; i < row.length; i++)
-              if (i == index) handler(row[i]) else row[i]
+              if (i == index) handler(row[i]) else row[i],
           ],
       ]);
 
@@ -186,19 +185,19 @@ class Matrix<E> extends Iterable<E> {
         for (int i = 0; i < data.length; i++)
           <E>[
             for (E item in data[i])
-              if (i == index) handler(item) else item
+              if (i == index) handler(item) else item,
           ],
       ]);
 
   Matrix<R> matrixMap<R>(R Function(E element) handler) => Matrix<R>(<List<R>>[
-        for (List<E> row in data) <R>[for (E item in row) handler(item)]
+        for (List<E> row in data) <R>[for (E item in row) handler(item)],
       ]);
 
   bool matrixAny(bool Function(E element) handler) => data.any((List<E> row) => row.any(handler));
   bool matrixEvery(bool Function(E element) handler) => data.every((List<E> row) => row.every(handler));
 
   Matrix<E> copy() => Matrix<E>(<List<E>>[
-        for (List<E> row in data) <E>[for (E item in row) item]
+        for (List<E> row in data) <E>[for (E item in row) item],
       ]);
 
   int get verticalLength => data.length;
@@ -246,7 +245,7 @@ class Matrix<E> extends Iterable<E> {
       throw TypeError();
     }
 
-    Matrix<String> stringified = matrixMap((E v) => (v as NumberLike<void>).strShort);
+    Matrix<String> stringified = matrixMap((E v) => (v as NumberLike<void>).strRat);
 
     return _buildString(stringified);
   }
@@ -344,19 +343,19 @@ class Matrix<E> extends Iterable<E> {
 
   List<Vector<E>> get rowVectors => _ListVectorProxy<E>(this, <List<(int, int)>>[
         for (int y = 0; y < verticalLength; ++y) //
-          <(int, int)>[for (int x = 0; x < horizontalLength; ++x) (y, x)]
+          <(int, int)>[for (int x = 0; x < horizontalLength; ++x) (y, x)],
       ]);
   List<Vector<E>> get columnVectors => _ListVectorProxy<E>(this, <List<(int, int)>>[
         for (int x = 0; x < horizontalLength; ++x) //
-          <(int, int)>[for (int y = 0; y < verticalLength; ++y) (y, x)]
+          <(int, int)>[for (int y = 0; y < verticalLength; ++y) (y, x)],
       ]);
   List<Vector<E>> get rightDiagonalVectors => _ListVectorProxy<E>(this, <List<(int, int)>>[
         for (int x = 0; x < horizontalLength; ++x) //
-          <(int, int)>[for (int y = 0; y < verticalLength; ++y) (y, (y + x) % horizontalLength)]
+          <(int, int)>[for (int y = 0; y < verticalLength; ++y) (y, (y + x) % horizontalLength)],
       ]);
   List<Vector<E>> get leftDiagonalVectors => _ListVectorProxy<E>(this, <List<(int, int)>>[
         for (int x = 0; x < horizontalLength; ++x) //
-          <(int, int)>[for (int y = 0; y < verticalLength; ++y) (y, (horizontalLength + y - x) % horizontalLength)]
+          <(int, int)>[for (int y = 0; y < verticalLength; ++y) (y, (horizontalLength + y - x) % horizontalLength)],
       ]);
   Vector<E> operator [](int index) => Vector<E>(data[index]);
   void operator []=(int index, Vector<E> val) => data[index] = val.data;

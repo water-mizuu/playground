@@ -8,25 +8,25 @@ extension NumericalMatrixMethods on NumericalMatrix {
         for (int y = 0; y < dimensions; ++y)
           <Scalar>[
             for (int x = 0; x < dimensions; ++x)
-              if (y == x) 1.c else 0.c
-          ]
+              if (y == x) 1.c else 0.c,
+          ],
       ]);
 
   static NumericalMatrix ones(int height, [int? width]) => NumericalMatrix(<List<Scalar>>[
         for (int y = 0; y < height; ++y) //
-          <Scalar>[for (int x = 0; x < (width ?? height); ++x) 1.c]
+          <Scalar>[for (int x = 0; x < (width ?? height); ++x) 1.c],
       ]);
 
   static NumericalMatrix zeros(int height, [int? width]) => NumericalMatrix(<List<Scalar>>[
         for (int y = 0; y < height; ++y) //
-          <Scalar>[for (int x = 0; x < (width ?? height); ++x) 0.c]
+          <Scalar>[for (int x = 0; x < (width ?? height); ++x) 0.c],
       ]);
 
   static NumericalMatrix companion(List<Scalar> scalars) => zeros(1, scalars.length - 2) //
       .verticalConcatenate(down: eye(scalars.length - 2))
       .horizontalConcatenate(
         right: NumericalMatrix.fromVectors(<NumericalVector>[
-          NumericalVector(<Scalar>[for (int i = 0; i < scalars.length - 1; ++i) -scalars[i]])
+          NumericalVector(<Scalar>[for (int i = 0; i < scalars.length - 1; ++i) -scalars[i]]),
         ]),
       );
 
@@ -40,7 +40,7 @@ extension NumericalMatrixMethods on NumericalMatrix {
 
   NumericalMatrix scale(Scalar scalar) => NumericalMatrix(<List<Scalar>>[
         for (int y = 0; y < verticalLength; ++y) //
-          <Scalar>[for (int x = 0; x < horizontalLength; ++x) scalar * data[y][x]]
+          <Scalar>[for (int x = 0; x < horizontalLength; ++x) scalar * data[y][x]],
       ]);
 
   NumericalMatrix get collapsed => matrixMap((Scalar v) => v.collapsed);
@@ -88,7 +88,7 @@ extension NumericalMatrixMethods on NumericalMatrix {
         <Scalar>[
           for (int x = 0; x < horizontal; ++x) //
             r_math.pow(-1, y + x).c * minorCofactorExpansion(y, x),
-        ]
+        ],
     ]);
     NumericalMatrix adjugateMatrix = cofactorMatrix.transpose();
 
@@ -223,15 +223,15 @@ extension NumericalMatrixMethods on NumericalMatrix {
     NumericalMatrix r = qr.upper;
 
     NumericalVector previous = NumericalVector(<Scalar>[for (int i = 0; i < verticalLength; ++i) 0.re]);
-    NumericalMatrix accuQ = q;
+    NumericalMatrix accumulatedQ = q;
     for (int k = 0; k <= 100; ++k) {
-      NumericalMatrix _a = r * q;
-      QRFactorization _qr = _a.qrFactorization();
-      NumericalMatrix _q = _qr.orthogonal;
-      NumericalMatrix _r = _qr.upper;
-      NumericalMatrix accumulative = accuQ * _q;
+      NumericalMatrix a0 = r * q;
+      QRFactorization qr0 = a0.qrFactorization();
+      NumericalMatrix q0 = qr0.orthogonal;
+      NumericalMatrix r0 = qr0.upper;
+      NumericalMatrix accumulative = accumulatedQ * q0;
 
-      NumericalVector estimates = _a.rightDiagonalVectors.first;
+      NumericalVector estimates = a0.rightDiagonalVectors.first;
       Scalar deviation = 0
           .to(estimates.degree) //
           .map((int i) => (previous[i] - estimates[i]).abs())
@@ -240,14 +240,14 @@ extension NumericalMatrixMethods on NumericalMatrix {
       if (0.re <= deviation && deviation <= 1e-16.re) {
         break;
       }
-      a = _a;
-      q = _q;
-      r = _r;
+      a = a0;
+      q = q0;
+      r = r0;
       previous = estimates;
-      accuQ = accumulative;
+      accumulatedQ = accumulative;
     }
 
-    NumericalMatrix vectorMatrix = accuQ.collapsed;
+    NumericalMatrix vectorMatrix = accumulatedQ.collapsed;
     NumericalMatrix diagonalMatrix = a.collapsed;
 
     return EigenEstimation(vectorMatrix, diagonalMatrix);
@@ -264,7 +264,7 @@ extension NumericalMatrixMethods on NumericalMatrix {
     List<NumericalVector> vectors = <NumericalVector>[
       // A - λI
       for (Matrix<Complex> eigenMatrix in values.map(NumericalMatrixMethods.eye(size).scale)) //
-        ...(this - eigenMatrix).nullBasis()
+        ...(this - eigenMatrix).nullBasis(),
     ];
 
     NumericalMatrix diagonal = NumericalMatrixMethods.eye(size)..leftDiagonalVectors[0] = NumericalVector(values);
@@ -381,7 +381,7 @@ extension NumericalMatrixMethods on NumericalMatrix {
     List<NumericalVector> vectors = reduced.rowVectors;
     Set<NumericalVector> basis = <NumericalVector>{
       for (int i = 0; i < verticalLength; ++i)
-        if (!reduced[i].data.every((Scalar v) => v == 0.c)) vectors[i]
+        if (!reduced[i].data.every((Scalar v) => v == 0.c)) vectors[i],
     };
 
     return basis;
@@ -392,7 +392,7 @@ extension NumericalMatrixMethods on NumericalMatrix {
     List<NumericalVector> vectors = columnVectors;
     Set<NumericalVector> nonNullVectors = <NumericalVector>{
       for (int i = 0; i < vectors.length; ++i)
-        if (!nullIndices.contains(i)) vectors[i]
+        if (!nullIndices.contains(i)) vectors[i],
     };
 
     return nonNullVectors;
@@ -438,7 +438,7 @@ extension NumericalMatrixMethods on NumericalMatrix {
 
     return NumericalMatrix(<List<Scalar>>[
       for (int y = 0; y < verticalLength; ++y)
-        <Scalar>[for (int x = 0; x < horizontalLength; ++x) data[y][x] + other.data[y][x]]
+        <Scalar>[for (int x = 0; x < horizontalLength; ++x) data[y][x] + other.data[y][x]],
     ]);
   }
 
@@ -451,7 +451,7 @@ extension NumericalMatrixMethods on NumericalMatrix {
     List<NumericalVector> columnVectors = other.columnVectors;
     List<NumericalVector> vectors = <NumericalVector>[
       for (NumericalVector column in columnVectors) //
-        NumericalVector(<Scalar>[for (NumericalVector row in rowVectors) row * column])
+        NumericalVector(<Scalar>[for (NumericalVector row in rowVectors) row * column]),
     ];
 
     return NumericalMatrix.fromVectors(vectors);
@@ -471,10 +471,10 @@ extension NumericalMatrixMethods on NumericalMatrix {
 }
 
 class EigenEstimation {
-  final NumericalMatrix eigenvectors;
-  final NumericalMatrix diagonal;
 
   const EigenEstimation(this.eigenvectors, this.diagonal);
+  final NumericalMatrix eigenvectors;
+  final NumericalMatrix diagonal;
 
   Set<Scalar> get eigenvalues {
     NumericalMatrix matrix = diagonal.collapsed;
@@ -507,49 +507,49 @@ class EigenEstimation {
 }
 
 class RowReduction {
+
+  const RowReduction(this.reduced);
   static const int permuteOnZeroOnly = 1 << 0;
   static const int preserveRowOrder = 1 << 1;
 
   final NumericalMatrix reduced;
-
-  const RowReduction(this.reduced);
 }
 
 class QRAlgorithm {
-  final NumericalMatrix diagonal;
-  final NumericalMatrix eigenvectors;
 
   const QRAlgorithm(this.diagonal, this.eigenvectors);
+  final NumericalMatrix diagonal;
+  final NumericalMatrix eigenvectors;
 }
 
 class EigenObjects {
-  final NumericalMatrix diagonal;
-  final NumericalMatrix eigenvectors;
 
   const EigenObjects(this.diagonal, this.eigenvectors);
+  final NumericalMatrix diagonal;
+  final NumericalMatrix eigenvectors;
 }
 
 class LUFactorization {
-  final NumericalMatrix lower;
-  final NumericalMatrix upper;
 
   const LUFactorization(this.lower, this.upper);
+  final NumericalMatrix lower;
+  final NumericalMatrix upper;
 }
 
 class PLUFactorization extends LUFactorization {
+
+  const PLUFactorization(this.permutation, super.lower, super.upper, this.permutationCount);
   static const int permuteOnZeroOnly = 1 << 0;
 
   final NumericalMatrix permutation;
   final int permutationCount;
-
-  const PLUFactorization(this.permutation, super.lower, super.upper, this.permutationCount);
 }
 
 class QRFactorization {
-  final NumericalMatrix orthogonal;
-  final NumericalMatrix upper;
 
   const QRFactorization(this.orthogonal, this.upper);
+  final NumericalMatrix orthogonal;
+  final NumericalMatrix upper;
 }
 
 extension MatrixPostfixExtension<E> on List<List<E>> {

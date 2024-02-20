@@ -3,6 +3,11 @@ import "../functions/real_math.dart" as r_math;
 import "../shared.dart";
 
 class Complex extends NumberLike<Complex> {
+  const Complex(this.real, this.imaginary);
+  const Complex.fromNum(this.real, this.imaginary);
+  const Complex.from(this.real) : imaginary = 0;
+  const Complex.imaginaryFrom(this.imaginary) : real = 0;
+
   static const Complex zero = Complex(0, 0);
   static const Complex one = Complex(1, 0);
   static const Complex two = Complex(2, 0);
@@ -10,11 +15,6 @@ class Complex extends NumberLike<Complex> {
 
   final ComplexMember real;
   final ComplexMember imaginary;
-
-  const Complex(this.real, this.imaginary);
-  const Complex.fromNum(this.real, this.imaginary);
-  const Complex.from(this.real) : imaginary = 0;
-  const Complex.imaginaryFrom(this.imaginary) : real = 0;
 
   // Knowing how fractions work, this seems like it'll be a nightmare. :(
   ComplexMember absSquared() => real.pow(2) + imaginary.pow(2);
