@@ -1,7 +1,7 @@
 name: playground
 # cspell:disable
 environment:
-  sdk: ">=3.2.0-0 "
+  sdk: ">=3.5.0-0 "
 
 dependencies:
   # ansicolor:
@@ -46,6 +46,8 @@ dependencies:
   # mime:
   # more:
   # numeral:
+  json: ^0.20.1
+  macros:
   path:
   # pdf:
   # petitparser:

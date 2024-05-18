@@ -1,6 +1,6 @@
 import "package:test/test.dart";
 
-import "../bin/range.dart";
+import "../bin/previous/range.dart";
 
 void main() {
   group("range", () {
