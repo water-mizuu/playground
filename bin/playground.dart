@@ -1,14 +1,12 @@
+import augment "playground_augment.dart";
 
+external int sum(int a, int b);
 
-import "package:json/json.dart";
+// @WrappingClass()
+// String _myWidget() {
+//   return "Hi";
+// }
 
-@JsonCodable()
-class Person {
-  Person(this.name, this.age);
-  String name;
-  int age;
-}
-
-void main() {
-  print(Person("Michael", 22).toJson());
+void main(List<String> arguments) {
+  print(sum(1, 2));
 }
